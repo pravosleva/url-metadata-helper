@@ -1,4 +1,5 @@
 const urlMetadata = require('url-metadata')
+const { hasProtocol, hasWWW } = require('utils/validator')
 
 module.exports = async (req, res) => {
   if (!req.query || !req.query.url) {
@@ -7,7 +8,16 @@ module.exports = async (req, res) => {
       error,
     });
   }
-  await urlMetadata(req.query.url)
+  const { url } = req.query
+  const normalizedURL = hasWWW(url)
+    ? new String(url).replace('www.', 'http://')
+    : hasProtocol(url)
+      ? url
+      : `http://${url}`
+
+  console.log(normalizedURL)
+
+  await urlMetadata(normalizedURL)
     .then(
     function (metadata) {
       res.set('Content-Type', 'application/json');
