@@ -15,8 +15,6 @@ module.exports = async (req, res) => {
       ? url
       : `http://${url}`
 
-  console.log(normalizedURL)
-
   await urlMetadata(normalizedURL)
     .then(
     function (metadata) {

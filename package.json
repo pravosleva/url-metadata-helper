@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "NODE_PATH=. node ./bin/www",
-    "dev": "NODE_PATH=. DEBUG=url-metadata-helper:* npm start"
+    "dev": "NODE_PATH=. DEBUG=url-metadata-helper:* npm start",
+    "test": "jest"
   },
   "dependencies": {
     "cookie-parser": "~1.4.3",
@@ -12,5 +13,8 @@
     "express": "~4.16.0",
     "morgan": "~1.9.0",
     "url-metadata": "^2.4.0"
+  },
+  "devDependencies": {
+    "jest": "^26.0.1"
   }
 }
