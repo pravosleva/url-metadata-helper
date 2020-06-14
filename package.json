@@ -1,16 +1,19 @@
 {
-  "name": "url-metadata-helper",
+  "name": "express-helper",
   "version": "0.0.0",
   "private": true,
   "scripts": {
     "start": "PORT=5000 NODE_PATH=. node ./bin/www",
-    "dev": "NODE_PATH=. DEBUG=url-metadata-helper:* npm start",
-    "start:pm2": "pm2 start npm --name \"url-metadata-helper-5000\" -- start",
+    "dev": "NODE_PATH=. DEBUG=express-helper:* npm start",
+    "start:pm2": "pm2 start npm --name \"express-helper-5000\" -- start",
     "test": "jest"
   },
   "dependencies": {
+    "axios": "^0.19.2",
+    "body-parser": "^1.19.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
+    "dotenv": "^8.2.0",
     "express": "~4.16.0",
     "morgan": "~1.9.0",
     "url-metadata": "^2.4.0"
