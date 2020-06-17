@@ -7,6 +7,6 @@ const verifyRouteRoute = require('./mws/verify');
 reCAPTCHA.use(bodyParser.urlencoded({ extended: false }));
 reCAPTCHA.use(bodyParser.json());
 
-reCAPTCHA.get('/verify', verifyRouteRoute);
+reCAPTCHA.post('/verify', verifyRouteRoute);
 
 module.exports = reCAPTCHA;
