@@ -8,7 +8,7 @@ const RECAPTCHAV3_SERVER_KEY = process.env.RECAPTCHAV3_SERVER_KEY;
 const RECAPTCHAV3_VERIFY_URL = process.env.RECAPTCHAV3_VERIFY_URL;
 // Client key: 6LdjSaQZAAAAABAV1C45jlV802Ydf-gQfqZDzYDs
 module.exports = async (req, res) => {
-  if (!req.query.captcha) {
+  if (!req.body.captcha) {
     res.status(400).send({
       success: 0,
       captcha: req.body.captcha,
@@ -20,7 +20,7 @@ module.exports = async (req, res) => {
 
   const byGoogle = await axios
     .post(
-      `${RECAPTCHAV3_VERIFY_URL}?secret=${RECAPTCHAV3_SERVER_KEY}&response=${req.query.captcha}`
+      `${RECAPTCHAV3_VERIFY_URL}?secret=${RECAPTCHAV3_SERVER_KEY}&response=${req.body.captcha}`
     )
     .then(httpErrorHandler)
     .then(apiErrorHandler)
