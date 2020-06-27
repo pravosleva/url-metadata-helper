@@ -5,7 +5,9 @@ module.exports = async (req, res) => {
   if (!req.query || !req.query.url) {
     res.status(400).send({
       success: 0,
-      error,
+      error: {
+        query: "query.url is required",
+      },
     });
   }
   const { url } = req.query;
