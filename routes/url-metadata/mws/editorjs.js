@@ -1,5 +1,5 @@
-const urlMetadata = require('url-metadata')
-const { hasProtocol, hasWWW } = require('utils/validator')
+const urlMetadata = require("url-metadata");
+const { hasProtocol, hasWWW } = require("utils/validator");
 
 module.exports = async (req, res) => {
   if (!req.query || !req.query.url) {
@@ -8,27 +8,29 @@ module.exports = async (req, res) => {
       error,
     });
   }
-  const { url } = req.query
-  const normalizedURL = hasWWW(url)
-    ? new String(url).replace('www.', 'http://')
-    : hasProtocol(url)
-      ? url
-      : `http://${url}`
+  const { url } = req.query;
+  let normalizedURL = url;
+  if (hasWWW(normalizedURL)) {
+    normalizedURL = normalizedURL.replace("www.", "");
+  }
+  if (!hasProtocol(normalizedURL)) {
+    normalizedURL = `http://${url}`;
+  }
 
-  await urlMetadata(normalizedURL)
-    .then(
+  await urlMetadata(normalizedURL).then(
     function (metadata) {
-      res.set('Content-Type', 'application/json');
+      res.set("Content-Type", "application/json");
       res.status(200).send({
         success: 1,
-        meta: metadata
+        meta: metadata,
       });
     },
     function (error) {
-      console.log(error)
+      console.log(error);
       res.status(500).send({
         success: 0,
         error,
       });
-    })
-}
+    }
+  );
+};
