@@ -1,11 +1,11 @@
 const { UniversalError } = require("../UniversalError");
 
-class apiError extends UniversalError {
+class ApiError extends UniversalError {
   constructor(errors) {
-    super("apiError");
+    super("ApiError");
 
     // Set the prototype explicitly.
-    Object.setPrototypeOf(this, apiError.prototype);
+    Object.setPrototypeOf(this, ApiError.prototype);
   }
 
   getErrorMsg() {
@@ -29,5 +29,5 @@ class apiError extends UniversalError {
 }
 
 module.exports = {
-  apiError,
+  ApiError,
 };

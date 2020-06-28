@@ -1,4 +1,4 @@
-const { apiError } = require("./ApiError");
+const { ApiError } = require("./ApiError");
 
 /*
 {
@@ -27,7 +27,7 @@ const apiErrorHandler = (res) => {
       errors.noKeys = "Ошибки не получены от апи гугла";
     }
 
-    throw new apiError(errors);
+    throw new ApiError(errors);
   }
 };
 
