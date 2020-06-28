@@ -3,8 +3,8 @@ info:
   title: Express helper
   description: API description in `express-helper/swagger.yaml`
   version: "1.0.0"
-host: localhost:5000
-basePath: /
+host: pravosleva.ru
+basePath: /express-helper
 schemes:
   - http
 paths:
@@ -38,7 +38,7 @@ paths:
         400:
           description: "Error: Bad Request"
           schema:
-            info: "query.url is required for example"
+            info: query.url is required for example
             type: object
             properties:
               success: 0
@@ -47,24 +47,26 @@ paths:
             example:
               success: 0
               error:
-                query: "query.url is required"
+                query: query.url is required
   /recaptcha-v3/verify:
-    get:
+    post:
+      consumes:
+        - application/json
       parameters:
-        - name: "captcha"
-          in: query
-          description: Token
+        - in: body
+          name: "body"
           required: true
-          type: string
+          schema:
+            $ref: "#/definitions/Verify"
       summary: Returns standart object by Google.
-      description: "Получить оценочные данные от Гугла"
+      description: Получить оценочные данные от Гугла через сервис
       produces:
         - application/json
       responses:
         200:
-          description: "OK"
+          description: OK
           schema:
-            info: "Standart object by Google"
+            info: Standart object by Google
             type: object
             properties:
               success:
@@ -90,7 +92,7 @@ paths:
               original:
                 success: true
                 score: 0.9
-                action: "some_action"
+                action: some_action
                 challenge_ts: "ISO format yyyy-MM-dd'T'HH:mm:ssZZ"
                 hostname: "localhost"
           400:
@@ -107,3 +109,11 @@ paths:
             example:
               errors:
                 requestError: "Description"
+definitions:
+  Verify:
+    type: "object"
+    properties:
+      captcha:
+        required: true
+        type: string
+        description: Токен, который был получен на клиенте
