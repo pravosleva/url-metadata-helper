@@ -1,7 +1,7 @@
 const { HttpError } = require("../HttpError");
 
 const httpErrorHandler = (obj) => {
-  // console.log(obj);
+  console.log(obj);
   if (!!obj.request && obj.request.status === 200) {
     return obj.data;
   } else {
