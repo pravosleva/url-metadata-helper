@@ -1,8 +1,8 @@
 const axios = require("axios");
-const { httpErrorHandler } = require("./errors/http/axios/httpErrorHandler");
-const { HttpError } = require("./errors/http/HttpError");
-const { apiErrorHandler } = require("./errors/api/apiErrorHandler");
-const { ApiError } = require("./errors/api/ApiError");
+const { httpErrorHandler } = require("utils/errors/http/axios/httpErrorHandler");
+const { HttpError } = require("utils/errors/http/HttpError");
+const { apiErrorHandler } = require("utils/errors/api/recaptcha-v3/apiErrorHandler");
+const { ApiError } = require("utils/errors/api/ApiError");
 
 const RECAPTCHAV3_SERVER_KEY = process.env.RECAPTCHAV3_SERVER_KEY;
 const RECAPTCHAV3_VERIFY_URL = process.env.RECAPTCHAV3_VERIFY_URL;

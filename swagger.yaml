@@ -58,7 +58,7 @@ paths:
           required: true
           schema:
             $ref: "#/definitions/Verify"
-      summary: Returns standart object by Google.
+      summary: Returns scoring result by Google.
       description: Получить оценочные данные от Гугла через сервис
       produces:
         - application/json
@@ -66,7 +66,7 @@ paths:
         200:
           description: OK
           schema:
-            info: Standart object by Google
+            info: Result of scoring by Google
             type: object
             properties:
               success:
