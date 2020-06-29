@@ -20,14 +20,12 @@ npm run dev
 
 ### Sample
 
-**Req**
-
+_Req_
 ```bash
 GET `http://localhost:3000/url-metadata/editorjs?url=<YOUR_PAGE_URL>`
 ```
 
-**Res 200** _TODO: Swagger doc_
-
+_Res: 200_
 ```js
 {
   "success": 1,
@@ -65,15 +63,15 @@ RECAPTCHAV3_VERIFY_URL=https://www.google.com/recaptcha/api/siteverify
 RECAPTCHAV3_SERVER_KEY=<RECAPTCHAV3_SERVER_KEY>
 ```
 
-**Req**
+### Sample
 
+_Req_
 ```
 POST `http://localhost:5000/recaptcha-v3/verify`
 { captcha: string }
 ```
 
-**Res 200**
-
+_Res: 200_
 ```js
 {
   success: 1,
