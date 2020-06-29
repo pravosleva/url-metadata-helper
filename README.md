@@ -22,7 +22,7 @@ npm run dev
 
 _Req_
 ```bash
-GET `http://localhost:3000/url-metadata/editorjs?url=<YOUR_PAGE_URL>`
+GET `http://localhost:5000/url-metadata/editorjs?url=<YOUR_PAGE_URL>`
 ```
 
 _Res: 200_
