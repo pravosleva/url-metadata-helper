@@ -1,4 +1,4 @@
-const { UniversalError } = require("../UniversalError");
+const { UniversalError } = require("utils/errors/UniversalError");
 
 class ApiError extends UniversalError {
   constructor(errors) {

@@ -13,6 +13,9 @@ class UniversalError extends Error {
   getReadableCamelCase(str) {
     return getReadableCamelCase(str)
   }
+  get nameAsReadableCamelCase () {
+    return this.getReadableCamelCase(this.name)
+  }
   getErrorMsg() {
     throw new Error('gerErrorMsg method should be implemented')
   }

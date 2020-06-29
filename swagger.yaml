@@ -74,46 +74,67 @@ paths:
               captcha:
                 type: string
               original:
-                type: object
-                properties:
-                  success: boolean
-                  score:
-                    type: number
-                    minimum: 0
-                    maximum: 1
-                  action: string
-                  challenge_ts: date
-                  hostname: string
-              errors:
-                type: object
+                required: true
+                schema:
+                  $ref: "#/definitions/RecaptchaResponseByGoogle"
             example:
               success: 1
               captcha: "req.body.captcha"
               original:
                 success: true
                 score: 0.9
-                action: some_action
+                action: "some_action"
                 challenge_ts: "ISO format yyyy-MM-dd'T'HH:mm:ssZZ"
                 hostname: "localhost"
-          400:
-            description: "Error: Bad request"
-            schema:
-              info: "Request error"
-              type: object
-              properties:
-                success: boolean
-                errors:
-                  type: array
-                  items:
-                    type: string
-            example:
+        400:
+          description: "Error: Bad request"
+          schema:
+            info: "Request error"
+            type: object
+            properties:
+              success: boolean
               errors:
-                requestError: "Description"
+                $ref: "#/definitions/ErrorsLikeUremont"
+            example:
+              success: 0
+              errors:
+                "!byGoogle.response.success":
+                  - "Неожиданная ошибка на стороне Гугла"
+                  - "Something else"
 definitions:
   Verify:
-    type: "object"
+    type: object
     properties:
       captcha:
         required: true
         type: string
         description: Токен, который был получен на клиенте
+  RecaptchaResponseByGoogle:
+    type: object
+    properties:
+      success:
+        required: true
+        type: boolean
+      score:
+        required: true
+        type: number
+        minimum: 0
+        maximum: 1
+        description: "Оценка, является ли пользователь человеком, по мнению Гугла"
+      action:
+        required: true
+        type: string
+      challenge_ts:
+        required: true
+        type: string
+      hostname:
+        required: true
+        type: string
+  ErrorsLikeUremont:
+    type: object
+    properties:
+      errorTypeSmple:
+        type: array
+        items:
+          type: string
+          description: Error description
