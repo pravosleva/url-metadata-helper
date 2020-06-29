@@ -1,13 +1,11 @@
 # express-helper
 
+Based on `express` code generator and `url-metadata` npm module.
+
 ## Roadmap:
 
 - [x] [url-metadata](#url-metadata)
 - [x] [reCAPTCHA-v3](#recaptcha-v3)
-
-## url-metadata
-
-Based on `express` code generator and `url-metadata` npm module.
 
 ### Quick start
 
@@ -15,6 +13,10 @@ Based on `express` code generator and `url-metadata` npm module.
 npm i
 npm run dev
 ```
+
+## url-metadata
+
+[Swagger](http://pravosleva.ru/express-helper/swagger/#/default/get_url_metadata_editorjs). See also `http://localhost:5000/swagger/`.
 
 ### Sample
 
@@ -30,7 +32,7 @@ GET `http://localhost:3000/url-metadata/editorjs?url=<YOUR_PAGE_URL>`
 {
   "success": 1,
   "meta": {
-    // metadata for you page url
+    // metadata for your page url
   }
 }
 ```
@@ -54,6 +56,8 @@ const editor = new EditorJS({
 
 ## recaptcha-v3
 
+[Swagger](http://pravosleva.ru/express-helper/swagger/#/default/post_recaptcha_v3_verify). See also `http://localhost:5000/swagger/`.
+
 `.env`
 
 ```env
@@ -65,9 +69,7 @@ RECAPTCHAV3_SERVER_KEY=<RECAPTCHAV3_SERVER_KEY>
 
 ```
 POST `http://localhost:5000/recaptcha-v3/verify`
-{
-  captcha: string
-}
+{ captcha: string }
 ```
 
 **Res 200**
