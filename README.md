@@ -8,7 +8,7 @@ Based on `express` code generator.
 
 _Local build then deploy and restart all current pm2 processes_
 
-### `yarn deploy:prod:restart-front`
+### `yarn deploy:prod:restart-helper`
 
 _Local build then deploy then `pm2 restart 2`_
 
@@ -25,7 +25,7 @@ _Local build then deploy then `pm2 restart 2`_
     "pre-deploy-remote": "pm2 stop all",
     "post-deploy": "pm2 delete all; pm2 resurrect --update-env"
   },
-  "prod:restart-front": {
+  "prod:restart-helper": {
     "user": "<USER>",
     "host": "<HOST>",
     "port": "<PORT>",
