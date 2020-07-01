@@ -2,6 +2,18 @@
 
 Based on `express` code generator.
 
+## Quick start
+
+```bash
+npm i
+npm run dev
+```
+
+## Roadmap:
+
+- [x] [url-metadata](#url-metadata)
+- [x] [reCAPTCHA-v3](#recaptcha-v3)
+
 ## Deploy
 
 ### `yarn deploy:prod:restart-all`
@@ -31,23 +43,11 @@ _Local build then deploy then `pm2 restart 2`_
     "port": "<PORT>",
     "files": "bin app.js public routes utils *.json *.yaml yarn.lock",
     "path": "/home/path-to-dir/pravosleva-blog/express-helper",
-    "post-deploy": "yarn; pm2 stop 2; pm2 restart 2 --update-env"
+    "post-deploy": "pm2 stop 2; yarn; pm2 restart 2 --update-env"
   },
   "dev": {},
   "staging": {}
 }
-```
-
-## Roadmap:
-
-- [x] [url-metadata](#url-metadata)
-- [x] [reCAPTCHA-v3](#recaptcha-v3)
-
-### Quick start
-
-```bash
-npm i
-npm run dev
 ```
 
 ## url-metadata
