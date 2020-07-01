@@ -16,7 +16,7 @@ yarn dev
 
 ## Deploy
 
-> ⚡ ### `bash deploy-app-config-init.sh`
+> ⚡ Once: `bash deploy-app-config-init.sh`
 >
 > _Init config template_
 
