@@ -1,4 +1,4 @@
-const { UniversalError } = require("../UniversalError");
+const { UniversalError } = require('../UniversalError')
 
 class NetworkError extends UniversalError {
   constructor(message) {
@@ -10,10 +10,10 @@ class NetworkError extends UniversalError {
   }
 
   getErrorMsg() {
-    return `${this.getReadableCamelCase(this.name)}${!!this.message ? `: ${this.message}` : ''}`
+    return `${this.getReadableCamelCase(this.name)}${this.message ? `: ${this.message}` : ''}`
   }
 }
 
 module.exports = {
   NetworkError,
-};
+}

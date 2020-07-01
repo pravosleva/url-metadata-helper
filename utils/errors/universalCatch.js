@@ -7,23 +7,22 @@ module.exports = {
     switch (true) {
       case err.isAxiosError:
         try {
-          throw new NetworkError('ERR: Client never received a response, or request never left')
-          if (!!err.response) {
+          if (err.response) {
             // Client received an error response (5xx, 4xx)
             throw new HttpError(err.response.status, err.response.statusText)
-          } else if (!!err.request) {
+          } else if (err.request) {
             throw new NetworkError('ERR: Client never received a response, or request never left')
           } else {
             return {
               isOk: false,
-              msg: "AXIOS ERR: Не удалось обработать ошибку",
-            };
+              msg: 'AXIOS ERR: Не удалось обработать ошибку',
+            }
           }
-        } catch (err) {
+        } catch (error) {
           return {
             isOk: false,
-            msg: err.getErrorMsg(),
-          };
+            msg: error.getErrorMsg(),
+          }
         }
       // NOTE 2
       // Доп. обрабочики (помимо apiErrorHandler) будут нужны,
@@ -36,18 +35,18 @@ module.exports = {
         return {
           isOk: false,
           msg: err.getErrorMsg(),
-        };
+        }
       case err instanceof TypeError: // CORS for example
         // case Object.getPrototypeOf(err).name === 'Error':
         return {
           isOk: false,
           msg: err.message,
-        };
+        }
       default:
         return {
           isOk: false,
-          msg: "REQUEST ERR: Не удалось обработать ошибку",
-        };
+          msg: 'REQUEST ERR: Не удалось обработать ошибку',
+        }
     }
-  }
+  },
 }

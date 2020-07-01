@@ -10,12 +10,15 @@ class UniversalError extends Error {
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, UniversalError.prototype)
   }
+
   getReadableCamelCase(str) {
     return getReadableCamelCase(str)
   }
-  get nameAsReadableCamelCase () {
+
+  get nameAsReadableCamelCase() {
     return this.getReadableCamelCase(this.name)
   }
+
   getErrorMsg() {
     throw new Error('gerErrorMsg method should be implemented')
   }

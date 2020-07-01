@@ -51,6 +51,12 @@ _Local build then deploy then `pm2 restart 2`_
 }
 ```
 
+## Test
+
+```bash
+yarn test
+```
+
 ## url-metadata
 
 Based on `url-metadata` npm module. See [Swagger](http://pravosleva.ru/express-helper/swagger/#/default/get_url_metadata_editorjs). And [local instance](http://localhost:5000/swagger/#/default/get_url_metadata_editorjs).
@@ -58,11 +64,13 @@ Based on `url-metadata` npm module. See [Swagger](http://pravosleva.ru/express-h
 ### Sample
 
 _Req_
+
 ```bash
 GET `http://localhost:5000/url-metadata/editorjs?url=<YOUR_PAGE_URL>`
 ```
 
 _Res: 200_
+
 ```js
 {
   "success": 1,
@@ -76,17 +84,17 @@ _Res: 200_
 
 ```js
 const editor = new EditorJS({
-  holderId: "editorjs",
+  holderId: 'editorjs',
   tools: {
     // ...
     linkTool: {
       class: LinkTool,
       config: {
-        endpoint: "http://localhost:5000/url-metadata/editorjs", // Your backend endpoint for url data fetching
+        endpoint: 'http://localhost:5000/url-metadata/editorjs', // Your backend endpoint for url data fetching
       },
     },
   },
-});
+})
 ```
 
 ## recaptcha-v3
@@ -103,12 +111,14 @@ RECAPTCHAV3_SERVER_KEY=<RECAPTCHAV3_SERVER_KEY>
 ### Sample
 
 _Req_
+
 ```
 POST `http://localhost:5000/recaptcha-v3/verify`
 { captcha: string }
 ```
 
 _Res: 200_
+
 ```js
 {
   success: 1,

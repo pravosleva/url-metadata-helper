@@ -1,4 +1,4 @@
-const { ApiError } = require("../ApiError");
+const { ApiError } = require('../ApiError')
 
 /*
 {
@@ -13,24 +13,23 @@ const { ApiError } = require("../ApiError");
 
 const apiErrorHandler = (res) => {
   if (res.success) {
-    return res;
-  } else {
-    const errors = {};
-
-    ["score", "action", "challenge_ts", "hostname"].forEach((key) => {
-      if (!!res[key]) {
-        errors[key] = res[key];
-      }
-    });
-
-    if (Object.keys(errors) === 0) {
-      errors.noKeys = "Ошибки не получены от апи гугла";
-    }
-
-    throw new ApiError(errors);
+    return res
   }
-};
+  const errors = {}
+
+  ;['score', 'action', 'challenge_ts', 'hostname'].forEach((key) => {
+    if (res[key]) {
+      errors[key] = res[key]
+    }
+  })
+
+  if (Object.keys(errors) === 0) {
+    errors.noKeys = 'Ошибки не получены от апи гугла'
+  }
+
+  throw new ApiError(errors)
+}
 
 module.exports = {
   apiErrorHandler,
-};
+}

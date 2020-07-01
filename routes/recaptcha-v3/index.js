@@ -1,12 +1,12 @@
-const express = require('express');
-const reCAPTCHA = express();
-const bodyParser = require('body-parser');
-const request = require('request');
-const verifyRoute = require('./mws/verify');
+const express = require('express')
 
-reCAPTCHA.use(bodyParser.urlencoded({ extended: false }));
-reCAPTCHA.use(bodyParser.json());
+const reCAPTCHA = express()
+const bodyParser = require('body-parser')
+const verifyRoute = require('./mws/verify')
 
-reCAPTCHA.post('/verify', verifyRoute);
+reCAPTCHA.use(bodyParser.urlencoded({ extended: false }))
+reCAPTCHA.use(bodyParser.json())
 
-module.exports = reCAPTCHA;
+reCAPTCHA.post('/verify', verifyRoute)
+
+module.exports = reCAPTCHA

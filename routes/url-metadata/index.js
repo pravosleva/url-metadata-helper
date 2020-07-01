@@ -1,7 +1,8 @@
-const express = require('express');
-const urlMetadata = express();
-const editorjsRoute = require('./mws/editorjs');
+const express = require('express')
 
-urlMetadata.get('/editorjs', editorjsRoute);
+const urlMetadata = express()
+const editorjsRoute = require('./mws/editorjs')
 
-module.exports = urlMetadata;
+urlMetadata.get('/editorjs', editorjsRoute)
+
+module.exports = urlMetadata
