@@ -10,8 +10,8 @@
     "test": "jest",
     "deploy:prod:restart-all": "deploy-app -d prod:restart-all",
     "deploy:prod:restart-helper": "deploy-app -d prod:restart-helper",
-    "lint": "eslint --debug 'routes/**/*.{js,jsx,ts,tsx}' 'utils/**/*.{js,jsx,ts,tsx}'",
-    "lint:fix": "eslint 'routes/**/*.{js,jsx,ts,tsx}' 'utils/**/*.{js,jsx,ts,tsx}' --fix"
+    "lint": "eslint --debug 'routes/**/*.{js,jsx,ts,tsx}' 'utils/**/*.{js,jsx,ts,tsx}' 'bin/**/*' app.js",
+    "lint:fix": "eslint 'routes/**/*.{js,jsx,ts,tsx}' 'utils/**/*.{js,jsx,ts,tsx}' 'bin/**/*' app.js --fix"
   },
   "lint-staged": {
     "*.{js, jsx, ts, tsx}": [
