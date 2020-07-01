@@ -1,9 +1,14 @@
-const validator = require('./validator');
+const { hasProtocol, hasWWW } = require("./validator");
 
-test('Has protocol uremont.com to equal false', () => {
-  expect(validator.hasProtocol('uremont.com')).toBe(false);
+test("Has protocol fn test", () => {
+  expect(hasProtocol("uremont.com")).toBe(false);
+  expect(hasProtocol("http://uremont.com")).toBe(true);
+  expect(hasProtocol("https://uremont.com")).toBe(true);
 });
 
-test('Has www uremont.com to equal true', () => {
-  expect(validator.hasWWW('www.uremont.com')).toBe(true);
+test("Has www fn test", () => {
+  expect(hasWWW("www.uremont.com")).toBe(true);
+  expect(hasWWW("http://uremont.com")).toBe(false);
+  expect(hasWWW("http://www.uremont.com")).toBe(true);
+  expect(hasWWW("uremont.com")).toBe(false);
 });
