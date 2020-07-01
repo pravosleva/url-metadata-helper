@@ -5,8 +5,8 @@ Based on `express` code generator.
 ## Quick start
 
 ```bash
-npm i
-npm run dev
+yarn
+yarn dev
 ```
 
 ## Roadmap:
@@ -36,7 +36,7 @@ _Local build then deploy then `pm2 restart 2`_
     "files": "bin app.js public routes utils package.json package-lock.json *.yaml yarn.lock README.md",
     "path": "/home/path-to-dir/pravosleva-blog/express-helper",
     "pre-deploy-remote": "pm2 stop all",
-    "post-deploy": "pm2 delete all; pm2 resurrect --update-env"
+    "post-deploy": "pm2 delete all; yarn; pm2 resurrect --update-env"
   },
   "prod:restart-helper": {
     "user": "<USER>",
