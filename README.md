@@ -16,6 +16,10 @@ yarn dev
 
 ## Deploy
 
+> ⚡ ### `bash deploy-app-config-init.sh`
+>
+> _Init config template_
+
 ### `yarn deploy:prod:restart-all`
 
 _Local build then deploy and restart all current pm2 processes_
