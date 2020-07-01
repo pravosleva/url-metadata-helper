@@ -1,6 +1,42 @@
 # express-helper
 
-Based on `express` code generator and `url-metadata` npm module.
+Based on `express` code generator.
+
+## Deploy
+
+### `yarn deploy:prod:restart-all`
+
+_Local build then deploy and restart all current pm2 processes_
+
+### `yarn deploy:prod:restart-front`
+
+_Local build then deploy then `pm2 restart 2`_
+
+`deploy-app-config.json`
+
+```json
+{
+  "prod:restart-all": {
+    "user": "<USER>",
+    "host": "<HOST>",
+    "port": "<PORT>",
+    "files": "bin app.js public routes utils *.json *.yaml yarn.lock",
+    "path": "/home/path-to-dir/pravosleva-blog/express-helper",
+    "pre-deploy-remote": "pm2 stop all",
+    "post-deploy": "pm2 delete all; pm2 resurrect --update-env"
+  },
+  "prod:restart-front": {
+    "user": "<USER>",
+    "host": "<HOST>",
+    "port": "<PORT>",
+    "files": "bin app.js public routes utils *.json *.yaml yarn.lock",
+    "path": "/home/path-to-dir/pravosleva-blog/express-helper",
+    "post-deploy": "yarn; pm2 stop 2; pm2 restart 2 --update-env"
+  },
+  "dev": {},
+  "staging": {}
+}
+```
 
 ## Roadmap:
 
@@ -16,7 +52,7 @@ npm run dev
 
 ## url-metadata
 
-[Swagger](http://pravosleva.ru/express-helper/swagger/#/default/get_url_metadata_editorjs). See also `http://localhost:5000/swagger/`.
+Based on `url-metadata` npm module. See [Swagger](http://pravosleva.ru/express-helper/swagger/#/default/get_url_metadata_editorjs). And [local instance](http://localhost:5000/swagger/#/default/get_url_metadata_editorjs).
 
 ### Sample
 
@@ -54,7 +90,7 @@ const editor = new EditorJS({
 
 ## recaptcha-v3
 
-[Swagger](http://pravosleva.ru/express-helper/swagger/#/default/post_recaptcha_v3_verify). See also `http://localhost:5000/swagger/`.
+[Swagger](http://pravosleva.ru/express-helper/swagger/#/default/post_recaptcha_v3_verify). And [local instance](http://localhost:5000/swagger/#/default/post_recaptcha_v3_verify).
 
 `.env`
 

@@ -70,3 +70,6 @@ ecosystem.*
 output/
 local-output/
 local-logs/
+
+# deploy tool
+deploy-app-config.json
