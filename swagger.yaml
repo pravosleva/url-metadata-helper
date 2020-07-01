@@ -57,7 +57,7 @@ paths:
           name: "body"
           required: true
           schema:
-            $ref: "#/definitions/Verify"
+            $ref: "#/definitions/RecaptchaVerifyRequestParams"
       summary: Returns scoring result by Google.
       description: Получить оценочные данные от Гугла через сервис
       produces:
@@ -76,16 +76,16 @@ paths:
               original:
                 required: true
                 schema:
-                  $ref: "#/definitions/RecaptchaResponseByGoogle"
+                  $ref: "#/definitions/RecaptchaVerifyResponseByGoogle"
             example:
               success: 1
               captcha: "req.body.captcha"
               original:
                 success: true
                 score: 0.9
-                action: "some_action"
-                challenge_ts: "ISO format yyyy-MM-dd'T'HH:mm:ssZZ"
-                hostname: "localhost"
+                action: "feedback"
+                challenge_ts: "2020-07-01T15:14:47Z"
+                hostname: "pravosleva.ru"
         400:
           description: "Error: Bad request"
           schema:
@@ -102,14 +102,14 @@ paths:
                   - "Неожиданная ошибка на стороне Гугла"
                   - "Something else"
 definitions:
-  Verify:
+  RecaptchaVerifyRequestParams:
     type: object
     properties:
       captcha:
         required: true
         type: string
         description: Токен, который был получен на клиенте
-  RecaptchaResponseByGoogle:
+  RecaptchaVerifyResponseByGoogle:
     type: object
     properties:
       success:
@@ -127,6 +127,7 @@ definitions:
       challenge_ts:
         required: true
         type: string
+        description: "ISO format yyyy-MM-dd'T'HH:mm:ssZZ"
       hostname:
         required: true
         type: string
