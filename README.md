@@ -2,19 +2,22 @@
 
 Based on `express` code generator.
 
-## Quick start
+## Roadmap:
+
+- [x] [Quick start](#quick-start)
+- [x] [Deploy](#deploy)
+- [x] [url-metadata](#url-metadata)
+- [x] [reCAPTCHA-v3](#recaptcha-v3)
+- [x] [Smartprice helper](#smartprice-helper)
+
+## quick-start
 
 ```bash
 yarn
 yarn dev
 ```
 
-## Roadmap:
-
-- [x] [url-metadata](#url-metadata)
-- [x] [reCAPTCHA-v3](#recaptcha-v3)
-
-## Deploy
+## deploy
 
 > ⚡ Once: `bash deploy-app-config-init.sh`
 >
@@ -130,7 +133,72 @@ _Res: 200_
 }
 ```
 
-### See also original docs
+## smartprice-helper
+
+### NGINX settings
+
+`/etc/nginx/nginx.conf`
+
+```bash
+user www-data;
+worker_processes auto;
+pid /run/nginx.pid;
+include /etc/nginx/modules-enabled/*.conf;
+
+events {
+	worker_connections 768;
+	# multi_accept on;
+}
+
+http {
+	include /etc/nginx/mime.types;
+	default_type application/octet-stream;
+
+	##
+	# Virtual Host Configs
+	##
+
+	include /etc/nginx/conf.d/*.conf;
+}
+```
+
+`/etc/nginx/conf.d/default.conf`
+
+```bash
+server {
+  listen 80;
+  client_max_body_size 32m;
+  server_tokens off;
+  proxy_http_version 1.1;
+
+  location / {
+    if ($request_method = 'POST') {
+      add_header 'Access-Control-Allow-Origin' '*';
+      add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+      add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range';
+      add_header 'Access-Control-Expose-Headers' 'Content-Length,Content-Range';
+    }
+    if ($request_method = 'GET') {
+      add_header 'Access-Control-Allow-Origin' '*';
+      add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+      add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range';
+      add_header 'Access-Control-Expose-Headers' 'Content-Length,Content-Range';
+    }
+    proxy_pass          http://127.0.0.1:3000;
+    proxy_http_version  1.1;
+  }
+
+  # location /api {
+  #   rewrite ^/api/(.*)$ /$1 break;
+  #   proxy_pass          http://127.0.0.1:5000/smartprice/api/$1
+  # }
+  location  ~ ^/api/(.*)$ {
+    proxy_pass   http://127.0.0.1:5000/smartprice/api/$1;
+  }
+}
+```
+
+## See also original docs
 
 - [https://developers.google.com/recaptcha/docs/verify#api_response](https://developers.google.com/recaptcha/docs/verify#api_response)
 - [https://developers.google.com/recaptcha/docs/v3#site_verify_response](https://developers.google.com/recaptcha/docs/v3#site_verify_response)

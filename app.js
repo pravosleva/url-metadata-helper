@@ -9,6 +9,7 @@ const usersRouter = require('./routes/users')
 const urlMetadataRouter = require('./routes/url-metadata')
 const reCAPTCHAV3Router = require('./routes/recaptcha-v3')
 const swaggerRouter = require('./routes/swagger')
+const smartpriceRouter = require('./routes/smartprice')
 
 const app = express()
 
@@ -23,5 +24,6 @@ app.use('/users', usersRouter)
 app.use('/url-metadata', urlMetadataRouter)
 app.use('/recaptcha-v3', reCAPTCHAV3Router)
 app.use('/swagger', swaggerRouter)
+app.use('/smartprice', smartpriceRouter)
 
 module.exports = app
