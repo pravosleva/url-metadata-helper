@@ -133,6 +133,12 @@ _Res: 200_
 }
 ```
 
+### See also original docs
+
+- [https://developers.google.com/recaptcha/docs/verify#api_response](https://developers.google.com/recaptcha/docs/verify#api_response)
+- [https://developers.google.com/recaptcha/docs/v3#site_verify_response](https://developers.google.com/recaptcha/docs/v3#site_verify_response)
+
+
 ## smartprice-helper
 
 ### NGINX settings
@@ -197,8 +203,3 @@ server {
   }
 }
 ```
-
-## See also original docs
-
-- [https://developers.google.com/recaptcha/docs/verify#api_response](https://developers.google.com/recaptcha/docs/verify#api_response)
-- [https://developers.google.com/recaptcha/docs/v3#site_verify_response](https://developers.google.com/recaptcha/docs/v3#site_verify_response)
