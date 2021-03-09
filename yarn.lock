@@ -4090,6 +4090,11 @@ nice-try@^1.0.4:
   resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"
   integrity sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==
 
+node-imei@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/node-imei/-/node-imei-1.0.8.tgz#0aecc6fc1ef2ddfece278b7fa359cbdef42befa1"
+  integrity sha512-LGLN0xQ9T6SLKRTLqln8VWT6zFoQMgY3nuX370M5KFtRmjBf9cOqOolxxaReV1ovpfoGhl5X3iDFXoCJwMFZhA==
+
 node-int64@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/node-int64/-/node-int64-0.4.0.tgz#87a9065cdb355d3182d8f94ce11188b825c68a3b"
