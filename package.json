@@ -32,6 +32,7 @@
     "deploy-app": "^1.0.3",
     "dotenv": "^8.2.0",
     "express": "~4.16.0",
+    "md5-hash": "^1.0.1",
     "morgan": "~1.9.0",
     "multer": "^1.4.2",
     "swagger-ui-express": "^4.1.4",
