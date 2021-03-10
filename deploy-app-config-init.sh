@@ -18,4 +18,4 @@ echo '{
   },
   "dev": {},
   "staging": {}
-}' > deploy-app-config.js
+}' > deploy-app-config.json
