@@ -70,10 +70,11 @@ Based on `url-metadata` npm module. See [Swagger](http://pravosleva.ru/express-h
 
 ### Sample
 
+`GET http://localhost:5000/url-metadata/editorjs?url=<YOUR_PAGE_URL>`
+
 _For example_
 
 ```bash
-GET `http://localhost:5000/url-metadata/editorjs?url=<YOUR_PAGE_URL>`
 curl 'http://pravosleva.ru/express-helper/url-metadata/editorjs?url=uremont.com' \
   -H 'Connection: keep-alive' \
   -H 'Cache-Control: max-age=0' \
