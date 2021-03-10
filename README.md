@@ -70,20 +70,54 @@ Based on `url-metadata` npm module. See [Swagger](http://pravosleva.ru/express-h
 
 ### Sample
 
-_Req_
+_For example_
 
 ```bash
 GET `http://localhost:5000/url-metadata/editorjs?url=<YOUR_PAGE_URL>`
+curl 'http://pravosleva.ru/express-helper/url-metadata/editorjs?url=uremont.com' \
+  -H 'Connection: keep-alive' \
+  -H 'Cache-Control: max-age=0' \
+  -H 'Upgrade-Insecure-Requests: 1' \
+  -H 'User-Agent: Mozilla/5.0 (Linux; Android 6.0.1; Moto G (4)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Mobile Safari/537.36' \
+  -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9' \
+  -H 'Accept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7' \
+  -H 'Cookie: _ga=GA1.2.183912308.1610541495; _ym_uid=1610541496300489295; _ym_d=1610541496' \
+  -H 'If-None-Match: W/"2be-diJo7qD3bwLgbiNi2gsHFMKSNsM"' \
+  --compressed \
+  --insecure
 ```
 
-_Res: 200_
+_200_
 
 ```js
 {
-  "success": 1,
-  "meta": {
-    // metadata for your page url
-  }
+	"success": 1,
+	"meta": {
+		"url": "https://uremont.com/",
+		"canonical": "",
+		"title": "Выбери свой автосервис | Uremont",
+		"image": "https://uremont.com/static/img/og-images/ulogo-1200-630.png",
+		"author": "",
+		"description": "",
+		"keywords": "",
+		"source": "uremont.com",
+		"og:url": "https://uremont.com",
+		"og:locale": "",
+		"og:locale:alternate": "",
+		"og:title": "Выбери свой автосервис | Uremont",
+		"og:type": "website",
+		"og:description": "",
+		"og:determiner": "",
+		"og:site_name": "uremont.com",
+		"og:image": "https://uremont.com/static/img/og-images/ulogo-1200-630.png",
+		"og:image:secure_url": "",
+		"og:image:type": "",
+		"og:image:width": "600",
+		"og:image:height": "315",
+		"price": "",
+		"priceCurrency": "",
+		"availability": ""
+	}
 }
 ```
 
