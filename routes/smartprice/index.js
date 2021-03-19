@@ -47,7 +47,7 @@ smartpriceApi.get('/fapi/get-catalog-data/', catalogDataRoute)
 smartpriceApi.get('/md5/make/', jsonParser, md5Make)
 
 // Online TradeIn API imitation
-smartpriceApi.use('/otapi/v1/svyaznoi/swagger/', otApiV1SvyaznoySwagger)
+smartpriceApi.use('/otapi/v1/svyaznoy/swagger/', otApiV1SvyaznoySwagger)
 smartpriceApi.post('/otapi/v1/svyaznoy/imei/', otApiV1SvyaznoyGetIMEI)
 smartpriceApi.post('/otapi/v1/svyaznoy/confirm_detection/', otApiV1SvyaznoyConfirmDetection)
 smartpriceApi.post('/otapi/v1/svyaznoy/diagnostics/', otApiV1SvyaznoyDiagnostics)
