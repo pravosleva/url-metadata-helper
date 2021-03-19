@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   title: Express helper API
-  description: API description in `express-helper/routes/swagger/swagger.yaml`
+  description: API description in `express-helper/routers/swagger/swagger.yaml`
   version: '1.0.0'
 host: pravosleva.ru
 basePath: /express-helper
