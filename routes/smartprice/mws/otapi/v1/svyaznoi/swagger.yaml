@@ -1,0 +1,55 @@
+swagger: '2.0'
+info:
+  title: 'API /smartprice/otapi/v1/svyaznoy'
+  description: 'В тестовом режиме возможен случайный вариант ответа `success | fail`'
+  version: '1.0.0'
+host: pravosleva.ru
+basePath: /express-helper/smartprice/otapi/v1/svyaznoy
+schemes:
+  - http
+paths:
+  /accept_preprice:
+    post:
+      # parameters:
+      #   - name: 'url'
+      #     in: query
+      #     description: Your page url
+      #     required: true
+      #     type: string
+      summary: Returns success after accept preprice
+      description: 'Подтверждение на любом этапе до формирования ценника'
+      produces:
+        - application/json
+      responses:
+        200:
+          description: 'OK'
+          schema:
+            info: 'Success response sample'
+            type: object
+            properties:
+              ok: boolean
+              need_photos:
+                type: object
+            example:
+              ok: true
+              need_photos:
+                - 'back'
+                - 'front'
+        200:
+          description: 'OK'
+          schema:
+            info: 'Fail response sample'
+            type: object
+            properties:
+              ok: boolean
+              code:
+                type: string
+              message:
+                type: string
+              extra:
+                type: null
+            example:
+              ok: false
+              code: 'access_denied'
+              message: 'Недопустимая операция'
+              extra: null

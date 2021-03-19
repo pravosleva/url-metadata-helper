@@ -28,6 +28,7 @@ const otApiV1SvyaznoyCheckState = require('./mws/otapi/v1/svyaznoi/check_state')
 const otApiV1SvyaznoyAcceptPrice = require('./mws/otapi/v1/svyaznoi/accept_price')
 const otApiV1SvyaznoyBuyoutDocForm = require('./mws/otapi/v1/svyaznoi/buyout_doc_form')
 const otApiV1SvyaznoySignBuyoutDoc = require('./mws/otapi/v1/svyaznoi/sign_buyout_doc')
+const otApiV1SvyaznoySwagger = require('./mws/otapi/v1/svyaznoi/swagger')
 
 // Special API imitation
 smartpriceApi.get('/api/catalog', catalogCounterRoute)
@@ -46,6 +47,7 @@ smartpriceApi.get('/fapi/get-catalog-data/', catalogDataRoute)
 smartpriceApi.get('/md5/make/', jsonParser, md5Make)
 
 // Online TradeIn API imitation
+smartpriceApi.use('/otapi/v1/svyaznoi/swagger/', otApiV1SvyaznoySwagger)
 smartpriceApi.post('/otapi/v1/svyaznoy/imei/', otApiV1SvyaznoyGetIMEI)
 smartpriceApi.post('/otapi/v1/svyaznoy/confirm_detection/', otApiV1SvyaznoyConfirmDetection)
 smartpriceApi.post('/otapi/v1/svyaznoy/diagnostics/', otApiV1SvyaznoyDiagnostics)
