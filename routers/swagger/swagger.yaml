@@ -1,8 +1,8 @@
-swagger: "2.0"
+swagger: '2.0'
 info:
-  title: Express helper
-  description: API description in `express-helper/swagger.yaml`
-  version: "1.0.0"
+  title: Express helper API
+  description: API description in `express-helper/routes/swagger/swagger.yaml`
+  version: '1.0.0'
 host: pravosleva.ru
 basePath: /express-helper
 schemes:
@@ -11,20 +11,20 @@ paths:
   /url-metadata/editorjs:
     get:
       parameters:
-        - name: "url"
+        - name: 'url'
           in: query
           description: Your page url
           required: true
           type: string
       summary: Returns metadata for your page url.
-      description: "Получить metadata для конкретной страницы"
+      description: 'Получить metadata для конкретной страницы'
       produces:
         - application/json
       responses:
         200:
-          description: "OK"
+          description: 'OK'
           schema:
-            info: "Standart for Editor.js"
+            info: 'Standart for Editor.js'
             type: object
             properties:
               success: 1
@@ -33,10 +33,10 @@ paths:
             example:
               success: 1
               meta:
-                url: "https://uremont.com"
-                og:title: "Выбери свой автосервис | Uremont"
+                url: 'https://uremont.com'
+                og:title: 'Выбери свой автосервис | Uremont'
         400:
-          description: "Error: Bad Request"
+          description: 'Error: Bad Request'
           schema:
             info: query.url is required for example
             type: object
@@ -54,10 +54,10 @@ paths:
         - application/json
       parameters:
         - in: body
-          name: "body"
+          name: 'body'
           required: true
           schema:
-            $ref: "#/definitions/RecaptchaVerifyRequestParams"
+            $ref: '#/definitions/RecaptchaVerifyRequestParams'
       summary: Returns scoring result by Google.
       description: Получить оценочные данные от Гугла через сервис
       produces:
@@ -76,31 +76,31 @@ paths:
               original:
                 required: true
                 schema:
-                  $ref: "#/definitions/RecaptchaVerifyResponseByGoogle"
+                  $ref: '#/definitions/RecaptchaVerifyResponseByGoogle'
             example:
               success: 1
-              captcha: "req.body.captcha"
+              captcha: 'req.body.captcha'
               original:
                 success: true
                 score: 0.9
-                action: "feedback"
-                challenge_ts: "2020-07-01T15:14:47Z"
-                hostname: "pravosleva.ru"
+                action: 'feedback'
+                challenge_ts: '2020-07-01T15:14:47Z'
+                hostname: 'pravosleva.ru'
         400:
-          description: "Error: Bad request"
+          description: 'Error: Bad request'
           schema:
-            info: "Request error"
+            info: 'Request error'
             type: object
             properties:
               success: boolean
               errors:
-                $ref: "#/definitions/ErrorsLikeUremont"
+                $ref: '#/definitions/ErrorsLikeUremont'
             example:
               success: 0
               errors:
-                "!byGoogle.response.success":
-                  - "Неожиданная ошибка на стороне Гугла"
-                  - "Something else"
+                '!byGoogle.response.success':
+                  - 'Неожиданная ошибка на стороне Гугла'
+                  - 'Something else'
 definitions:
   RecaptchaVerifyRequestParams:
     type: object
@@ -120,7 +120,7 @@ definitions:
         type: number
         minimum: 0
         maximum: 1
-        description: "Оценка, является ли пользователь человеком, по мнению Гугла"
+        description: 'Оценка, является ли пользователь человеком, по мнению Гугла'
       action:
         required: true
         type: string
