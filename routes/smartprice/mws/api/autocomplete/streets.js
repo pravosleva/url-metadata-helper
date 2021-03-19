@@ -9,7 +9,7 @@ module.exports = async (req, res) => {
   try {
     filter = req.body.filter
   } catch (err) {
-    res.status(500).send({ ok: false, _originalBody: req.body })
+    res.status(500).send({ ok: false, _originalBody: req.body, message: err.message || 'No err.message' })
   }
 
   const toBeOrNotToBe = getRandomInteger(0, 1)

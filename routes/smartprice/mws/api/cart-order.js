@@ -1,11 +1,13 @@
 const { getRandomInteger } = require('utils/getRandomInteger')
 
+const { SUCCESS_ANYWAY } = process.env
+
 module.exports = async (req, res) => {
   res.append('Content-Type', 'application/json')
 
   // TODO: if !delivery -> 403 поле delivery обязательно
 
-  const toBeOrNotToBe = Boolean(getRandomInteger(0, 1))
+  const toBeOrNotToBe = SUCCESS_ANYWAY === '1' ? 1 : Boolean(getRandomInteger(0, 1))
   const response = {
     _originalBody: req.body,
   }

@@ -5,7 +5,7 @@
   "scripts": {
     "kill-5000": "fuser -k -n tcp 5000",
     "start": "PORT=5000 NODE_PATH=. node ./bin/www",
-    "dev": "DEBUG=express-helper:* npm start",
+    "dev": "SUCCESS_ANYWAY=1 DEBUG=express-helper:* npm start",
     "start:pm2": "pm2 start npm --name \"express-helper-5000\" -- start",
     "test": "jest",
     "deploy:prod:restart-all": "deploy-app -d prod:restart-all",

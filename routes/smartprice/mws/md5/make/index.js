@@ -21,6 +21,7 @@ module.exports = async (req, res) => {
     status = 200
   } else {
     result.message = 'Required query fields: key, svar, t'
+    result.sample = '/smartprice/md5/make?key=abcd&svar=42&t=1496275200'
   }
 
   res.status(status).send(result)

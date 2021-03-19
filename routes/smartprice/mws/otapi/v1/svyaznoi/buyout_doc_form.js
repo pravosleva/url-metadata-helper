@@ -1,5 +1,6 @@
 /* eslint-disable no-restricted-syntax */
-const { getRandomInteger } = require('utils/getRandomInteger')
+// const { getRandomInteger } = require('utils/getRandomInteger')
+// const { SUCCESS_ANYWAY } = process.env
 
 const requiredFields = {
   birth_date: true,
@@ -74,7 +75,7 @@ module.exports = async (req, res) => {
       }
     }
 
-    // toBeOrNotToBeIndex = getRandomInteger(0, 1)
+    // toBeOrNotToBeIndex = SUCCESS_ANYWAY === '1' ? 1 : getRandomInteger(0, 1)
     if (internalErrorResult.ok) {
       toBeOrNotToBeIndex = 1
     }
