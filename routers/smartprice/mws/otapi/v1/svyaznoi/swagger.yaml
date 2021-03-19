@@ -1,4 +1,5 @@
 swagger: '2.0'
+# See also: https://swagger.io/specification/v2/
 info:
   title: 'API /smartprice/otapi/v1/svyaznoy'
   description: 'В тестовом режиме возможен случайный вариант ответа `success | fail`'
@@ -35,21 +36,11 @@ paths:
               need_photos:
                 - 'back'
                 - 'front'
-        200:
-          description: 'OK'
-          schema:
-            info: 'Fail response sample'
-            type: object
-            properties:
-              ok: boolean
               code:
                 type: string
               message:
                 type: string
               extra:
                 type: null
-            example:
-              ok: false
-              code: 'access_denied'
-              message: 'Недопустимая операция'
-              extra: null
+            required:
+              - ok
