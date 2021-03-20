@@ -74,3 +74,7 @@ local-logs/
 
 # deploy tool
 deploy-app-config.json
+
+# Etc.
+routers/auth/pages/signin/*
+!routers/auth/pages/signin/.gitkeep

@@ -1,20 +1,25 @@
 import React, { useCallback, useState } from 'react'
-import { Container } from '@material-ui/core'
 import { Formik, Form as FormikForm, Field } from 'formik';
 import {
   Button,
-  // Checkbox,
+  Checkbox,
+  Container,
   CircularProgress,
   Grid,
-  // FormControlLabel,
+  FormControlLabel,
   TextField,
 } from '@material-ui/core';
 import axios from 'axios'
 import { Alert } from '@material-ui/lab'
 import { TValues } from './interfaces'
 import { getErrors } from './getErrors'
+// import { useRouter } from '~/common/hooks'
+import queryString from 'query-string'
+
+const { REACT_APP_API_URL } = process.env
 
 const apiResponseValidator = (axiosRes: any): boolean => !!axiosRes?.data?.id
+const apiResponseAccessCodeValidator = (axiosRes: any): boolean => axiosRes?.data?.ok && !!axiosRes?.data?.accessCode
 
 type TResSuccess = {
   isOk: boolean
@@ -30,19 +35,69 @@ type TResFail = {
 export const MainPage = () => {
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
   const [redirectTo, setRedirectTo] = useState<string | null>(null)
+  const [targetUiName, setTargetUiName] = useState<string | null>(null)
+  const resetTargetUiName = () => {
+    setTargetUiName(null)
+  }
   const [successMsg, setSuccessMsg] = useState<string | null>(null)
   const resetErrorMsg = () => {
     setErrorMsg(null);
   };
+  const [isAccepted, setIsAccepted] = useState<boolean>(false);
+  const handleCheckAccept = useCallback(
+    (_event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+      setIsAccepted(checked);
+    },
+    [setIsAccepted]
+  );
+  // const router = useRouter()
+  // const { query } = router
+  const query: any = queryString.parse(window.location.search)
+  const getAccessCode = useCallback(async (): Promise<any> => {
+    resetTargetUiName()
+    console.log(query)
+    if (!query?.hash) {
+      return Promise.reject('No hash in query!')
+    }
+    const res: any = await axios({
+      method: 'GET',
+      url: `${REACT_APP_API_URL}/auth/get-access-code-by-hash?hash=${query?.hash}`,
+    })
+    .then((axiosRes) => {
+      if (!apiResponseAccessCodeValidator(axiosRes)) {
+        throw new Error('Fail');
+      }
+      return { isOk: true, data: axiosRes.data }
+    })
+    .catch((err) => {
+      return { isOk: false, message: err.message || 'No err.message' }
+    });
+
+    if (res.isOk) return Promise.resolve(res.data)
+
+    return Promise.reject(res.message)
+  }, [query?.hash, resetTargetUiName])
   const handleSubmit = useCallback(async (data: Partial<TValues>): Promise<TResSuccess | TResFail> => {
-    const res = await axios({
+    const accessCode = await getAccessCode()
+      // @ts-ignore
+      .then((data) => {
+        if (!!data?.uiName) {
+          setTargetUiName(data?.uiName)
+        }
+        return data.accessCode
+      })
+      .catch(() => null)
+    if (!accessCode) {
+      // @ts-ignore
+      return Promise.reject('Не удалось получить accessCode')
+    }
+    const res: any = await axios({
       method: 'POST',
-      url: '/auth/login',
+      url: `${REACT_APP_API_URL}/auth/login`,
       headers: {
         'Content-Type': 'application/json',
       },
-      // TODO: req
-      data: { ...data, code: 'sp.otapi.v1.svyaznoy.jwt' },
+      data: { ...data, code: accessCode },
     })
     .then((axiosRes) => {
       if (!apiResponseValidator(axiosRes)) {
@@ -54,16 +109,15 @@ export const MainPage = () => {
       return { isOk: false, message: err.message || 'No err.message' }
     });
 
-    // @ts-ignore
     if (res.isOk) return Promise.resolve(res.data)
-    // @ts-ignore
+
     return Promise.reject(res.message)
-  }, [])
+  }, [getAccessCode, setTargetUiName])
   const isCorrect = useCallback(
     (values: TValues): boolean => {
-      return Object.keys(getErrors(values)).length === 0
+      return Object.keys(getErrors(values)).length === 0 && isAccepted
     },
-    []
+    [isAccepted]
   );
 
   return (
@@ -78,18 +132,23 @@ export const MainPage = () => {
     >
       <Formik
         initialValues={{
-          email: '',
+          email: 'admin@sp.ru',
           password: '',
         }}
         validate={getErrors}
         onSubmit={(values, { setSubmitting, resetForm }) => {
           resetErrorMsg();
           setSubmitting(true);
+          
+          // TODO: GET /get-access-code-by-hash
+          // RES: { accessCode: string } -> code -> handleSubmit(values, code)
+
           handleSubmit(values)
             .then((data) => {
               // addSuccessNotif({ message: 'Ваша заявка отправлена' });
               setSubmitting(false);
               setSuccessMsg(data.message)
+
               // @ts-ignore
               if (!!data.redirect) setRedirectTo(data.redirect)
               resetForm()
@@ -109,6 +168,7 @@ export const MainPage = () => {
                   // autoFocus
                   // className={classes.standardFilledTextField}
                   component={TextField}
+                  defaultValue={values.email}
                   name="email"
                   type="text"
                   label="Email"
@@ -141,24 +201,47 @@ export const MainPage = () => {
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
-              <Button
-                // className={classes.standardPrimaryBlueBtn}
-                disabled={isSubmitting || !isCorrect(values)}
-                variant="contained"
-                color="primary"
-                onClick={submitForm}
-                // fullWidth={isMobile}
-                endIcon={
-                  isSubmitting && (
-                    <CircularProgress
-                      size={20}
-                    />
-                  )
-                }
-              >
-                Отправить заявку
-              </Button>
-
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column'
+                  }}
+                >
+                  <Button
+                    style={{ marginBottom: '5px' }}
+                    // className={classes.standardPrimaryBlueBtn}
+                    disabled={isSubmitting || !isCorrect(values)}
+                    variant="contained"
+                    color="primary"
+                    onClick={submitForm}
+                    fullWidth
+                    endIcon={
+                      isSubmitting && (
+                        <CircularProgress
+                          size={20}
+                        />
+                      )
+                    }
+                  >
+                    Submit
+                  </Button>
+                  <FormControlLabel
+                    // className={classes.smallPolicyWrapper}
+                    control={
+                      <Checkbox
+                        color="primary"
+                        onChange={handleCheckAccept}
+                        checked={isAccepted}
+                      />
+                    }
+                    // onChange={(e: any) => { console.log(e); }}
+                    label={
+                      <span>
+                        Я не против записи файлов <b>cookies</b> на моей машине
+                      </span>
+                    }
+                  />
+                </div>
               </Grid>
               {!!errorMsg &&
                 (
@@ -203,7 +286,7 @@ export const MainPage = () => {
                       //   </IconButton>
                       // }
                     >
-                      {successMsg}{!!redirectTo && <>{' '}<a href={redirectTo}>Перейти</a></>}
+                      {successMsg}. {!!redirectTo && <a href={redirectTo}>{targetUiName}</a>}
                     </Alert>
                   </Grid>
                 )

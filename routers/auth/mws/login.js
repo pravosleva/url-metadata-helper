@@ -1,11 +1,11 @@
 const jwt = require('jsonwebtoken')
 const { redirect } = require('../cfg')
 
-const { SP_JWT_SECRET, EXPIRES_COOKIES_IN_DAYS, SP_ACCESS_EMAIL, SP_ACCESS_PASSWORD } = process.env
+const { SP_SVYAZNOY_JWT_SECRET, EXPIRES_COOKIES_IN_DAYS, SP_ACCESS_EMAIL, SP_ACCESS_PASSWORD } = process.env
 const getUsernameFromEmail = (email) => email.split('@')[0]
 
-if (!SP_JWT_SECRET || !SP_ACCESS_EMAIL || !SP_ACCESS_PASSWORD) {
-  throw new Error('!SP_JWT_SECRET || !SP_ACCESS_EMAIL || !SP_ACCESS_PASSWORD')
+if (!SP_SVYAZNOY_JWT_SECRET || !SP_ACCESS_EMAIL || !SP_ACCESS_PASSWORD) {
+  throw new Error('!SP_SVYAZNOY_JWT_SECRET || !SP_ACCESS_EMAIL || !SP_ACCESS_PASSWORD')
 }
 
 let expiresCookiesTimeInDays
@@ -29,7 +29,7 @@ module.exports = function (req, res) {
       {
         id: 1,
       },
-      SP_JWT_SECRET,
+      SP_SVYAZNOY_JWT_SECRET,
       { expiresIn: 60 * 60 * 24 * expiresCookiesTimeInDays }
     )
     const uname = getUsernameFromEmail(req.body.email)

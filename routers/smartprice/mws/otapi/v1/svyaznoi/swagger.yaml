@@ -2,7 +2,7 @@ swagger: '2.0'
 # See also: https://swagger.io/specification/v2/
 info:
   title: 'API /smartprice/otapi/v1/svyaznoy'
-  description: 'В тестовом режиме возможен случайный вариант ответа `success | fail`'
+  description: 'В тестовом режиме возможен случайный вариант ответа `success | fail` *(Возможно, потребуется включить **CORS**)*'
   version: '1.0.0'
 host: pravosleva.ru
 basePath: /express-helper/smartprice/otapi/v1/svyaznoy
