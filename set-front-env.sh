@@ -1,3 +1,5 @@
+echo "SKIP_PREFLIGHT_CHECK=true" > frontend.signin/.env
+
 if [ $# -eq 1 ]
 then
   case $1 in
