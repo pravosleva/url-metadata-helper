@@ -9,9 +9,11 @@ Based on `express` code generator.
 - [x] [url-metadata](#url-metadata)
 - [x] [reCAPTCHA-v3](#recaptcha-v3)
 - [x] [Smartprice helper](#smartprice-helper)
-- [ ] **[frontend.signin](#frontend.signin)**
+- [x] [frontend.signin](#frontend-signin)
 
 ## quick-start
+
+> May be important build sign-in SPA before: [frontend.signin](#frontend-signin)
 
 ```bash
 yarn
@@ -239,16 +241,16 @@ server {
 - [https://developers.google.com/recaptcha/docs/verify#api_response](https://developers.google.com/recaptcha/docs/verify#api_response)
 - [https://developers.google.com/recaptcha/docs/v3#site_verify_response](https://developers.google.com/recaptcha/docs/v3#site_verify_response)
 
-## frontend.signin
+## frontend-signin
 
 ### `./.env`
 
 ```
 EXPIRES_COOKIES_IN_DAYS=1
 
-SP_SVYAZNOY_JWT_SECRET=random_string
-SP_ACCESS_EMAIL=admin@sp.ru
-SP_ACCESS_PASSWORD=admin
+SP_SVYAZNOY_JWT_SECRET=<YOUR_STRING>
+SP_ACCESS_EMAIL=<EMIL>
+SP_ACCESS_PASSWORD=<YOUR_PASSWORD>
 # Prod:
 # EXTERNAL_ROUTE=/express-helper
 # SUCCESS_ANYWAY=1
