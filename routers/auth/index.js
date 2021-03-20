@@ -15,6 +15,7 @@ authApi.post('/login', loginRoute)
 authApi.use(
   '/signin',
   redirectIfLoggedMw(SP_SVYAZNOY_JWT_SECRET, accessCode.OTSvyaznoyV1),
+  // TODO: Other middlewares...
   express.static(path.join(__dirname, './pages/signin/build'))
 )
 authApi.get('/get-access-code-by-hash', getAccessCodeByHash)

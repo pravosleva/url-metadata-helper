@@ -62,15 +62,17 @@ export const MainPage = () => {
     const res: any = await axios({
       method: 'GET',
       url: `${REACT_APP_API_URL}/auth/get-access-code-by-hash?hash=${query?.hash}`,
+      validateStatus: (_status) => true,
     })
     .then((axiosRes) => {
       if (!apiResponseAccessCodeValidator(axiosRes)) {
-        throw new Error('Fail');
+        throw new Error(axiosRes?.data?.message || 'Fail');
       }
       return { isOk: true, data: axiosRes.data }
     })
     .catch((err) => {
-      return { isOk: false, message: err.message || 'No err.message' }
+      console.log(err)
+      return { isOk: false, message: typeof err === 'string' ? err : err?.message || 'No err.message' }
     });
 
     if (res.isOk) return Promise.resolve(res.data)
@@ -78,18 +80,17 @@ export const MainPage = () => {
     return Promise.reject(res.message)
   }, [query?.hash, resetTargetUiName])
   const handleSubmit = useCallback(async (data: Partial<TValues>): Promise<TResSuccess | TResFail> => {
-    const accessCode = await getAccessCode()
+    resetErrorMsg()
+    const accessCodeRes: any = await getAccessCode()
       // @ts-ignore
       .then((data) => {
-        if (!!data?.uiName) {
-          setTargetUiName(data?.uiName)
-        }
-        return data.accessCode
+        if (!!data?.uiName) setTargetUiName(data?.uiName)
+        return { isOk: true, code: data.accessCode }
       })
-      .catch(() => null)
-    if (!accessCode) {
+      .catch((err) => ({ isOk: false, message: typeof err === 'string' ? err : err?.message || 'No err.message' }))
+    if (!accessCodeRes.isOk) {
       // @ts-ignore
-      return Promise.reject('Не удалось получить accessCode')
+      return Promise.reject(accessCodeRes.message)
     }
     const res: any = await axios({
       method: 'POST',
@@ -97,7 +98,7 @@ export const MainPage = () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      data: { ...data, code: accessCode },
+      data: { ...data, code: accessCodeRes.code },
     })
     .then((axiosRes) => {
       if (!apiResponseValidator(axiosRes)) {
@@ -112,7 +113,7 @@ export const MainPage = () => {
     if (res.isOk) return Promise.resolve(res.data)
 
     return Promise.reject(res.message)
-  }, [getAccessCode, setTargetUiName])
+  }, [getAccessCode, setTargetUiName, resetErrorMsg])
   const isCorrect = useCallback(
     (values: TValues): boolean => {
       return Object.keys(getErrors(values)).length === 0 && isAccepted
@@ -123,9 +124,15 @@ export const MainPage = () => {
   return (
     <Container
       style={{
-        marginTop: '20px',
+        // marginTop: '20px',
+        width: '100%',
+        height: '100vh',
+        paddingTop: '15%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'flex-start',
       }}
-      maxWidth="md"
+      maxWidth="sm"
       // className={clsx(classes.minimalHeightSetting, {
       //   [baseClasses.noPaddingMobile]: isTheNotePage,
       // })}
@@ -176,7 +183,7 @@ export const MainPage = () => {
                   helperText={errors.email}
                   fullWidth
                   size="small"
-                  variant="filled"
+                  variant="outlined"
                   onChange={(e: any) => {
                     setFieldValue('email', e.target.value);
                   }}
@@ -194,7 +201,7 @@ export const MainPage = () => {
                   helperText={errors.password}
                   fullWidth
                   size="small"
-                  variant="filled"
+                  variant="outlined"
                   onChange={(e: any) => {
                     setFieldValue('password', e.target.value);
                   }}
@@ -204,7 +211,8 @@ export const MainPage = () => {
                 <div
                   style={{
                     display: 'flex',
-                    flexDirection: 'column'
+                    flexDirection: 'column',
+                    width: '100%',
                   }}
                 >
                   <Button
@@ -237,7 +245,7 @@ export const MainPage = () => {
                     // onChange={(e: any) => { console.log(e); }}
                     label={
                       <span>
-                        Я не против записи файлов <b>cookies</b> на моей машине
+                        <b>cookies</b> is good
                       </span>
                     }
                   />
