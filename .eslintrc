@@ -14,7 +14,8 @@
     "import/no-unresolved": "off",
     "import/prefer-default-export": "off",
     "class-methods-use-this": "off",
-    "no-fallthrough": "off"
+    "no-fallthrough": "off",
+    "strict": "off"
   },
   "env": {
     "jest/globals": true

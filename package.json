@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "kill-5000": "fuser -k -n tcp 5000",
-    "start": "EXPIRES_COOKIES_IN_DAYS=1 SP_JWT_SECRET=tst PORT=5000 NODE_PATH=. node ./bin/www",
-    "dev": "EXPIRES_COOKIES_IN_DAYS=1 SP_JWT_SECRET=tst SUCCESS_ANYWAY=1 DEBUG=express-helper:* npm start",
+    "start": "yarn --cwd routers/auth/pages/signin install && yarn --cwd routers/auth/pages/signin build && PORT=5000 NODE_PATH=. node ./bin/www",
+    "dev": "SUCCESS_ANYWAY=1 DEBUG=express-helper:* npm start",
     "start:pm2": "pm2 start npm --name \"express-helper-5000\" -- start",
     "test": "jest",
     "deploy:prod:restart-all": "deploy-app -d prod:restart-all",
@@ -15,7 +15,7 @@
   },
   "lint-staged": {
     "*.{js, jsx, ts, tsx}": [
-      "node_modules/.bin/eslint --max-warnings=0",
+      "node_modules/.bin/eslint --max-warnings=0 --no-ignore",
       "prettier --write"
     ]
   },

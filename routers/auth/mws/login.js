@@ -1,9 +1,20 @@
 const jwt = require('jsonwebtoken')
+const { redirect } = require('../cfg')
 
-const { SP_JWT_SECRET, EXPIRES_COOKIES_IN_DAYS } = process.env
+const { SP_JWT_SECRET, EXPIRES_COOKIES_IN_DAYS, SP_ACCESS_EMAIL, SP_ACCESS_PASSWORD } = process.env
+const getUsernameFromEmail = (email) => email.split('@')[0]
 
-// eslint-disable-next-line radix
-const expiresCookiesTimeInDays = parseInt(EXPIRES_COOKIES_IN_DAYS)
+if (!SP_JWT_SECRET || !SP_ACCESS_EMAIL || !SP_ACCESS_PASSWORD) {
+  throw new Error('!SP_JWT_SECRET || !SP_ACCESS_EMAIL || !SP_ACCESS_PASSWORD')
+}
+
+let expiresCookiesTimeInDays
+try {
+  // eslint-disable-next-line radix
+  expiresCookiesTimeInDays = parseInt(EXPIRES_COOKIES_IN_DAYS)
+} catch (err) {
+  expiresCookiesTimeInDays = 1
+}
 const getMsByDays = (days) => 1000 * 60 * 60 * 24 * days
 
 module.exports = function (req, res) {
@@ -13,7 +24,7 @@ module.exports = function (req, res) {
   /*
    * Check if the username and password is correct
    */
-  if (req.body.username === 'admin' && req.body.password === 'admin') {
+  if (req.body.email === SP_ACCESS_EMAIL && req.body.password === SP_ACCESS_PASSWORD) {
     const jwt4Cookie = jwt.sign(
       {
         id: 1,
@@ -21,18 +32,25 @@ module.exports = function (req, res) {
       SP_JWT_SECRET,
       { expiresIn: 60 * 60 * 24 * expiresCookiesTimeInDays }
     )
+    const uname = getUsernameFromEmail(req.body.email)
+    const maxAge = getMsByDays(expiresCookiesTimeInDays)
 
-    res.cookie(req.body.code, jwt4Cookie, { maxAge: getMsByDays(expiresCookiesTimeInDays), httpOnly: true })
-    res.cookie(`${req.body.code}Username`, req.body.username, {
-      maxAge: getMsByDays(expiresCookiesTimeInDays),
-      httpOnly: true,
-    })
+    res.cookie(req.body.code, jwt4Cookie, { maxAge, httpOnly: true })
+    // res.cookie(`${req.body.code}.username`, uname, { maxAge, httpOnly: true })
+
+    // --- Redirect
+    let redirectTo = null
+    if (redirect[req.body.code]) {
+      redirectTo = redirect[req.body.code].logged
+    }
+    // ---
 
     res.json({
       id: 1,
-      username: 'admin',
-      jwt,
-      redirect: '/',
+      username: uname,
+      jwt: jwt4Cookie,
+      redirect: redirectTo,
+      message: `Logged as ${uname}`,
     })
   } else {
     /*

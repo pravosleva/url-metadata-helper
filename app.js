@@ -11,6 +11,7 @@ const reCAPTCHAV3Router = require('./routers/recaptcha-v3')
 const swaggerRouter = require('./routers/swagger')
 const smartpriceRouter = require('./routers/smartprice')
 const imeiRouter = require('./routers/imei')
+const authRouter = require('./routers/auth')
 
 const app = express()
 
@@ -27,5 +28,6 @@ app.use('/recaptcha-v3', reCAPTCHAV3Router)
 app.use('/swagger', swaggerRouter)
 app.use('/smartprice', smartpriceRouter)
 app.use('/imei', imeiRouter)
+app.use('/auth', authRouter)
 
 module.exports = app

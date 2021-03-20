@@ -34,7 +34,7 @@ module.exports = (jwtSecret, cookieName) => (req, res, next) => {
      */
     return res
       .status(403)
-      .json({ message: 'Ошибка аутентификации #2', code: `Forbidden: No token in cookies.${cookieName}` })
+      .json({ message: 'Ошибка аутентификации #2', code: `Forbidden: No token in cookies['${cookieName}']` })
     // res.redirect('/auth/signin')
   }
 }

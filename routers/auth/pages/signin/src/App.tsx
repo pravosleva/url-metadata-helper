@@ -1,11 +1,8 @@
 import React from 'react';
+import { MainPage } from '~/common/components/MainPage'
 
 function App() {
-  return (
-    <div>
-      Sign In
-    </div>
-  );
+  return <MainPage />;
 }
 
 export default App;
