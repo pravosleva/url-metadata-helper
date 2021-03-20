@@ -9,6 +9,7 @@ Based on `express` code generator.
 - [x] [url-metadata](#url-metadata)
 - [x] [reCAPTCHA-v3](#recaptcha-v3)
 - [x] [Smartprice helper](#smartprice-helper)
+- [ ] **[frontend.signin](#frontend.signin)**
 
 ## quick-start
 
@@ -237,3 +238,32 @@ server {
 
 - [https://developers.google.com/recaptcha/docs/verify#api_response](https://developers.google.com/recaptcha/docs/verify#api_response)
 - [https://developers.google.com/recaptcha/docs/v3#site_verify_response](https://developers.google.com/recaptcha/docs/v3#site_verify_response)
+
+## frontend.signin
+
+### `./.env`
+
+```
+EXPIRES_COOKIES_IN_DAYS=1
+
+SP_SVYAZNOY_JWT_SECRET=random_string
+SP_ACCESS_EMAIL=admin@sp.ru
+SP_ACCESS_PASSWORD=admin
+# Prod:
+# EXTERNAL_ROUTE=/express-helper
+# SUCCESS_ANYWAY=1
+```
+
+ ### `./frontend.signin/.env`
+
+ ```
+SKIP_PREFLIGHT_CHECK=true
+# Dev:
+REACT_APP_API_URL=http://localhost:5000
+# Prod:
+# REACT_APP_API_URL=/express-helper
+ ```
+
+```bash
+yarn build:front
+```
