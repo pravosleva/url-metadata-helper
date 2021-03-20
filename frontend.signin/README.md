@@ -1,5 +1,15 @@
 # Getting Started with Create React App
 
+### `.env`
+
+```bash
+SKIP_PREFLIGHT_CHECK=true
+# Dev:
+REACT_APP_API_URL=http://localhost:5000
+# Prod:
+# REACT_APP_API_URL=/express-helper
+```
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

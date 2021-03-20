@@ -4,13 +4,14 @@
   "private": true,
   "scripts": {
     "kill-5000": "fuser -k -n tcp 5000",
-    "build:front": "yarn --cwd routers/auth/pages/signin install && yarn --cwd routers/auth/pages/signin build",
+    "build:front:dev": "yarn --cwd frontend.signin install && bash set-front-env.sh dev && yarn --cwd frontend.signin build",
+    "build:front:prod": "yarn --cwd frontend.signin install && bash set-front-env.sh prod && yarn --cwd frontend.signin build",
     "start": "PORT=5000 NODE_PATH=. node ./bin/www",
-    "dev": "yarn build:front && SUCCESS_ANYWAY=1 DEBUG=express-helper:* npm start",
+    "dev": "yarn build:front:dev && SUCCESS_ANYWAY=1 DEBUG=express-helper:* npm start",
     "start:pm2": "pm2 start npm --name \"express-helper-5000\" -- start",
     "test": "jest",
     "deploy:prod:restart-all": "deploy-app -d prod:restart-all",
-    "deploy:prod:restart-helper": "deploy-app -d prod:restart-helper",
+    "deploy:prod:restart-helper": "yarn build:front:prod && deploy-app -d prod:restart-helper",
     "lint": "eslint --debug 'routers/**/*.{js,jsx,ts,tsx}' 'utils/**/*.{js,jsx,ts,tsx}' 'bin/**/*' app.js",
     "lint:fix": "eslint 'routers/**/*.{js,jsx,ts,tsx}' 'utils/**/*.{js,jsx,ts,tsx}' 'bin/**/*' app.js --fix"
   },

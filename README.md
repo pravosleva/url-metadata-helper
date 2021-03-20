@@ -13,11 +13,8 @@ Based on `express` code generator.
 
 ## quick-start
 
-> May be important build sign-in SPA before: [frontend.signin](#frontend-signin)
-
 ```bash
-yarn
-yarn dev
+yarn && yarn dev
 ```
 
 ## deploy
