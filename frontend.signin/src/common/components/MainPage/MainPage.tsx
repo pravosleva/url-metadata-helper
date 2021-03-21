@@ -19,13 +19,14 @@ import queryString from 'query-string'
 const { REACT_APP_API_URL } = process.env
 
 const apiResponseValidator = (axiosRes: any): boolean => !!axiosRes?.data?.id
-const apiResponseAccessCodeValidator = (axiosRes: any): boolean => axiosRes?.data?.ok && !!axiosRes?.data?.accessCode
+// const apiResponseAccessCodeValidator = (axiosRes: any): boolean => axiosRes?.data?.ok && !!axiosRes?.data?.accessCode
 
 type TResSuccess = {
   isOk: boolean
   data: any
   message: string
   redirect: string
+  uiName: string
 }
 type TResFail = {
   isOk: boolean
@@ -40,9 +41,9 @@ export const MainPage = () => {
     setTargetUiName(null)
   }
   const [successMsg, setSuccessMsg] = useState<string | null>(null)
-  const resetErrorMsg = () => {
-    setErrorMsg(null);
-  };
+  const resetErrorMsg = useCallback(() => {
+    setErrorMsg(null)
+  }, [setErrorMsg]);
   const [isAccepted, setIsAccepted] = useState<boolean>(false);
   const handleCheckAccept = useCallback(
     (_event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
@@ -53,52 +54,17 @@ export const MainPage = () => {
   // const router = useRouter()
   // const { query } = router
   const query: any = queryString.parse(window.location.search)
-  const getAccessCode = useCallback(async (): Promise<any> => {
-    resetTargetUiName()
-    console.log(query)
-    if (!query?.hash) {
-      return Promise.reject('No hash in query!')
-    }
-    const res: any = await axios({
-      method: 'GET',
-      url: `${REACT_APP_API_URL}/auth/get-access-code-by-hash?hash=${query?.hash}`,
-      validateStatus: (_status) => true,
-    })
-    .then((axiosRes) => {
-      if (!apiResponseAccessCodeValidator(axiosRes)) {
-        throw new Error(axiosRes?.data?.message || 'Fail');
-      }
-      return { isOk: true, data: axiosRes.data }
-    })
-    .catch((err) => {
-      console.log(err)
-      return { isOk: false, message: typeof err === 'string' ? err : err?.message || 'No err.message' }
-    });
-
-    if (res.isOk) return Promise.resolve(res.data)
-
-    return Promise.reject(res.message)
-  }, [query?.hash, resetTargetUiName])
   const handleSubmit = useCallback(async (data: Partial<TValues>): Promise<TResSuccess | TResFail> => {
     resetErrorMsg()
-    const accessCodeRes: any = await getAccessCode()
-      // @ts-ignore
-      .then((data) => {
-        if (!!data?.uiName) setTargetUiName(data?.uiName)
-        return { isOk: true, code: data.accessCode }
-      })
-      .catch((err) => ({ isOk: false, message: typeof err === 'string' ? err : err?.message || 'No err.message' }))
-    if (!accessCodeRes.isOk) {
-      // @ts-ignore
-      return Promise.reject(accessCodeRes.message)
-    }
+    if (!query?.hash) return Promise.reject('No hash in query!')
+
     const res: any = await axios({
       method: 'POST',
       url: `${REACT_APP_API_URL}/auth/login`,
       headers: {
         'Content-Type': 'application/json',
       },
-      data: { ...data, code: accessCodeRes.code },
+      data: { ...data, hash: query?.hash },
     })
     .then((axiosRes) => {
       if (!apiResponseValidator(axiosRes)) {
@@ -113,7 +79,7 @@ export const MainPage = () => {
     if (res.isOk) return Promise.resolve(res.data)
 
     return Promise.reject(res.message)
-  }, [getAccessCode, setTargetUiName, resetErrorMsg])
+  }, [query?.hash, resetErrorMsg])
   const isCorrect = useCallback(
     (values: TValues): boolean => {
       return Object.keys(getErrors(values)).length === 0 && isAccepted
@@ -145,6 +111,7 @@ export const MainPage = () => {
         validate={getErrors}
         onSubmit={(values, { setSubmitting, resetForm }) => {
           resetErrorMsg();
+          resetTargetUiName();
           setSubmitting(true);
           
           // TODO: GET /get-access-code-by-hash
@@ -155,6 +122,8 @@ export const MainPage = () => {
               // addSuccessNotif({ message: 'Ваша заявка отправлена' });
               setSubmitting(false);
               setSuccessMsg(data.message)
+              // @ts-ignore
+              setTargetUiName(data.uiName)
 
               // @ts-ignore
               if (!!data.redirect) setRedirectTo(data.redirect)

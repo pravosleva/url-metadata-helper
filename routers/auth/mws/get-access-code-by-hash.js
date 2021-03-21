@@ -23,7 +23,7 @@ module.exports = (req, res) => {
   let targetUiName = null
 
   for (const key in redirect) {
-    if (redirect[key].fakeHash === hash) {
+    if (redirect[key].hash === hash) {
       targetAccessCode = key
       targetUiName = redirect[key].uiName
     }

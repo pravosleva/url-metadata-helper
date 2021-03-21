@@ -9,7 +9,9 @@ Based on `express` code generator.
 - [x] [url-metadata](#url-metadata)
 - [x] [reCAPTCHA-v3](#recaptcha-v3)
 - [x] [Smartprice helper](#smartprice-helper)
-- [x] [frontend.signin](#frontend-signin)
+- Access feature
+  - [x] [frontend.signin](#frontend-signin)
+  - [x] [How to add new access space](#add-access-space)
 
 ## quick-start
 
@@ -238,22 +240,23 @@ server {
 - [https://developers.google.com/recaptcha/docs/verify#api_response](https://developers.google.com/recaptcha/docs/verify#api_response)
 - [https://developers.google.com/recaptcha/docs/v3#site_verify_response](https://developers.google.com/recaptcha/docs/v3#site_verify_response)
 
-## frontend-signin
 
-### `./.env`
+## Access feature
+### frontend-signin
+
+1. `./.env`
 
 ```
 EXPIRES_COOKIES_IN_DAYS=1
 
 SP_SVYAZNOY_JWT_SECRET=<YOUR_STRING>
-SP_ACCESS_EMAIL=<EMIL>
 SP_ACCESS_PASSWORD=<YOUR_PASSWORD>
 # Prod:
 # EXTERNAL_ROUTE=/express-helper
 # SUCCESS_ANYWAY=1
 ```
 
- ### `./frontend.signin/.env`
+ 2. `./frontend.signin/.env`
 
  ```
 SKIP_PREFLIGHT_CHECK=true
@@ -266,3 +269,38 @@ REACT_APP_API_URL=http://localhost:5000
 ```bash
 yarn build:front
 ```
+
+## add-access-space
+
+1. Add new key to **accessCode** `./routers/auth/cfg.js`
+```js
+const accessCode = {
+  OTSvyaznoyV1: 'sp.otapi.v1.svyaznoy.jwt',
+  // TODO: New
+}
+
+// etc.
+```
+
+2. Add new array key to **redirect object** `./routers/auth/cfg.js`
+```js
+// etc.
+
+module.exports = {
+  accessCode,
+  redirect: {
+    // default: { unlogged: `${EXTERNAL_ROUTE}/auth/signin/` },
+    [accessCode.OTSvyaznoyV1]: {
+      jwtSecret: SP_SVYAZNOY_JWT_SECRET,
+      uiName: 'Online Trade-in API (Svyaznoy)',
+      envName: 'SP_ACCESS_PASSWORD',
+      hash: md5Hash(accessCode.OTSvyaznoyV1),
+      logged: `${EXTERNAL_ROUTE}/smartprice/otapi/v1/svyaznoy/swagger/`,
+      unlogged: `${EXTERNAL_ROUTE}/auth/signin/`,
+    },
+    // TODO: New
+  },
+}
+```
+
+3. Set new env to **process.env**

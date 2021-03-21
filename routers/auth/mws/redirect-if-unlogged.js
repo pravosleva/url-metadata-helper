@@ -10,7 +10,7 @@ module.exports = (jwtSecret, cookieName) => (req, res, next) => {
    */
   // if (req.hasOwnProperty('headers') && req.headers.hasOwnProperty('authorization')) {
   if (!req.cookies || !req.cookies[cookieName]) {
-    return res.redirect(`${redirect[cookieName].unlogged}?hash=${redirect[cookieName].fakeHash}`)
+    return res.redirect(`${redirect[cookieName].unlogged}?hash=${redirect[cookieName].hash}`)
     // return res.status(200).json({
     //   link: redirect.default.unlogged,
     //   message: 'TODO: redirect by Express or NGINX?',
@@ -26,7 +26,7 @@ module.exports = (jwtSecret, cookieName) => (req, res, next) => {
   } catch (err) {
     if (!!req.cookies && !!req.cookies[cookieName]) {
       if (redirect[cookieName]) {
-        return res.redirect(`${redirect[cookieName].unlogged}?hash=${redirect[cookieName].fakeHash}`)
+        return res.redirect(`${redirect[cookieName].unlogged}?hash=${redirect[cookieName].hash}`)
         // return res.status(200).json({ link: redirect[cookieName].unlogged, message: 'TODO: redirect by Express or NGINX? _' })
       }
       return res.status(500).json({

@@ -8,9 +8,20 @@ const { accessCode } = require('./cfg')
 const getAccessCodeByHash = require('./mws/get-access-code-by-hash')
 // const checkAuth = require('./mws/check-jwt')
 
-const { SP_SVYAZNOY_JWT_SECRET } = process.env
+const { SP_SVYAZNOY_JWT_SECRET, EXPIRES_COOKIES_IN_DAYS, SP_ACCESS_PASSWORD } = process.env
+if (!SP_SVYAZNOY_JWT_SECRET || !SP_ACCESS_PASSWORD) {
+  throw new Error('!SP_SVYAZNOY_JWT_SECRET || !SP_ACCESS_EMAIL || !SP_ACCESS_PASSWORD')
+}
 
-authApi.post('/login', loginRoute)
+let expiresCookiesTimeInDays
+try {
+  // eslint-disable-next-line radix
+  expiresCookiesTimeInDays = parseInt(EXPIRES_COOKIES_IN_DAYS)
+} catch (err) {
+  expiresCookiesTimeInDays = 1
+}
+
+authApi.post('/login', loginRoute(expiresCookiesTimeInDays))
 // authApi.get('/signin', redirectIfLoggedMw(SP_SVYAZNOY_JWT_SECRET, accessCode.OTSvyaznoyV1))
 authApi.use(
   '/signin',
