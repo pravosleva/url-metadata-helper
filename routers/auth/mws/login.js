@@ -25,17 +25,12 @@ module.exports = (expiresCookiesTimeInDays) =>
     if (!targetCfgItem || !targetCode) return res.status(500).json({ message: '#03 target cfg item not found' })
 
     // 2. Auth by passwd
-    if (!targetCfgItem.envName) {
+    if (!targetCfgItem.accessPassword) {
       return res
         .status(500)
-        .json({ message: 'Ошибка авторизации #04', code: `Check cfg: !targetCfgItem.envName is true` })
+        .json({ message: 'Ошибка авторизации #04', code: `Check cfg: !targetCfgItem.accessPassword is true` })
     }
-    if (!process.env[targetCfgItem.envName]) {
-      return res
-        .status(500)
-        .json({ message: 'Ошибка авторизации #05', code: `Fuckup: !process.env[${targetCfgItem.envName}] is true` })
-    }
-    if (!!process.env[targetCfgItem.envName] && req.body.password === process.env[targetCfgItem.envName]) {
+    if (req.body.password === targetCfgItem.accessPassword) {
       const jwt4Cookie = jwt.sign({ id: 1 }, targetCfgItem.jwtSecret, {
         expiresIn: 60 * 60 * 24 * expiresCookiesTimeInDays,
       })
