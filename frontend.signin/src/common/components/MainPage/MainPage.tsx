@@ -126,7 +126,13 @@ export const MainPage = () => {
               setTargetUiName(data.uiName)
 
               // @ts-ignore
-              if (!!data.redirect) setRedirectTo(data.redirect)
+              if (!!data.redirect) {
+                // @ts-ignore
+                setRedirectTo(data.redirect)
+                // NOTE: Could be removed
+                // @ts-ignore
+                window.location.replace(data.redirect)
+              }
               resetForm()
             })
             .catch((err) => {

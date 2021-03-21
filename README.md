@@ -276,13 +276,24 @@ yarn build:front
 ```js
 const accessCode = {
   OTSvyaznoyV1: 'sp.otapi.v1.svyaznoy.jwt',
-  // TODO: New
+  // TODO: New key-value
 }
 
 // etc.
 ```
 
-2. Add new array key to **redirect object** `./routers/auth/cfg.js`
+2. Set new env to **process.env**
+```bash
+# etc.
+
+SP_SVYAZNOY_JWT_SECRET=random_string
+SP_ACCESS_PASSWORD=admin
+## TODO: New settings
+
+# etc.
+```
+
+3. Add new array key to **redirect object** `./routers/auth/cfg.js`
 ```js
 // etc.
 
@@ -298,9 +309,21 @@ module.exports = {
       logged: `${EXTERNAL_ROUTE}/smartprice/otapi/v1/svyaznoy/swagger/`,
       unlogged: `${EXTERNAL_ROUTE}/auth/signin/`,
     },
-    // TODO: New
+    // TODO: New object
   },
 }
 ```
 
-3. Set new env to **process.env**
+4. Add **redirectIfLoggedMw** middleware for redirecting to `./routers/auth/index.js`
+```js
+// etc.
+
+authApi.use(
+  '/signin',
+  redirectIfLoggedMw(SP_SVYAZNOY_JWT_SECRET, accessCode.OTSvyaznoyV1),
+  // TODO: Other middlewares...
+  express.static(path.join(__dirname, './pages/signin/build'))
+)
+
+// etc.
+```

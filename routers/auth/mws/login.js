@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-syntax */
 const jwt = require('jsonwebtoken')
-const { redirect: cfg } = require('../cfg')
+const { redirect: cfg, hashedRedirectMap } = require('../cfg')
 
 // const getUsernameFromEmail = (email) => (email ? email.split('@')[0] : 'Noname')
 const getMsByDays = (days) => 1000 * 60 * 60 * 24 * days
@@ -16,11 +16,10 @@ module.exports = (expiresCookiesTimeInDays) =>
     // 1. Find cfg target item by hash
     let targetCfgItem = null
     let targetCode = null
-    for (const key in cfg) {
-      if (cfg[key].hash === req.body.hash) {
-        targetCfgItem = cfg[key]
-        targetCode = key
-      }
+    const { hash } = req.body
+    if (hashedRedirectMap.has(hash)) {
+      targetCfgItem = hashedRedirectMap.get(hash)
+      targetCode = targetCfgItem.code
     }
     if (!targetCfgItem || !targetCode) return res.status(500).json({ message: '#03 target cfg item not found' })
 
