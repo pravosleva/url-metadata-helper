@@ -105,7 +105,7 @@ export const MainPage = () => {
     >
       <Formik
         initialValues={{
-          email: 'admin@sp.ru',
+          // email: 'admin@sp.ru',
           password: '',
         }}
         validate={getErrors}
@@ -139,7 +139,7 @@ export const MainPage = () => {
         {({ submitForm, isSubmitting, errors, setFieldValue, values }) => (
           <FormikForm>
             <Grid container spacing={3}>
-              <Grid item xs={12} sm={6}>
+              {/* <Grid item xs={12} sm={6}>
                 <Field
                   // autoFocus
                   // className={classes.standardFilledTextField}
@@ -157,10 +157,10 @@ export const MainPage = () => {
                     setFieldValue('email', e.target.value);
                   }}
                 />
-              </Grid>
+              </Grid> */}
               <Grid item xs={12} sm={6}>
                 <Field
-                  // autoFocus
+                  autoFocus
                   // className={classes.standardFilledTextField}
                   component={TextField}
                   name="password"

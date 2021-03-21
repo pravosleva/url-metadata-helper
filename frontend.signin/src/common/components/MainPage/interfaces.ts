@@ -1,4 +1,4 @@
 export type TValues = {
-  email: string
+  // email: string
   password: string
 }
