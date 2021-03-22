@@ -184,6 +184,7 @@ export const MainPage = () => {
                   onChange={(e: any) => {
                     setFieldValue('password', e.target.value);
                   }}
+                  disabled={isSubmitting || !!successMsg}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -197,7 +198,6 @@ export const MainPage = () => {
                   <Button
                     style={{ marginBottom: '5px' }}
                     // className={classes.standardPrimaryBlueBtn}
-                    disabled={isSubmitting || !isCorrect(values) || !!successMsg}
                     variant="contained"
                     type="submit"
                     color="primary"
@@ -210,10 +210,12 @@ export const MainPage = () => {
                         />
                       )
                     }
+                    disabled={isSubmitting || !isCorrect(values) || !!successMsg}
                   >
                     Submit
                   </Button>
                   <FormControlLabel
+                    disabled={isSubmitting || !!successMsg}
                     // className={classes.smallPolicyWrapper}
                     control={
                       <Checkbox
