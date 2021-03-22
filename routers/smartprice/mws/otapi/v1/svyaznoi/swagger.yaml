@@ -9,16 +9,17 @@ basePath: /express-helper/smartprice/otapi/v1/svyaznoy
 schemes:
   - http
 paths:
-  /accept_preprice:
+  /imei:
     post:
-      # parameters:
-      #   - name: 'url'
-      #     in: query
-      #     description: Your page url
-      #     required: true
-      #     type: string
-      summary: Returns success after accept preprice
-      description: 'Подтверждение на любом этапе до формирования ценника'
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          required: true
+          schema:
+            $ref: '#/definitions/IMEIVerifyRequestParams'
+      summary: 'Returns specific OT data'
+      description: 'Проверить IMEI'
       produces:
         - application/json
       responses:
@@ -29,13 +30,93 @@ paths:
             type: object
             properties:
               ok: boolean
+              imei:
+                type: string
+              phone:
+                vendor: string
+                model: string
+                memory: string
+                color: string
+                memory_choices: array
+                  items:
+                    type: string
+                color_choices:
+                  $ref: '#/definitions/ColorChoices'
+            example:
+              ok: true
+              imei: '868030034494821'
+              phone:
+                vendor: Xiaomi
+                model: 'MI 6'
+                memory: ''
+                color: ''
+                memory_choices:
+                  - '128 GB'
+                  - '64 GB'
+                color_choices:
+                  '128 GB':
+                    - white
+                    - ceramic_black
+                    - blue
+                    - black
+                  '64 GB':
+                    - white
+                    - ceramic_black
+                    - blue
+                    - black
+                type: mobile_phone
+  /confirm_detection:
+    post:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          required: true
+          schema:
+            $ref: '#/definitions/ConfirmDetectionRequestParams'
+      summary: 'Returns specific OT data'
+      description: 'Кнопка Продолжить'
+      responses:
+        200:
+          description: 'OK'
+          schema:
+            info: 'Success response sample'
+            type: object
+            properties:
+              ok:
+                type: boolean
+                required: true
+            example:
+              ok: true
+  /accept_preprice:
+    post:
+      # parameters:
+      #   - name: 'url'
+      #     in: query
+      #     description: Your page url
+      #     required: true
+      #     type: string
+      summary: 'Returns success after accept preprice'
+      description: 'Подтверждение на любом этапе до формирования ценника'
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            info: 'Success response sample'
+            type: object
+            properties:
+              ok: boolean
               need_photos:
                 type: object
             example:
               ok: true
               need_photos:
-                - 'back'
-                - 'front'
+                - back
+                - front
               code:
                 type: string
               message:
@@ -44,3 +125,46 @@ paths:
                 type: null
             required:
               - ok
+
+definitions:
+  IMEIVerifyRequestParams:
+    type: object
+    properties:
+      IMEI:
+        required: true
+        type: string
+        description: 'Your device IMEI'
+  ColorChoices:
+    type: object
+    example:
+      '128 GB':
+        - white
+        - ceramic_black
+        - blue
+        - black
+      '64 GB':
+        - white
+        - ceramic_black
+        - blue
+        - black
+  ConfirmDetectionRequestParams:
+    type: object
+    properties:
+      color:
+        required: true
+        type: string
+      device:
+        required: true
+        type: number
+      memory:
+        required: true
+        type: string
+      model_ok:
+        required: true
+        type: boolean
+      same_imeis:
+        required: true
+        type: boolean
+      turns_on:
+        required: true
+        type: boolean
