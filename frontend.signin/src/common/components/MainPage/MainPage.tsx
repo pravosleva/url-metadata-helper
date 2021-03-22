@@ -110,6 +110,11 @@ export const MainPage = () => {
         }}
         validate={getErrors}
         onSubmit={(values, { setSubmitting, resetForm }) => {
+          if (!isCorrect(values)) {
+            console.log('Check something')
+            return
+          }
+
           resetErrorMsg();
           resetTargetUiName();
           setSubmitting(true);
@@ -129,9 +134,8 @@ export const MainPage = () => {
               if (!!data.redirect) {
                 // @ts-ignore
                 setRedirectTo(data.redirect)
-                // NOTE: Could be removed
                 // @ts-ignore
-                window.location.replace(data.redirect)
+                // window.location.replace(data.redirect)
               }
               resetForm()
             })
@@ -193,8 +197,9 @@ export const MainPage = () => {
                   <Button
                     style={{ marginBottom: '5px' }}
                     // className={classes.standardPrimaryBlueBtn}
-                    disabled={isSubmitting || !isCorrect(values)}
+                    disabled={isSubmitting || !isCorrect(values) || !!successMsg}
                     variant="contained"
+                    type="submit"
                     color="primary"
                     onClick={submitForm}
                     fullWidth
