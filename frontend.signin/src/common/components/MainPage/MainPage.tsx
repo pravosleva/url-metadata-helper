@@ -146,7 +146,7 @@ export const MainPage = () => {
             });
         }}
       >
-        {({ submitForm, isSubmitting, errors, setFieldValue, values }) => (
+        {({ isSubmitting, errors, setFieldValue, values }) => (
           <FormikForm>
             <Grid container spacing={3}>
               {/* <Grid item xs={12} sm={6}>
@@ -201,7 +201,7 @@ export const MainPage = () => {
                     variant="contained"
                     type="submit"
                     color="primary"
-                    onClick={submitForm}
+                    // onClick={submitForm}
                     fullWidth
                     endIcon={
                       isSubmitting && (
