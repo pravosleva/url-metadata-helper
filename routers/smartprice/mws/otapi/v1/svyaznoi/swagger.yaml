@@ -16,8 +16,17 @@ paths:
       parameters:
         - in: body
           required: true
+          # schema:
+          #   $ref: '#/definitions/IMEIVerifyRequestParams'
+          type: object
           schema:
+            # type: object
             $ref: '#/definitions/IMEIVerifyRequestParams'
+            # properties:
+            #   IMEI:
+            #     required: true
+            #     type: string
+            #     description: 'Your device IMEI'
       summary: 'Returns specific OT data'
       description: 'Проверить IMEI'
       produces:
@@ -136,6 +145,10 @@ definitions:
         description: 'Your device IMEI'
   ColorChoices:
     type: object
+    additionalProperties:
+      type: array
+      items:
+        type: string
     example:
       '128 GB':
         - white
