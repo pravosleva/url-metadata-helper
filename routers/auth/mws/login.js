@@ -8,7 +8,9 @@ const getMsByDays = (days) => 1000 * 60 * 60 * 24 * days
 module.exports = (expiresCookiesTimeInDays) =>
   function (req, res) {
     if (!req.body.hash) {
-      return res.status(401).json({ message: 'Ошибка авторизации #02', code: 'req.body.hash should be transfered!' })
+      return res
+        .status(401)
+        .json({ message: 'Нехрен сюда лезть без хэша', code: '#02 req.body.hash should be transfered!' })
     }
     /*
      * Check if the password is correct
@@ -21,13 +23,17 @@ module.exports = (expiresCookiesTimeInDays) =>
       targetCfgItem = hashedRedirectMap.get(hash)
       targetCode = targetCfgItem.code
     }
-    if (!targetCfgItem || !targetCode) return res.status(500).json({ message: '#03 target cfg item not found' })
+    if (!targetCfgItem || !targetCode)
+      return res
+        .status(401)
+        .json({ message: 'Нехрен сюда лезть без правильного хэша', code: '#03 target cfg item not found' })
 
     // 2. Auth by passwd
     if (!targetCfgItem.accessPassword) {
-      return res
-        .status(500)
-        .json({ message: 'Ошибка авторизации #04', code: `Check cfg: !targetCfgItem.accessPassword is true` })
+      return res.status(500).json({
+        message: 'Ошибка авторизации #04: Возможно, на бэке что-то забыли указать',
+        code: `#04 Check cfg: !targetCfgItem.accessPassword is true`,
+      })
     }
     if (req.body.password === targetCfgItem.accessPassword) {
       const jwt4Cookie = jwt.sign({ id: 1 }, targetCfgItem.jwtSecret, {

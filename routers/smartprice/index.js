@@ -30,10 +30,8 @@ const otApiV1SvyaznoyBuyoutDocForm = require('./mws/otapi/v1/svyaznoi/buyout_doc
 const otApiV1SvyaznoySignBuyoutDoc = require('./mws/otapi/v1/svyaznoi/sign_buyout_doc')
 const otApiV1SvyaznoySwagger = require('./mws/otapi/v1/svyaznoi/swagger')
 // const checkAuth = require('../auth/mws/check-jwt')
-const { accessCode } = require('../auth/cfg')
+const { accessCode, redirect } = require('../auth/cfg')
 const redirectIfUnloggedMw = require('../auth/mws/redirect-if-unlogged')
-
-const { SP_SVYAZNOY_JWT_SECRET } = process.env
 
 // Special API imitation
 smartpriceApi.get('/api/catalog', catalogCounterRoute)
@@ -54,7 +52,7 @@ smartpriceApi.get('/md5/make/', jsonParser, md5Make)
 // Online TradeIn API imitation
 smartpriceApi.use(
   '/otapi/v1/svyaznoy/swagger/',
-  redirectIfUnloggedMw(SP_SVYAZNOY_JWT_SECRET, accessCode.OTSvyaznoyV1),
+  redirectIfUnloggedMw(redirect[accessCode.OTSvyaznoyV1].jwtSecret, accessCode.OTSvyaznoyV1),
   otApiV1SvyaznoySwagger
 )
 smartpriceApi.post('/otapi/v1/svyaznoy/imei/', otApiV1SvyaznoyGetIMEI)

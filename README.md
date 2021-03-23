@@ -272,7 +272,7 @@ yarn build:front
 
 ## add-access-space
 
-1. Add new key to **accessCode** `./routers/auth/cfg.js`
+1. Add new key to **accessCode** `./routers/auth/cfg.js`.
 
 _For example:_
 
@@ -285,7 +285,7 @@ const accessCode = {
 // etc.
 ```
 
-2. Set new env to **process.env**
+2. Set new env to **process.env**.
 
 _For example:_
 
@@ -299,7 +299,7 @@ SP_ACCESS_PASSWORD=admin
 # etc.
 ```
 
-3. Add new array key to **redirect object** `./routers/auth/cfg.js`
+3. Add new array key to **redirect object** `./routers/auth/cfg.js`.
 
 _For example:_
 
@@ -309,7 +309,6 @@ _For example:_
 module.exports = {
   accessCode,
   redirect: {
-    // default: { unlogged: `${EXTERNAL_ROUTE}/auth/signin/` },
     [accessCode.OTSvyaznoyV1]: {
       jwtSecret: SP_SVYAZNOY_JWT_SECRET,
       uiName: 'Online Trade-in API (Svyaznoy)',
@@ -323,7 +322,7 @@ module.exports = {
 }
 ```
 
-4. Add **redirectIfLoggedMw** middleware for redirecting to `./routers/auth/index.js`
+4. Add **redirectIfLoggedMw** middleware for redirecting to `./routers/auth/index.js` _for signin page route (or other unlogged route)._
 
 _For example:_
 
@@ -340,7 +339,7 @@ authApi.use(
 // etc.
 ```
 
-5. Add new route for static and **redirectIfUnloggedMw** middleware
+5. Add new route for static and **redirectIfUnloggedMw** middleware _where you need it._
 
 _For example:_
 

@@ -4,36 +4,34 @@ const { redirect } = require('../cfg')
 
 module.exports = (jwtSecret, cookieName) => (req, res, next) => {
   // console.log(req.cookies)
-  // console.log(`DEFAULT REDIRECT: ${redirect.default.unlogged}`)
-  /*
-   * Check if authorization header is set
-   */
-  // if (req.hasOwnProperty('headers') && req.headers.hasOwnProperty('authorization')) {
-  if (!req.cookies || !req.cookies[cookieName]) {
-    return res.redirect(`${redirect[cookieName].unlogged}?hash=${redirect[cookieName].hash}`)
-    // return res.status(200).json({
-    //   link: redirect.default.unlogged,
-    //   message: 'TODO: redirect by Express or NGINX?',
-    // })
-  }
 
   try {
-    req.user = jwt.verify(req.cookies[cookieName], jwtSecret)
-
-    if (req.user.id) {
-      return next()
-    }
-  } catch (err) {
+    // --- NOTE: REDIRECT UNLOGGED who has NOT permission to work with the current agent
+    // 1) Проерим, есть ли конкретная кука в запросе
     if (!!req.cookies && !!req.cookies[cookieName]) {
-      if (redirect[cookieName]) {
-        return res.redirect(`${redirect[cookieName].unlogged}?hash=${redirect[cookieName].hash}`)
-        // return res.status(200).json({ link: redirect[cookieName].unlogged, message: 'TODO: redirect by Express or NGINX? _' })
-      }
-      return res.status(500).json({
-        message: 'Не могу корректно редиректнуть, допишите мапинг',
-        code: `You should be redirected. But !redirect[${redirect[cookieName]}]. Check cfg!`,
-      })
+      // -- 1.1) Verify user by cookie
+      /*
+       * Try to decode & verify the JWT token
+       * The token contains user's id ( it can contain more informations )
+       * and this is saved in req.user object
+       */
+      req.user = jwt.verify(req.cookies[cookieName], jwtSecret)
+      if (req.user.id) return next()
+
+      // console.log(user)
+
+      // -- 1.2) Or redirect
+      return res.redirect(`${redirect[cookieName].unlogged}?hash=${redirect[cookieName].hash}`)
+      // --
     }
+    // 2) Нет конкретной куки в запросе (в этой миддлваре проверили только на конкретного контрагента)
+    return res.redirect(`${redirect[cookieName].unlogged}?hash=${redirect[cookieName].hash}`)
+
+    // ---
+  } catch (err) {
+    return res.status(500).json({
+      message: 'Fuckup',
+      code: `You should be redirected. But !redirect[${redirect[cookieName]}]. Check cfg! (redirect-if-unlogged mw)`,
+    })
   }
-  return next()
 }

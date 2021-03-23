@@ -4,6 +4,8 @@ const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 require('dotenv').config()
 
+const { accessCode, redirect } = require('routers/auth/cfg')
+const redirectIfUnloggedMw = require('routers/auth/mws/redirect-if-unlogged')
 const mainRouter = require('./routers/index')
 const usersRouter = require('./routers/users')
 const urlMetadataRouter = require('./routers/url-metadata')
@@ -19,9 +21,15 @@ app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
+
+app.get(
+  '/',
+  redirectIfUnloggedMw(redirect[accessCode.Homepage].jwtSecret, accessCode.Homepage),
+  express.static(path.join(__dirname, 'public')),
+  mainRouter
+)
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.use('/', mainRouter)
 app.use('/users', usersRouter)
 app.use('/url-metadata', urlMetadataRouter)
 app.use('/recaptcha-v3', reCAPTCHAV3Router)
