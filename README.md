@@ -240,8 +240,8 @@ server {
 - [https://developers.google.com/recaptcha/docs/verify#api_response](https://developers.google.com/recaptcha/docs/verify#api_response)
 - [https://developers.google.com/recaptcha/docs/v3#site_verify_response](https://developers.google.com/recaptcha/docs/v3#site_verify_response)
 
-
 ## Access feature
+
 ### frontend-signin
 
 1. `./.env`
@@ -256,15 +256,15 @@ SP_ACCESS_PASSWORD=<YOUR_PASSWORD>
 # SUCCESS_ANYWAY=1
 ```
 
- 2. `./frontend.signin/.env`
+2.  `./frontend.signin/.env`
 
- ```
+```
 SKIP_PREFLIGHT_CHECK=true
 # Dev:
 REACT_APP_API_URL=http://localhost:5000
 # Prod:
 # REACT_APP_API_URL=/express-helper
- ```
+```
 
 ```bash
 yarn build:front
@@ -273,6 +273,9 @@ yarn build:front
 ## add-access-space
 
 1. Add new key to **accessCode** `./routers/auth/cfg.js`
+
+_For example:_
+
 ```js
 const accessCode = {
   OTSvyaznoyV1: 'sp.otapi.v1.svyaznoy.jwt',
@@ -283,6 +286,9 @@ const accessCode = {
 ```
 
 2. Set new env to **process.env**
+
+_For example:_
+
 ```bash
 # etc.
 
@@ -294,6 +300,9 @@ SP_ACCESS_PASSWORD=admin
 ```
 
 3. Add new array key to **redirect object** `./routers/auth/cfg.js`
+
+_For example:_
+
 ```js
 // etc.
 
@@ -315,6 +324,9 @@ module.exports = {
 ```
 
 4. Add **redirectIfLoggedMw** middleware for redirecting to `./routers/auth/index.js`
+
+_For example:_
+
 ```js
 // etc.
 
@@ -326,4 +338,16 @@ authApi.use(
 )
 
 // etc.
+```
+
+5. Add new route for static and **redirectIfUnloggedMw** middleware
+
+_For example:_
+
+```js
+smartpriceApi.use(
+  '/otapi/v1/svyaznoy/swagger/',
+  redirectIfUnloggedMw(SP_SVYAZNOY_JWT_SECRET, accessCode.OTSvyaznoyV1),
+  otApiV1SvyaznoySwagger
+)
 ```
