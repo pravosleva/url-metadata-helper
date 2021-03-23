@@ -4,33 +4,40 @@ info:
   title: 'API /smartprice/otapi/v1/svyaznoy'
   description: 'В тестовом режиме возможен случайный вариант ответа `success | fail` *(Возможно, потребуется включить **CORS**)*'
   version: '1.0.0'
+  contact:
+    email: 'pravosleva@smartprice.ru'
 host: pravosleva.ru
 basePath: /express-helper/smartprice/otapi/v1/svyaznoy
 schemes:
   - http
+tags:
+  - name: 'imei'
+    description: 'Check your IMEI'
+    externalDocs:
+      description: 'Find out more'
+      url: 'http://swagger.io'
+  - name: 'confirm_detection'
+    description: 'Go on button'
+  - name: accept_preprice
+    description: 'Accept preprice'
 paths:
   /imei:
     post:
+      tags:
+        - 'imei'
+      summary: 'Returns specific OT data'
+      description: 'Проверить IMEI'
       consumes:
+        - application/json
+      produces:
         - application/json
       parameters:
         - in: body
+          name: body
+          description: 'IMEI object that needs to be added to the store'
           required: true
-          # schema:
-          #   $ref: '#/definitions/IMEIVerifyRequestParams'
-          type: object
           schema:
-            # type: object
             $ref: '#/definitions/IMEIVerifyRequestParams'
-            # properties:
-            #   IMEI:
-            #     required: true
-            #     type: string
-            #     description: 'Your device IMEI'
-      summary: 'Returns specific OT data'
-      description: 'Проверить IMEI'
-      produces:
-        - application/json
       responses:
         200:
           description: 'OK'
@@ -39,18 +46,18 @@ paths:
             type: object
             properties:
               ok: boolean
-              imei:
-                type: string
+              imei: string
               phone:
-                vendor: string
-                model: string
-                memory: string
-                color: string
-                memory_choices: array
-                  items:
-                    type: string
-                color_choices:
-                  $ref: '#/definitions/ColorChoices'
+                type: object
+                properties:
+                  vendor: string
+                  model: string
+                  memory: string
+                  color: string
+                  memory_choices:
+                    $ref: '#/definitions/MemoryChoises'
+                  color_choices:
+                    $ref: '#/definitions/ColorChoices'
             example:
               ok: true
               imei: '868030034494821'
@@ -76,12 +83,15 @@ paths:
                 type: mobile_phone
   /confirm_detection:
     post:
+      tags:
+        - 'confirm_detection'
       consumes:
         - application/json
       produces:
         - application/json
       parameters:
         - in: body
+          name: body
           required: true
           schema:
             $ref: '#/definitions/ConfirmDetectionRequestParams'
@@ -101,16 +111,14 @@ paths:
               ok: true
   /accept_preprice:
     post:
-      # parameters:
-      #   - name: 'url'
-      #     in: query
-      #     description: Your page url
-      #     required: true
-      #     type: string
-      summary: 'Returns success after accept preprice'
-      description: 'Подтверждение на любом этапе до формирования ценника'
+      tags:
+        - 'accept_preprice'
+      consumes:
+        - application/json
       produces:
         - application/json
+      summary: 'Returns success after accept preprice'
+      description: 'Подтверждение на любом этапе до формирования ценника'
       responses:
         200:
           description: OK
@@ -120,18 +128,17 @@ paths:
             properties:
               ok: boolean
               need_photos:
+                $ref: '#/definitions/NeedPhotos'
+              additionalProperties:
                 type: object
             example:
               ok: true
               need_photos:
                 - back
                 - front
-              code:
-                type: string
-              message:
-                type: string
-              extra:
-                type: null
+              code: some text
+              message: Message
+              extra: null
             required:
               - ok
 
@@ -181,3 +188,11 @@ definitions:
       turns_on:
         required: true
         type: boolean
+  MemoryChoises:
+    type: array
+    items:
+      type: string
+  NeedPhotos:
+    type: array
+    items:
+      type: string
