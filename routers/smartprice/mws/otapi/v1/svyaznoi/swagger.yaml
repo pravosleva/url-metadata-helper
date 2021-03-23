@@ -1,7 +1,7 @@
 swagger: '2.0'
 # See also: https://swagger.io/specification/v2/
 info:
-  title: 'API /smartprice/otapi/v1/svyaznoy'
+  title: Online trade-in API
   description: 'В тестовом режиме возможен случайный вариант ответа `success | fail` *(Возможно, потребуется включить **CORS**)*'
   version: '1.0.0'
   contact:

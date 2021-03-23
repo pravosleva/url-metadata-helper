@@ -11,7 +11,7 @@ if (!SP_SVYAZNOY_JWT_SECRET || !SP_ACCESS_PASSWORD) {
 
 const accessCode = {
   OTSvyaznoyV1: 'sp.otapi.v1.svyaznoy.jwt',
-  Homepage: 'access-to-homepage',
+  Homepage: 'demo.access-to-homepage.jwt',
 }
 // --- Check accessCode map:
 const hasDuplicate = (arr) => new Set(arr).size !== arr.length
