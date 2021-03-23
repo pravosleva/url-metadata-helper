@@ -15,17 +15,15 @@ tags:
     description: 'Check your IMEI'
     externalDocs:
       description: 'Проверить IMEI'
-      url: 'http://code-samples.space/notes/603f81a316a4d2615f26d7f5#3-1.-proverit-imei'
+      url: 'swagger.io'
   - name: 'confirm_detection'
     description: 'Go on button'
     externalDocs:
       description: 'Кнопка Продолжить'
-      url: 'http://code-samples.space/notes/603f81a316a4d2615f26d7f5#3-2.-prodolzhit'
   - name: accept_preprice
     description: 'Accept preprice'
     externalDocs:
       description: 'Кнопка Рассчитать цену'
-      url: 'http://code-samples.space/notes/603f81a316a4d2615f26d7f5#3-3.-raschitat-cenu'
 paths:
   /imei:
     post:
