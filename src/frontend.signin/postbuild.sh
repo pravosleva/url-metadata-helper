@@ -2,7 +2,7 @@
 # set -e
 # set -x
 
-echo "===> POSTBUILD STARTED "
+echo "🔨 POSTBUILD STARTED "
 
 EXTERNAL_DIR_0=""$(dirname "$PWD")""
 EXTERNAL_DIR=""$(dirname "$EXTERNAL_DIR_0")""
@@ -30,6 +30,6 @@ echo -ne '######                    (30%)\r'
 
 echo -ne '########################  (100%)\r'
 
-echo "===> POSTBUILD COMPLETED "
+echo "🔨 POSTBUILD COMPLETED "
 
 exit 0
