@@ -24,7 +24,7 @@
     "lint:fix": "eslint 'src/server/**/*.{js,jsx,ts,tsx}' 'bin/**/*' --fix"
   },
   "lint-staged": {
-    "src/serer/**/*.{js, jsx, ts, tsx}": [
+    "src/server/**/*.{js, jsx, ts, tsx}": [
       "node_modules/.bin/eslint --max-warnings=0 --no-ignore",
       "prettier --write"
     ]
