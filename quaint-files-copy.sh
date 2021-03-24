@@ -11,4 +11,4 @@ quaint_copy(){
   rsync -r -f '+ *.'"$ext" -f '+ **/' -f '- *' --prune-empty-dirs $srcDir $destDir
 }
 
-quaint_copy $1 $2 $3
+quaint_copy $PWD/$1 $PWD/$2 $3

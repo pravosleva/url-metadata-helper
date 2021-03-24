@@ -6,7 +6,6 @@ echo "🔨 POSTBUILD STARTED "
 
 EXTERNAL_DIR_0=""$(dirname "$PWD")""
 EXTERNAL_DIR=""$(dirname "$EXTERNAL_DIR_0")""
-# TARGET_DIR="${EXTERNAL_DIR}/server/routers/auth/pages/signin/build"
 TARGET_DIR="${EXTERNAL_DIR}/server-dist/routers/auth/pages/signin/build"
 
 # Step 1: Create target dir if necessary
