@@ -6,7 +6,10 @@
 
 const debug = require('debug')('url-metadata-helper:server')
 const http = require('http')
-const app = require('../app')
+const path = require('path')
+require('dotenv').config({ path: path.join(__dirname, '../server-dist/.env') })
+
+const app = require('../server-dist/app')
 
 /**
  * Normalize a port into a number, string, or false.

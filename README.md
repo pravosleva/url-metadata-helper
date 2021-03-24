@@ -35,6 +35,8 @@ _Local build then deploy then `pm2 restart 2`_
 
 `deploy-app-config.json`
 
+_Old:_
+
 ```js
 {
   "prod:restart-all": {
@@ -53,6 +55,23 @@ _Local build then deploy then `pm2 restart 2`_
     "port": "<PORT>",
     "files": "bin app.js public routers routers/**/*.yaml utils package.json",
     "path": "/home/path-to-dir/pravosleva-blog/express-helper",
+    "post-deploy": "pm2 stop 2; yarn; pm2 restart 2 --update-env"
+  },
+  "dev": {},
+  "staging": {}
+}
+```
+
+_New (ts transpiling added):_
+
+```js
+{
+  "prod:restart-helper": {
+    "user": "root",
+    "host": "pravosleva.ru",
+    "port": "22",
+    "files": "bin public server-dist package.json",
+    "path": "/home/pravosleva/pravosleva-blog/express-helper",
     "post-deploy": "pm2 stop 2; yarn; pm2 restart 2 --update-env"
   },
   "dev": {},
@@ -244,7 +263,7 @@ server {
 
 ### frontend-signin
 
-1. `./.env`
+1. `./.env` _(**You can change it**, will be copied to `./server-dist/.env`)_
 
 ```
 EXPIRES_COOKIES_IN_DAYS=1
@@ -256,7 +275,7 @@ SP_ACCESS_PASSWORD=<YOUR_PASSWORD>
 # SUCCESS_ANYWAY=1
 ```
 
-2.  `./frontend.signin/.env`
+2. `./frontend.signin/.env` _(**Don't worry**, Will be updated by `yarn build:front:prod` script)_
 
 ```
 SKIP_PREFLIGHT_CHECK=true
@@ -272,7 +291,7 @@ yarn build:front
 
 ## add-access-space
 
-1. Add new key to **accessCode** `./routers/auth/cfg.js`.
+1. Add new key to **accessCode** `./src/server/routers/auth/cfg.js`.
 
 _For example:_
 
@@ -285,7 +304,7 @@ const accessCode = {
 // etc.
 ```
 
-2. Set new env to **process.env**.
+2. Set new env to `./.env`.
 
 _For example:_
 
@@ -299,7 +318,7 @@ SP_ACCESS_PASSWORD=admin
 # etc.
 ```
 
-3. Add new array key to **redirect object** `./routers/auth/cfg.js`.
+3. Add new array key to **redirect object** `./src/server/routers/auth/cfg.js`.
 
 _For example:_
 
@@ -322,7 +341,7 @@ module.exports = {
 }
 ```
 
-4. Add **redirectIfLoggedMw** middleware for redirecting to `./routers/auth/index.js` _for signin page route (or other unlogged route)._
+4. Add **redirectIfLoggedMw** middleware for redirecting to `./src/server/routers/auth/index.js` _for signin page route (or other unlogged route)._
 
 _For example:_
 
@@ -339,9 +358,9 @@ authApi.use(
 // etc.
 ```
 
-5. Add new route for static and **redirectIfUnloggedMw** middleware _where you need it._
+5. Add new route for static with **redirectIfUnloggedMw** middleware _where you need it._
 
-_For example:_
+_For example: Additional access for specific swagger as static route_
 
 ```js
 smartpriceApi.use(

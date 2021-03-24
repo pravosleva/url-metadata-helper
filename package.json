@@ -4,19 +4,27 @@
   "private": true,
   "scripts": {
     "kill-5000": "fuser -k -n tcp 5000",
-    "build:front:dev": "yarn --cwd frontend.signin install && bash set-front-env.sh dev && yarn --cwd frontend.signin build",
-    "build:front:prod": "yarn --cwd frontend.signin install && bash set-front-env.sh prod && yarn --cwd frontend.signin build",
+    "cleanup:server-dist": "rm -rf ./server-dist/* !./server-dist/.gitkeep",
+    "transpile-server:watch": "tsc -p ./src/server -w",
+    "quaint-yaml-copy:pravosleva": "bash quaint-files-copy.sh /home/pravosleva/projects/smartprice_projects/express-helper/src/server/ /home/pravosleva/projects/smartprice_projects/express-helper/server-dist/ yaml",
+    "quaint-env-copy:pravosleva": "cp /home/pravosleva/projects/smartprice_projects/express-helper/.env /home/pravosleva/projects/smartprice_projects/express-helper/server-dist/.env",
+    "quaint-copy": "yarn quaint-yaml-copy:pravosleva && yarn quaint-env-copy:pravosleva",
+    "transpile-server": "tsc -p ./src/server && yarn quaint-copy",
+    "build:front:dev": "yarn --cwd src/frontend.signin install && bash src/set-front-env.sh dev && yarn --cwd src/frontend.signin build",
+    "build:front:prod": "yarn --cwd src/frontend.signin install && bash src/set-front-env.sh prod && yarn --cwd src/frontend.signin build",
+    "build:fresh-prod": "yarn cleanup:server-dist && yarn transpile-server && yarn build:front:prod",
+    "build:fresh-dev": "yarn cleanup:server-dist && yarn transpile-server && yarn build:front:dev",
     "start": "PORT=5000 NODE_PATH=. node ./bin/www",
-    "dev": "yarn build:front:dev && SUCCESS_ANYWAY=1 DEBUG=express-helper:* npm start",
+    "dev": "yarn build:fresh-dev && SUCCESS_ANYWAY=1 DEBUG=express-helper:* npm start",
     "start:pm2": "pm2 start npm --name \"express-helper-5000\" -- start",
     "test": "jest",
     "deploy:prod:restart-all": "deploy-app -d prod:restart-all",
-    "deploy:prod:restart-helper": "yarn build:front:prod && deploy-app -d prod:restart-helper",
-    "lint": "eslint --debug 'routers/**/*.{js,jsx,ts,tsx}' 'utils/**/*.{js,jsx,ts,tsx}' 'bin/**/*' app.js",
-    "lint:fix": "eslint 'routers/**/*.{js,jsx,ts,tsx}' 'utils/**/*.{js,jsx,ts,tsx}' 'bin/**/*' app.js --fix"
+    "deploy:prod:restart-helper": "yarn build:fresh-prod && deploy-app -d prod:restart-helper",
+    "lint": "eslint --debug 'src/server/**/*.{js,jsx,ts,tsx}' 'bin/**/*'",
+    "lint:fix": "eslint 'src/server/**/*.{js,jsx,ts,tsx}' 'bin/**/*' --fix"
   },
   "lint-staged": {
-    "*.{js, jsx, ts, tsx}": [
+    "src/serer/**/*.{js, jsx, ts, tsx}": [
       "node_modules/.bin/eslint --max-warnings=0 --no-ignore",
       "prettier --write"
     ]
@@ -54,6 +62,7 @@
     "husky": "^4.2.5",
     "jest": "^26.0.1",
     "lint-staged": "^10.2.11",
-    "prettier": "^2.0.5"
+    "prettier": "^2.0.5",
+    "typescript": "^4.2.3"
   }
 }
