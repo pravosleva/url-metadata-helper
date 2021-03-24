@@ -3,6 +3,7 @@ echo "SKIP_PREFLIGHT_CHECK=true" > src/frontend.signin/.env
 
 if [ $# -eq 1 ]
 then
+  # NOTE: Билд CRA всегда происходит как для production.
   case $1 in
     "dev")
       echo "REACT_APP_API_URL=http://localhost:5000" > src/frontend.signin/.env.production

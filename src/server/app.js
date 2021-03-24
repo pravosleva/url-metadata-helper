@@ -23,8 +23,8 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 
-// NOTE: Пути до "публичной" статики (та что в ./public/*) указываем относительно ./server-dist
-// (transpiling destination dir, откуда будет запуск)
+// NOTE: Пути до "публичной" статики (та что в ./public/*) указываем относительно <PROJECT_ROOT_DIR>/server-dist
+// (transpiling destination dir) ...или ./bin/www, откуда будет запуск?
 app.get(
   '/',
   redirectIfUnloggedMw(redirect[accessCode.Homepage].jwtSecret, accessCode.Homepage),
