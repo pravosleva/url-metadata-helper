@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 // NOTE: envs already got from ./server-dist/.env
 
 import express from 'express'
@@ -15,6 +16,7 @@ import reCAPTCHAV3Router from './routers/recaptcha-v3'
 import swaggerRouter from './routers/swagger'
 import smartpriceRouter from './routers/smartprice'
 import imeiRouter from './routers/imei'
+import { qrApi as qrRouter } from './routers/qr'
 
 const app = express()
 
@@ -40,5 +42,6 @@ app.use('/swagger', swaggerRouter)
 app.use('/smartprice', smartpriceRouter)
 app.use('/imei', imeiRouter)
 app.use('/auth', authRouter)
+app.use('/qr', qrRouter)
 
 module.exports = app
