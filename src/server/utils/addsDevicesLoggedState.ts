@@ -5,7 +5,7 @@ const genDataUrl: (payload: string) => Promise<string> = promisify(QRCode.toData
 
 // NOTE: Несколько других устройств для аутентификации по QR коду:
 // TODO: Could be moved to envs
-const authOnOtherDevicesLimit = 1
+const authOnOtherDevicesLimit = 2
 
 /**
  * Класс Одиночка предоставляет метод getInstance, который позволяет клиентам
@@ -13,7 +13,7 @@ const authOnOtherDevicesLimit = 1
  */
 class Singleton {
   private static instance: Singleton;
-   state: Map<any, any>;
+   state: Map<string, { qr: string, hash: string, additionalLoggedCounter: number, infoUrl: string, success_url: string, fail_url: string }>;
 
   /**
    * Конструктор Одиночки всегда должен быть скрытым, чтобы предотвратить
@@ -46,17 +46,28 @@ class Singleton {
 
     return dataUrl
   }
-  public async addExistsSession(reqId: string, payload: string): Promise<string> {
+  public async addExistsSession({
+    reqId,
+    infoUrl: payload,
+    infoUrl,
+    hash,
+    success_url,
+    fail_url,
+  }: { reqId: string, payload: string, hash: string, infoUrl: string, success_url: string, fail_url: string }): Promise<string> {
     const qr = await this.createQR(payload)
 
     this.state.set(reqId, {
+      hash,
       qr,
-      additionalLoggedCounter: 0, // Один раз как минимум до вызова
+      additionalLoggedCounter: 0, // Login on first device.
+      success_url,
+      fail_url,
+      infoUrl,
     })
 
     return qr
   }
-  public setLoggedSessionOrDelete(reqId: string): Promise<string> {
+  public addLoggedSessionOrDelete(reqId: string): Promise<string> {
     if (this.state.has(reqId)) {
       const sesData = this.state.get(reqId)
       

@@ -18,17 +18,21 @@ import queryString from 'query-string'
 
 const { REACT_APP_API_URL } = process.env
 
-const apiResponseValidator = (axiosRes: any): boolean => !!axiosRes?.data?.id
+const apiResponseValidator = (axiosRes: any): boolean => !!axiosRes?.data?.qr
 // const apiResponseAccessCodeValidator = (axiosRes: any): boolean => axiosRes?.data?.ok && !!axiosRes?.data?.accessCode
 
-type TResSuccess = {
+interface IRes {
+  ok: boolean
+}
+interface IResSuccess extends IRes {
   isOk: boolean
   data: any
   message: string
   redirect: string
   uiName: string
+  qr: string
 }
-type TResFail = {
+interface IResFail extends IRes {
   isOk: boolean
   message: string
 }
@@ -54,7 +58,7 @@ export const MainPage = () => {
   // const router = useRouter()
   // const { query } = router
   const query: any = queryString.parse(window.location.search)
-  const handleSubmit = useCallback(async (data: Partial<TValues>): Promise<TResSuccess | TResFail> => {
+  const handleSubmit = useCallback(async (data: Partial<TValues>): Promise<any> => {
     resetErrorMsg()
     if (!query?.hash) return Promise.reject('No hash in query!')
 
@@ -86,6 +90,7 @@ export const MainPage = () => {
     },
     [isAccepted]
   );
+  const [QR, setQR] = useState<string | null>(null)
 
   return (
     <Container
@@ -123,12 +128,13 @@ export const MainPage = () => {
           // RES: { accessCode: string } -> code -> handleSubmit(values, code)
 
           handleSubmit(values)
-            .then((data) => {
+            .then((data: IResSuccess) => {
               // addSuccessNotif({ message: 'Ваша заявка отправлена' });
               setSubmitting(false);
               setSuccessMsg(data.message)
               // @ts-ignore
               setTargetUiName(data.uiName)
+              setQR(data.qr)
 
               // @ts-ignore
               if (!!data.redirect) {
@@ -281,6 +287,26 @@ export const MainPage = () => {
                   </Grid>
                 )
               }
+              {!!QR && (
+                <Grid
+                  item
+                  xs={12}
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <img
+                    style={{
+                      width: '200px',
+                      height: '200px',
+                    }}
+                    src={QR}
+                    alt='QR'
+                  />
+                </Grid>
+              )}
             </Grid>
           </FormikForm>
         )}

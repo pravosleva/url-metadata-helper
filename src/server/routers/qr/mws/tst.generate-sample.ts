@@ -1,6 +1,9 @@
 import { Response as IResponse } from 'express'
 import { ICustomRequest } from '../../../utils/interfaces'
+import QRCode from 'qrcode'
+import { promisify } from 'es6-promisify'
 
+const genDataUrl: (payload: string) => Promise<string> = promisify(QRCode.toDataURL.bind(QRCode))
 
 export const generateSample = async (req: ICustomRequest, res: IResponse) => {
   const { payload } = req.query
@@ -18,7 +21,8 @@ export const generateSample = async (req: ICustomRequest, res: IResponse) => {
 
   // --- NOTE: При генерации qr создаем возможность
   // аутентифицироваться на других устройствах, используя req.id:
-  const dataUrl = await req.loggedMap.addExistsSession(req.id, String(payload))
+  // const dataUrl = await req.loggedMap.addExistsSession(req.id, String(payload))
+  const dataUrl = await genDataUrl(String(payload))
   // ---
 
   return res.status(200).json({

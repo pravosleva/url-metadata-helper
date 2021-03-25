@@ -1,4 +1,7 @@
 /* eslint-disable no-restricted-syntax */
+
+import buildUrl from 'build-url'
+
 const jwt = require('jsonwebtoken')
 const { redirect: cfg, hashedRedirectMap } = require('../cfg')
 
@@ -6,7 +9,7 @@ const { redirect: cfg, hashedRedirectMap } = require('../cfg')
 const getMsByDays = (days) => 1000 * 60 * 60 * 24 * days
 
 module.exports = (expiresCookiesTimeInDays) =>
-  function (req, res) {
+  async function (req, res) {
     if (!req.body.hash) {
       return res
         .status(401)
@@ -44,12 +47,42 @@ module.exports = (expiresCookiesTimeInDays) =>
       // 3. Set cookie
       res.cookie(targetCode, jwt4Cookie, { maxAge, httpOnly: true })
 
+      // --- QR CODE: 3.1
+      const qrInfoUrl = buildUrl(targetCfgItem.qr.successUrl, {
+        queryParams: {
+          logged_req_id: req.id,
+          // bar: ['one', 'two', 'three']
+        },
+      })
+
+      const qr = await req.loggedMap.addExistsSession({
+        reqId: req.id,
+        infoUrl: qrInfoUrl,
+        hash: req.body.hash,
+        success_url: buildUrl(targetCfgItem.logged, {
+          queryParams: {
+            logged_req_id: req.id,
+            hash: targetCfgItem.hash,
+          },
+        }),
+        fail_url: buildUrl(targetCfgItem.unlogged, {
+          queryParams: {
+            hash: targetCfgItem.hash,
+          },
+        }),
+      })
+      // ---
+
       return res.json({
         id: 1,
         jwt: jwt4Cookie,
         redirect: cfg[targetCode].logged,
         uiName: cfg[targetCode].uiName || 'Noname',
-        message: 'Logged',
+        message: 'Logged, use QR',
+        qr,
+        _express: {
+          totalLogged: req.loggedMap.state.size,
+        },
       })
     }
     /*
