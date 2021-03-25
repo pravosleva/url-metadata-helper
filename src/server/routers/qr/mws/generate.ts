@@ -2,7 +2,7 @@ import { Request as IRequest, Response as IResponse } from 'express'
 import QRCode from 'qrcode'
 import { promisify } from 'es6-promisify'
 
-const genDataUrl: (payload: string) => void = promisify(QRCode.toDataURL.bind(QRCode))
+const genDataUrl: (payload: string) => Promise<string> = promisify(QRCode.toDataURL.bind(QRCode))
 
 export const generate = async (req: IRequest, res: IResponse) => {
   const { payload } = req.body

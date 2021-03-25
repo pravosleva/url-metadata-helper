@@ -17,13 +17,21 @@ import swaggerRouter from './routers/swagger'
 import smartpriceRouter from './routers/smartprice'
 import imeiRouter from './routers/imei'
 import { qrApi as qrRouter } from './routers/qr'
+import { addsDevicesLoggedState } from './utils/addsDevicesLoggedState'
 
 const app = express()
 
+const addRequestId = require('express-request-id')()
+
+app.use(addRequestId) // NOTE: New additional field req.id
 app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
+app.use((req, _res, next) => {
+  req.loggedMap = addsDevicesLoggedState
+  next()
+})
 
 // NOTE: Пути до "публичной" статики (та что в ./public/*) указываем относительно <PROJECT_ROOT_DIR>/server-dist
 // (transpiling destination dir) ...или ./bin/www, откуда будет запуск?
