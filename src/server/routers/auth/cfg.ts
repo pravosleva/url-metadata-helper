@@ -9,13 +9,13 @@ if (!SP_SVYAZNOY_JWT_SECRET || !SP_ACCESS_PASSWORD) {
   throw new Error('!SP_SVYAZNOY_JWT_SECRET || !SP_ACCESS_PASSWORD')
 }
 
-const accessCode = {
-  OTSvyaznoyV1: 'sp.otapi.v1.svyaznoy.jwt',
-  Homepage: 'demo.access-to-homepage.jwt',
+enum EAccessCode {
+  OTSvyaznoyV1 = 'sp.otapi.v1.svyaznoy.jwt',
+  Homepage = 'demo.access-to-homepage.jwt',
 }
-// --- Check accessCode map:
-const hasDuplicate = (arr) => new Set(arr).size !== arr.length
-const keys = Object.values(accessCode)
+// --- Check EAccessCode map:
+const hasDuplicate = (arr: string[]): boolean => new Set(arr).size !== arr.length
+const keys = Object.values(EAccessCode)
 if (hasDuplicate(keys)) {
   const result = keys.reduce(
     (acc, cur) => {
@@ -34,19 +34,19 @@ if (hasDuplicate(keys)) {
 // ---
 
 const redirect = {
-  [accessCode.OTSvyaznoyV1]: {
+  [EAccessCode.OTSvyaznoyV1]: {
     jwtSecret: SP_SVYAZNOY_JWT_SECRET,
     uiName: 'Online Trade-in API (Svyaznoy)',
     accessPassword: SP_ACCESS_PASSWORD,
-    hash: md5Hash(accessCode.OTSvyaznoyV1),
+    hash: md5Hash(EAccessCode.OTSvyaznoyV1),
     logged: `${EXTERNAL_ROUTE}/smartprice/otapi/v1/svyaznoy/swagger/`,
     unlogged: `${EXTERNAL_ROUTE}/auth/signin/`,
   },
-  [accessCode.Homepage]: {
+  [EAccessCode.Homepage]: {
     jwtSecret: 'ACCESS_TO_HOMEPAGE_SECRET_JWT_SAMPLE',
     uiName: 'Homepage',
     accessPassword: 'home',
-    hash: md5Hash(accessCode.Homepage),
+    hash: md5Hash(EAccessCode.Homepage),
     logged: `${EXTERNAL_ROUTE}/`,
     unlogged: `${EXTERNAL_ROUTE}/auth/signin/`,
   },
@@ -58,5 +58,7 @@ for (const key in redirect) {
 
   hashedRedirectMap.set(hash, { ...redirect[key], code: key })
 }
+
+const accessCode = EAccessCode
 
 export { accessCode, redirect, hashedRedirectMap }
