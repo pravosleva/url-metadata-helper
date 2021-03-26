@@ -1,5 +1,5 @@
 import express, { Express as IExpress } from 'express'
-import { generateSample } from './mws/tst.generate-sample'
+import { tstGenerate } from './mws/tst.generate'
 import { tryAuthOnOtherDevice } from './mws/tst.try-auth-on-other-device'
 import { getLoggedMap } from './mws/tst.get-logged-map'
 import { generate } from './mws/generate'
@@ -11,7 +11,7 @@ import redirectIfUnloggedMw from '../auth/mws/redirect-if-unlogged'
 
 const qrApi: IExpress = express()
 
-qrApi.get('/tst.generate', generateSample)
+qrApi.get('/tst.generate', tstGenerate)
 qrApi.get('/tst.try-auth-on-other-device', tryAuthOnOtherDevice)
 qrApi.get('/tst.get-logged-map', getLoggedMap)
 

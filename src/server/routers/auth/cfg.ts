@@ -71,7 +71,7 @@ const redirect = {
     uiName: 'QR test API documentation',
     accessPassword: QR_SWAGGER_ACCESS_PASSWORD,
     hash: md5Hash(EAccessCode.QRSwagger),
-    logged: `${EXTERNAL_ROUTE}/qr/swagger`,
+    logged: `${EXTERNAL_ROUTE}/qr/swagger/`, // NOTE: Последний слеш обязательно!
     unlogged: `${EXTERNAL_ROUTE}/auth/signin/`,
     qr,
   },

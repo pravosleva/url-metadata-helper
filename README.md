@@ -338,6 +338,8 @@ module.exports = {
       uiName: 'Online Trade-in API (Svyaznoy)',
       accessPassword: SP_ACCESS_PASSWORD,
       hash: md5Hash(accessCode.OTSvyaznoyV1),
+
+      // NOTE: Последний слеш обязательно!
       logged: `${EXTERNAL_ROUTE}/smartprice/otapi/v1/svyaznoy/swagger/`,
       unlogged: `${EXTERNAL_ROUTE}/auth/signin/`,
     },

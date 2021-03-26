@@ -7,25 +7,25 @@ info:
   contact:
     email: 'selection4test@gmail.com'
 host: pravosleva.ru
-basePath: /express-helper/qr/
+basePath: /express-helper/qr
 schemes:
   - http
 tags:
-  - name: 'generate_sample'
+  - name: 'tst.generate'
     description: 'Generate QR code by payload'
     externalDocs:
       description: 'Сгенерить QR по строке (аргументу, как правило, это ссылка)'
       url: 'swagger.io'
 paths:
-  /generate-sample:
+  /tst.generate:
     get:
       tags:
-        - 'generate_sample'
+        - 'tst.generate'
       produces:
         - application/json
       parameters:
         - in: query
-          name: body
+          name: payload
           required: true
           schema:
             $ref: '#/definitions/GenerateSampleParams'
@@ -41,7 +41,7 @@ paths:
               ok:
                 type: boolean
                 required: true
-              qr:
+              src:
                 type: string
                 required: true
 definitions:

@@ -5,7 +5,7 @@ import { promisify } from 'es6-promisify'
 
 const genDataUrl: (payload: string) => Promise<string> = promisify(QRCode.toDataURL.bind(QRCode))
 
-export const generateSample = async (req: ICustomRequest, res: IResponse) => {
+export const tstGenerate = async (req: ICustomRequest, res: IResponse) => {
   const { payload } = req.query
 
   const _express = {
