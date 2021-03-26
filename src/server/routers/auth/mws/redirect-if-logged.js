@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const jwt = require('jsonwebtoken')
 
 const { redirect } = require('../cfg')
@@ -15,8 +16,17 @@ module.exports = (jwtSecret, cookieName) => (req, res, next) => {
          * The token contains user's id ( it can contain more informations )
          * and this is saved in req.user object
          */
-        req.user = jwt.verify(req.cookies[cookieName], jwtSecret)
-        if (req.user.id) return res.redirect(redirect[cookieName].logged)
+        try {
+          req.user = jwt.verify(req.cookies[cookieName], jwtSecret)
+          if (req.user.id) {
+            return res.redirect(redirect[cookieName].logged)
+          }
+        } catch (err) {
+          // NOTE: For example, JsonWebTokenError: invalid signature
+          console.log('err #riu1')
+          console.log(err)
+        }
+
         // -
       }
     }

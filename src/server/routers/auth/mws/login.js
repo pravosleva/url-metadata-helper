@@ -35,7 +35,7 @@ module.exports = (expiresCookiesTimeInDays) =>
     if (!targetCfgItem.accessPassword) {
       return res.status(500).json({
         message: 'Ошибка авторизации #04: Возможно, на бэке что-то забыли указать',
-        code: `#04 Check cfg: !targetCfgItem.accessPassword is true`,
+        code: '#04 Check cfg: !targetCfgItem.accessPassword is true',
       })
     }
     if (req.body.password === targetCfgItem.accessPassword) {
@@ -59,17 +59,17 @@ module.exports = (expiresCookiesTimeInDays) =>
         reqId: req.id,
         infoUrl: qrInfoUrl,
         hash: req.body.hash,
-        success_url: buildUrl(targetCfgItem.logged, {
-          queryParams: {
-            logged_req_id: req.id,
-            hash: targetCfgItem.hash,
-          },
-        }),
-        fail_url: buildUrl(targetCfgItem.unlogged, {
-          queryParams: {
-            hash: targetCfgItem.hash,
-          },
-        }),
+        success_url: buildUrl(
+          targetCfgItem.logged
+          // { queryParams: {
+          //   logged_req_id: req.id,
+          //   hash: targetCfgItem.hash, }}
+        ),
+        fail_url: buildUrl(
+          targetCfgItem.unlogged
+          // { queryParams: {
+          //   hash: targetCfgItem.hash, }},
+        ),
       })
       // ---
 

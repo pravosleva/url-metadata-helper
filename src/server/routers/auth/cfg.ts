@@ -3,15 +3,26 @@
 import md5Hash from '../../utils/md5'
 
 const EXTERNAL_ROUTE = process.env.EXTERNAL_ROUTE || ''
-const { BASE_PROTOCOL_HOST, SP_SVYAZNOY_JWT_SECRET, SP_ACCESS_PASSWORD } = process.env
+const {
+  BASE_PROTOCOL_HOST,
+  SP_SVYAZNOY_JWT_SECRET,
+  SP_ACCESS_PASSWORD,
+  QR_SWAGGER_JWT_SECRET,
+  QR_SWAGGER_ACCESS_PASSWORD,
+} = process.env
 
-if (!BASE_PROTOCOL_HOST || !SP_SVYAZNOY_JWT_SECRET || !SP_ACCESS_PASSWORD) {
-  throw new Error('!BASE_PROTOCOL_HOST || !SP_SVYAZNOY_JWT_SECRET || !SP_ACCESS_PASSWORD')
+const requiredEnvs = ['BASE_PROTOCOL_HOST', 'SP_SVYAZNOY_JWT_SECRET', 'SP_ACCESS_PASSWORD', 'QR_SWAGGER_JWT_SECRET', 'QR_SWAGGER_ACCESS_PASSWORD']
+
+for (const key of requiredEnvs) {
+  if (!process.env[key]) {
+    throw new Error(`🚫 Check envs: process.env.${key} is ${typeof process.env[key]}`)
+  }
 }
 
-enum EAccessCode {
+export enum EAccessCode {
   OTSvyaznoyV1 = 'sp.otapi.v1.svyaznoy.jwt',
   Homepage = 'demo.access-to-homepage.jwt',
+  QRSwagger = 'qr.swagger-access.jwt',
 }
 
 // --- Check EAccessCode map:
@@ -30,7 +41,7 @@ if (hasDuplicate(keys)) {
     { duplicates: [] }
   )
 
-  throw new Error(`🚫 Check cfg! Douplicate keys: ${result.duplicates.join(', ')}`)
+  throw new Error(`🚫 Check EAccessCode values! Douplicate values: ${result.duplicates.join(', ')}`)
 }
 // ---
 const qr = {
@@ -47,11 +58,20 @@ const redirect = {
     qr,
   },
   [EAccessCode.Homepage]: {
-    jwtSecret: 'ACCESS_TO_HOMEPAGE_SECRET_JWT_SAMPLE',
+    jwtSecret: 'HOMEPAGE_SECRET_JWT_SAMPLE_ACCESS',
     uiName: 'Homepage',
     accessPassword: 'home',
     hash: md5Hash(EAccessCode.Homepage),
     logged: `${EXTERNAL_ROUTE}/`,
+    unlogged: `${EXTERNAL_ROUTE}/auth/signin/`,
+    qr,
+  },
+  [EAccessCode.QRSwagger]: {
+    jwtSecret: QR_SWAGGER_JWT_SECRET,
+    uiName: 'QR test API documentation',
+    accessPassword: QR_SWAGGER_ACCESS_PASSWORD,
+    hash: md5Hash(EAccessCode.QRSwagger),
+    logged: `${EXTERNAL_ROUTE}/qr/swagger`,
     unlogged: `${EXTERNAL_ROUTE}/auth/signin/`,
     qr,
   },

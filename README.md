@@ -12,6 +12,9 @@ Based on `express` code generator.
 - Access feature
   - [x] [frontend.signin](#frontend-signin)
   - [x] [How to add new access space](#add-access-space)
+    - [ ] Auth by QR Code
+      - [ ] #ERRPAGE (вместо 500 на /go-target)
+      - [ ] Swagger for Test QR API
 
 ## quick-start
 
@@ -260,7 +263,7 @@ server {
 
 ### frontend-signin
 
-✅ 1. `./.env.dev` & `./.env.prod` _(**You can change this files in project root dir**, they will be copied to `./server-dist/.env`)_
+⭕ 1. `./.env.dev` & `./.env.prod` _(**You can change this files in project root dir**, they will be copied to `./server-dist/.env`)_
 
 ```
 EXPIRES_COOKIES_IN_DAYS=1
@@ -293,7 +296,7 @@ yarn build:front
 
 ## add-access-space
 
-✅ 1. Add new key to **accessCode** `./src/server/routers/auth/cfg.js`.
+⭕ 1. Add new key to **accessCode** `./src/server/routers/auth/cfg.js`.
 
 _For example:_
 
@@ -306,7 +309,7 @@ const accessCode = {
 // etc.
 ```
 
-✅ 2. Set new env to `./.env`.
+✅ 2. Set new env to `./.env` _(**Don't worry**, Will be updated by `yarn quaint-express-env-copy:<dev|prod>` script)_
 
 _For example:_
 
@@ -320,7 +323,7 @@ SP_ACCESS_PASSWORD=admin
 # etc.
 ```
 
-✅ 3. Add new key to redirect setyings object `./src/server/routers/auth/cfg.js`.
+⭕ 3. Add new key to redirect setyings object `./src/server/routers/auth/cfg.js`.
 
 _For example:_
 
@@ -343,7 +346,7 @@ module.exports = {
 }
 ```
 
-✅ 4. Add **redirectIfLoggedMw** middleware for redirecting to `./src/server/routers/auth/index.js` _for signin page route (or other unlogged route)._
+⭕ 4. Add **redirectIfLoggedMw** middleware for redirecting to `./src/server/routers/auth/index.js` _for signin page route (or other unlogged route)._
 
 _For example:_
 
@@ -360,7 +363,7 @@ authApi.use(
 // etc.
 ```
 
-✅ 5. Add new route for static with **redirectIfUnloggedMw** middleware _where you need it._
+⭕ 5. Add new route for static with **redirectIfUnloggedMw** middleware _where you need it._
 
 _For example: Additional access for specific swagger as static route_
 

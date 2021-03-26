@@ -7,7 +7,7 @@ import cookieParser from 'cookie-parser'
 import logger from 'morgan'
 import authRouter from './routers/auth'
 
-import { accessCode, redirect } from './routers/auth/cfg'
+import { EAccessCode, redirect } from './routers/auth/cfg'
 import redirectIfUnloggedMw from './routers/auth/mws/redirect-if-unlogged'
 import mainRouter from './routers/index'
 import usersRouter from './routers/users'
@@ -37,7 +37,7 @@ app.use((req, _res, next) => {
 // (transpiling destination dir) ...или ./bin/www, откуда будет запуск?
 app.get(
   '/',
-  redirectIfUnloggedMw(redirect[accessCode.Homepage].jwtSecret, accessCode.Homepage),
+  redirectIfUnloggedMw(redirect[EAccessCode.Homepage].jwtSecret, EAccessCode.Homepage),
   express.static(path.join(__dirname, '../', 'public')),
   mainRouter
 )

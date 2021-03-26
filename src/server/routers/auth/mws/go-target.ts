@@ -14,8 +14,6 @@ export const goTarget = (expiresCookiesTimeInDays: number) => async (req: ICusto
       .status(401)
       .json({ message: 'Нехрен сюда лезть без правильных параметров', code: '!req.query.logged_req_id is true' })
 
-  // TODO: Check is req.query.success_url, req.fail_url valid url
-
   const loggedReqId = req.query.logged_req_id
   const hasLoggedReqIdInState = req.loggedMap.state.has(loggedReqId)
 
@@ -24,7 +22,8 @@ export const goTarget = (expiresCookiesTimeInDays: number) => async (req: ICusto
       throw new Error('typeof req.query.logged_req_id should be string!')
     }
     if (!hasLoggedReqIdInState) {
-      throw new Error('Нет такой сессии для аутентификации на доп устройствах: !hasLoggedReqIdInState')
+      // TODO?: res.clearCookie(cookieName)
+      throw new Error('Нет такой сессии для аутентификации на доп устройствах: !hasLoggedReqIdInState; Возможно, Вы исчерпали количество дополнительных устройств для аутентификации')
   
       // return res.status(200).redirect(fail_url)
       // return res.status(500).json({ ok: false, mesage: 'TODO' })
@@ -63,7 +62,7 @@ export const goTarget = (expiresCookiesTimeInDays: number) => async (req: ICusto
       .catch((msg) => {
         res.cookie('auth_service_msg', msg, { maxAge, httpOnly: true })
 
-        // TODO: redirect to error page
+        // TODO?: redirect to error page
 
         res.status(500).json({
           ok: false,
@@ -74,6 +73,8 @@ export const goTarget = (expiresCookiesTimeInDays: number) => async (req: ICusto
         // res.status(200).redirect(success_url)
       })
   } catch (err) {
+    // TODO?: May be remove cookie and go fail_url? #ERRPAGE
+
     return res.status(500).json({
       _originalReqQuery: req.query,
       _express: {

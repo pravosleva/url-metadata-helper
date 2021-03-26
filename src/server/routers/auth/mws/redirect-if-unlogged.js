@@ -15,10 +15,15 @@ module.exports = (jwtSecret, cookieName) => (req, res, next) => {
        * The token contains user's id ( it can contain more informations )
        * and this is saved in req.user object
        */
-      req.user = jwt.verify(req.cookies[cookieName], jwtSecret)
-      if (req.user.id) return next()
+      try {
+        req.user = jwt.verify(req.cookies[cookieName], jwtSecret)
+        if (req.user.id) return next()
+      } catch (err) {
+        // NOTE: For example, JsonWebTokenError: invalid signature
+        res.clearCookie(cookieName)
 
-      // console.log(user)
+        return res.status(200).redirect(`${redirect[cookieName].unlogged}?hash=${redirect[cookieName].hash}`)
+      }
 
       // -- 1.2) Or redirect
       return res.redirect(`${redirect[cookieName].unlogged}?hash=${redirect[cookieName].hash}`)
@@ -30,8 +35,8 @@ module.exports = (jwtSecret, cookieName) => (req, res, next) => {
     // ---
   } catch (err) {
     return res.status(500).json({
-      message: 'Fuckup',
-      code: `You should be redirected. But !redirect[${redirect[cookieName]}]. Check cfg! (redirect-if-unlogged mw)`,
+      message: 'Developers fuckup detected. Problem in redirect-if-unlogged mw',
+      code: `You should be redirected. But !redirect[${cookieName}]. Check cfg! (redirect-if-unlogged mw)`,
     })
   }
 }

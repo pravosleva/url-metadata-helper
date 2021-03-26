@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import express from 'express'
 // Create application/json parser
 import bodyParser from 'body-parser'
@@ -26,7 +27,7 @@ import otApiV1SvyaznoyBuyoutDocForm from './mws/otapi/v1/svyaznoi/buyout_doc_for
 import otApiV1SvyaznoySignBuyoutDoc from './mws/otapi/v1/svyaznoi/sign_buyout_doc'
 import otApiV1SvyaznoySwagger from './mws/otapi/v1/svyaznoi/swagger'
 // import checkAuth from '../auth/mws/check-jwt'
-import { accessCode, redirect } from '../auth/cfg'
+import { EAccessCode, redirect } from '../auth/cfg'
 import redirectIfUnloggedMw from '../auth/mws/redirect-if-unlogged'
 
 const jsonParser = bodyParser.json()
@@ -52,7 +53,7 @@ smartpriceApi.get('/md5/make/', jsonParser, md5Make)
 // Online TradeIn API imitation
 smartpriceApi.use(
   '/otapi/v1/svyaznoy/swagger/',
-  redirectIfUnloggedMw(redirect[accessCode.OTSvyaznoyV1].jwtSecret, accessCode.OTSvyaznoyV1),
+  redirectIfUnloggedMw(redirect[EAccessCode.OTSvyaznoyV1].jwtSecret, EAccessCode.OTSvyaznoyV1),
   otApiV1SvyaznoySwagger
 )
 smartpriceApi.post('/otapi/v1/svyaznoy/imei/', otApiV1SvyaznoyGetIMEI)
