@@ -13,29 +13,22 @@ export const goTarget = (expiresCookiesTimeInDays: number) => async (req: ICusto
   if (!req.query.logged_req_id || typeof req.query.logged_req_id !== 'string')
     return res
       .status(401)
-      .json({ message: 'Нехрен сюда лезть без правильных параметров', code: '!req.query.logged_req_id is true' })
+      .json({ message: 'Нехрен сюда лезть без правильных параметров', code: `typeof req.query.logged_req_id is ${typeof req.query.logged_req_id}` })
+  
+  const { hash } = req.query
+  if (!hash) return res
+    .status(401)
+    .json({ message: 'Что-то пошло не так', code: `req.query.hash is ${typeof hash}` })
 
   const loggedReqId = req.query.logged_req_id
   const hasLoggedReqIdInState = req.loggedMap.state.has(loggedReqId)
   const maxAge = getMsByDays(expiresCookiesTimeInDays)
 
   try {
-    if (typeof loggedReqId !== 'string') {
-      throw new Error('typeof req.query.logged_req_id should be string!')
-    }
-
     const loggedObj = req.loggedMap.state.get(loggedReqId)
-    const { hash } = req.query
-
-    if (!hash) {
-      return res
-        .status(401)
-        .json({ message: 'Что-то пошло не так', code: `req.query.hash is ${typeof hash}` })
-
-    }
-    if (!hashedRedirectMap.has(hash)) {
+    
+    if (!hashedRedirectMap.has(hash))
       throw new Error('Многое поменялось пока Вы спали: !hashedRedirectMap.has(hash); Скорее всего, поменялся jwt secret')
-    }
 
     // 1. Find cfg target item by hash
     let targetCfgItem = null
