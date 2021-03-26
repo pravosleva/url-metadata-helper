@@ -222,35 +222,35 @@ http {
 
 ```bash
 server {
-  listen 80;
-  client_max_body_size 32m;
-  server_tokens off;
-  proxy_http_version 1.1;
+    listen 80;
+    client_max_body_size 32m;
+    server_tokens off;
+    proxy_http_version 1.1;
 
-  location / {
-    if ($request_method = 'POST') {
-      add_header 'Access-Control-Allow-Origin' '*';
-      add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
-      add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range';
-      add_header 'Access-Control-Expose-Headers' 'Content-Length,Content-Range';
+    location / {
+        if ($request_method = 'POST') {
+            add_header 'Access-Control-Allow-Origin' '*';
+            add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+            add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range';
+            add_header 'Access-Control-Expose-Headers' 'Content-Length,Content-Range';
+        }
+        if ($request_method = 'GET') {
+            add_header 'Access-Control-Allow-Origin' '*';
+            add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+            add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range';
+            add_header 'Access-Control-Expose-Headers' 'Content-Length,Content-Range';
+        }
+        proxy_pass          http://127.0.0.1:3000;
+        proxy_http_version  1.1;
     }
-    if ($request_method = 'GET') {
-      add_header 'Access-Control-Allow-Origin' '*';
-      add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
-      add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range';
-      add_header 'Access-Control-Expose-Headers' 'Content-Length,Content-Range';
-    }
-    proxy_pass          http://127.0.0.1:3000;
-    proxy_http_version  1.1;
-  }
 
-  # location /api {
-  #   rewrite ^/api/(.*)$ /$1 break;
-  #   proxy_pass          http://127.0.0.1:5000/smartprice/api/$1
-  # }
-  location  ~ ^/api/(.*)$ {
-    proxy_pass   http://127.0.0.1:5000/smartprice/api/$1;
-  }
+    # NOTE: This is EXTERNAL_ROUTE, which you can set to .env file:
+    location /express-helper {
+        rewrite ^/express-helper/(.*)$ /$1 break;
+        proxy_pass          http://127.0.0.1:5000;
+    }
+
+    # etc.
 }
 ```
 
