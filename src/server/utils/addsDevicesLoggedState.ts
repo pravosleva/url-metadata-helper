@@ -5,7 +5,7 @@ const genDataUrl: (payload: string) => Promise<string> = promisify(QRCode.toData
 
 // NOTE: Несколько других устройств для аутентификации по QR коду:
 // TODO: Could be moved to envs
-const authOnOtherDevicesLimit = 2
+const authOnOtherDevicesLimit = 1
 
 /**
  * Класс Одиночка предоставляет метод getInstance, который позволяет клиентам
@@ -78,7 +78,7 @@ class Singleton {
           ...sesData,
           additionalLoggedCounter: newLoggedCounter,
         })
-        return Promise.resolve(`Вы аутентифицированы ${newLoggedCounter} раз`)
+        return Promise.resolve(`Вы аутентифицированы на доп устройстве ${newLoggedCounter} раз`)
       } else {
         this.state.delete(reqId)
         return Promise.resolve('Вы аутентифицированы последний раз на доп устройстве в рамках конкретной сессии')

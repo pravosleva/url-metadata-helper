@@ -48,7 +48,7 @@ module.exports = (expiresCookiesTimeInDays) =>
       res.cookie(targetCode, jwt4Cookie, { maxAge, httpOnly: true })
 
       // --- QR CODE: 3.1
-      const qrInfoUrl = buildUrl(targetCfgItem.qr.successUrl, {
+      const qrInfoUrl = buildUrl(targetCfgItem.qr.targetUrl, {
         queryParams: {
           logged_req_id: req.id,
           // bar: ['one', 'two', 'three']

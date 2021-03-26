@@ -34,8 +34,7 @@ if (hasDuplicate(keys)) {
 }
 // ---
 const qr = {
-  successUrl: `${BASE_PROTOCOL_HOST}${EXTERNAL_ROUTE}/auth/go-target`,
-  // failUrl: `${EXTERNAL_ROUTE}/error`,
+  targetUrl: `${BASE_PROTOCOL_HOST}${EXTERNAL_ROUTE}/auth/go-target`,
 }
 const redirect = {
   [EAccessCode.OTSvyaznoyV1]: {
