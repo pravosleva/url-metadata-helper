@@ -70,22 +70,26 @@ class Singleton {
   public addLoggedSessionOrDelete(reqId: string): Promise<string> {
     if (this.state.has(reqId)) {
       const sesData = this.state.get(reqId)
+      const currentCounter = sesData.additionalLoggedCounter
       
-      if (sesData.additionalLoggedCounter < authOnOtherDevicesLimit) {
-        const newLoggedCounter = sesData.additionalLoggedCounter + 1
+      if (currentCounter + 1 >= authOnOtherDevicesLimit) {
+        this.state.delete(reqId)
+        return Promise.resolve('Вы аутентифицированы последний раз на доп устройстве в рамках конкретной сессии')
+      } else {
+        const newLoggedCounter = currentCounter + 1
 
         this.state.set(reqId, {
           ...sesData,
           additionalLoggedCounter: newLoggedCounter,
         })
         return Promise.resolve(`Вы аутентифицированы на доп устройстве ${newLoggedCounter} раз`)
-      } else {
-        this.state.delete(reqId)
-        return Promise.resolve('Вы аутентифицированы последний раз на доп устройстве в рамках конкретной сессии')
       }
     } else {
       return Promise.reject('Извините, такой сессии нет в памяти. Попробуйте авторизоваться еще раз.')
     }
+  }
+  public clearState(): void {
+    this.state.clear()
   }
 }
 

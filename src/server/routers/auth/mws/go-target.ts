@@ -56,12 +56,12 @@ export const goTarget = (expiresCookiesTimeInDays: number) => async (req: ICusto
     // ---
 
     await req.loggedMap.addLoggedSessionOrDelete(loggedReqId)
-      .then((_msg) => {
-        // res.set('service_msg', msg)
+      .then((msg) => {
+        res.cookie('auth_service_msg', msg, { maxAge, httpOnly: true })
         res.status(200).redirect(success_url)
       })
       .catch((msg) => {
-        // res.set('service_msg', msg)
+        res.cookie('auth_service_msg', msg, { maxAge, httpOnly: true })
 
         // TODO: redirect to error page
 
