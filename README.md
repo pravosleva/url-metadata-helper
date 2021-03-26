@@ -202,19 +202,16 @@ pid /run/nginx.pid;
 include /etc/nginx/modules-enabled/*.conf;
 
 events {
-	worker_connections 768;
-	# multi_accept on;
+    worker_connections 768;
+    # multi_accept on;
 }
 
 http {
-	include /etc/nginx/mime.types;
-	default_type application/octet-stream;
+    include /etc/nginx/mime.types;
+    default_type application/octet-stream;
 
-	##
-	# Virtual Host Configs
-	##
-
-	include /etc/nginx/conf.d/*.conf;
+    # NOTE: Virtual Host Configs
+    include /etc/nginx/conf.d/*.conf;
 }
 ```
 
@@ -263,7 +260,7 @@ server {
 
 ### frontend-signin
 
-1. `./.env.dev` & `./.env.prod` _(**You can change this files in project root dir**, they will be copied to `./server-dist/.env`)_
+✅ 1. `./.env.dev` & `./.env.prod` _(**You can change this files in project root dir**, they will be copied to `./server-dist/.env`)_
 
 ```
 EXPIRES_COOKIES_IN_DAYS=1
@@ -271,20 +268,22 @@ EXPIRES_COOKIES_IN_DAYS=1
 SP_SVYAZNOY_JWT_SECRET=<YOUR_STRING>
 SP_ACCESS_PASSWORD=<YOUR_PASSWORD>
 
-# Prod:
+##  Prod:
 BASE_PROTOCOL_HOST=http://pravosleva.ru
+
+## Optional:
 # EXTERNAL_ROUTE=/express-helper
 # SUCCESS_ANYWAY=1
 ```
 
-2. `./frontend.signin/.env` _(**Don't worry**, Will be updated by `yarn build:front:prod` script)_
+✅ 2. `./frontend.signin/.env` _(**Don't worry**, Will be updated by `yarn build:front:prod` script)_
 
 ```
 SKIP_PREFLIGHT_CHECK=true
-# Dev:
+## Dev:
 REACT_APP_API_URL=http://localhost:5000
 
-# Prod:
+## Prod:
 # REACT_APP_API_URL=/express-helper
 ```
 
@@ -294,7 +293,7 @@ yarn build:front
 
 ## add-access-space
 
-1. Add new key to **accessCode** `./src/server/routers/auth/cfg.js`.
+✅ 1. Add new key to **accessCode** `./src/server/routers/auth/cfg.js`.
 
 _For example:_
 
@@ -307,7 +306,7 @@ const accessCode = {
 // etc.
 ```
 
-2. Set new env to `./.env`.
+✅ 2. Set new env to `./.env`.
 
 _For example:_
 
@@ -321,7 +320,7 @@ SP_ACCESS_PASSWORD=admin
 # etc.
 ```
 
-3. Add new array key to **redirect object** `./src/server/routers/auth/cfg.js`.
+✅ 3. Add new key to redirect setyings object `./src/server/routers/auth/cfg.js`.
 
 _For example:_
 
@@ -344,7 +343,7 @@ module.exports = {
 }
 ```
 
-4. Add **redirectIfLoggedMw** middleware for redirecting to `./src/server/routers/auth/index.js` _for signin page route (or other unlogged route)._
+✅ 4. Add **redirectIfLoggedMw** middleware for redirecting to `./src/server/routers/auth/index.js` _for signin page route (or other unlogged route)._
 
 _For example:_
 
@@ -361,7 +360,7 @@ authApi.use(
 // etc.
 ```
 
-5. Add new route for static with **redirectIfUnloggedMw** middleware _where you need it._
+✅ 5. Add new route for static with **redirectIfUnloggedMw** middleware _where you need it._
 
 _For example: Additional access for specific swagger as static route_
 
