@@ -6,4 +6,7 @@ export interface ICustomRequest extends IRequest {
   loggedMap: typeof addsDevicesLoggedState
   success_url?: string
   swaggerDoc?: any
+  query: {
+    [key: string]: any
+  }
 }

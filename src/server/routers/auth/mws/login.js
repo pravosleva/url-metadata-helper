@@ -51,6 +51,7 @@ module.exports = (expiresCookiesTimeInDays) =>
       const qrInfoUrl = buildUrl(targetCfgItem.qr.targetUrl, {
         queryParams: {
           logged_req_id: req.id,
+          hash,
           // bar: ['one', 'two', 'three']
         },
       })
