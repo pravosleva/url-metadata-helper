@@ -62,14 +62,16 @@ export const goTarget = (expiresCookiesTimeInDays: number) => async (req: ICusto
       })
       .catch((msg) => {
         // res.set('service_msg', msg)
+
         // TODO: redirect to error page
-        // res.status(500).json({
-        //   ok: false,
-        //   message: msg
-        // })
+
+        res.status(500).json({
+          ok: false,
+          message: msg
+        })
 
         // NOTE: Если страница требует авторизации, пользователь все равно будет переброшен на страницу авторизации
-        res.status(200).redirect(success_url)
+        // res.status(200).redirect(success_url)
       })
   } catch (err) {
     return res.status(500).json({
