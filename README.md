@@ -263,14 +263,16 @@ server {
 
 ### frontend-signin
 
-1. `./.env` _(**You can change it**, will be copied to `./server-dist/.env`)_
+1. `./.env.dev` & `./.env.prod` _(**You can change this files in project root dir**, they will be copied to `./server-dist/.env`)_
 
 ```
 EXPIRES_COOKIES_IN_DAYS=1
 
 SP_SVYAZNOY_JWT_SECRET=<YOUR_STRING>
 SP_ACCESS_PASSWORD=<YOUR_PASSWORD>
+
 # Prod:
+BASE_PROTOCOL_HOST=http://pravosleva.ru
 # EXTERNAL_ROUTE=/express-helper
 # SUCCESS_ANYWAY=1
 ```
@@ -281,6 +283,7 @@ SP_ACCESS_PASSWORD=<YOUR_PASSWORD>
 SKIP_PREFLIGHT_CHECK=true
 # Dev:
 REACT_APP_API_URL=http://localhost:5000
+
 # Prod:
 # REACT_APP_API_URL=/express-helper
 ```
