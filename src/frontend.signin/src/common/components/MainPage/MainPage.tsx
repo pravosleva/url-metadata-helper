@@ -15,7 +15,7 @@ import { TValues } from './interfaces'
 import { getErrors } from './getErrors'
 // import { useRouter } from '~/common/hooks'
 import queryString from 'query-string'
-import { useUrgentMsgFromCookies } from '~/common/hooks'
+import { useMainContext, useUrgentMsgFromCookies } from '~/common/hooks'
 
 const { REACT_APP_API_URL } = process.env
 
@@ -49,7 +49,8 @@ export const MainPage = () => {
   const resetErrorMsg = useCallback(() => {
     setErrorMsg(null)
   }, [setErrorMsg]);
-  const [isAccepted, setIsAccepted] = useState<boolean>(false);
+  // const [isAccepted, setIsAccepted] = useState<boolean>(false);
+  const { isCookieAccepted: isAccepted, toggler: setIsAccepted } = useMainContext()
   const handleCheckAccept = useCallback(
     (_event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
       setIsAccepted(checked);
@@ -155,7 +156,7 @@ export const MainPage = () => {
         }}
       >
         {({ isSubmitting, errors, setFieldValue, values }) => (
-          <FormikForm>
+          <FormikForm style={{ width: '100%' }}>
             <Grid container spacing={3}>
               {/* <Grid item xs={12} sm={6}>
                 <Field

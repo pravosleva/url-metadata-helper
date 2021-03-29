@@ -12,7 +12,23 @@ code {
     monospace;
 }
 
-/* REACT-NOTIFICATIONS-COMPONENT CUSTOM */
+/* COOKIE DISCLAIMER */
+.cookie-disclaimer_container {
+  margin: 0 auto;
+  max-width: 576px;
+
+  display: flex !important;
+  align-items: center !important;
+}
+/* .cookie-disclaimer_container > div:first-child {
+  margin-bottom: 0px !important;
+} */
+.cookie-disclaimer_btns-wrapper {
+  display: flex;
+}
+.cookie-disclaimer_btns-wrapper > button:not(:last-child) {
+  margin-right: 0px !important;
+}
 
 /* REACT-NOTIFICATIONS-COMPONENT */
 

@@ -1,3 +1,4 @@
+export { useMainContext } from '~/common/context/MainContext'
 export { useNotifsContext } from '~/common/context/NotificationContext'
 export * from './useRouter'
 export * from './useUrgentMsgFromCookies'
