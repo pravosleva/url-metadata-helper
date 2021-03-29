@@ -244,7 +244,7 @@ server {
         proxy_http_version  1.1;
     }
 
-    # NOTE: This is EXTERNAL_ROUTE, which you can set to .env file:
+    # NOTE: This is EXTERNAL_ROUTING, which you can set to .env file:
     location /express-helper {
         rewrite ^/express-helper/(.*)$ /$1 break;
         proxy_pass          http://127.0.0.1:5000;
@@ -277,7 +277,7 @@ QR_SWAGGER_ACCESS_PASSWORD=<YOUR_QR_SWAGGER_ACCESS_PASSWORD>
 BASE_PROTOCOL_HOST=http://pravosleva.ru
 
 ## Optional:
-# EXTERNAL_ROUTE=/express-helper
+# EXTERNAL_ROUTING=/express-helper
 # SUCCESS_ANYWAY=1
 ```
 
@@ -290,6 +290,7 @@ REACT_APP_API_URL=http://localhost:5000
 
 ## Prod:
 # REACT_APP_API_URL=/express-helper
+REACT_APP_EXTERNAL_ROUTING=/express-helper
 ```
 
 ```bash
@@ -342,8 +343,8 @@ module.exports = {
       hash: md5Hash(accessCode.OTSvyaznoyV1),
 
       // NOTE: Последний слеш обязательно!
-      logged: `${EXTERNAL_ROUTE}/smartprice/otapi/v1/svyaznoy/swagger/`,
-      unlogged: `${EXTERNAL_ROUTE}/auth/signin/`,
+      logged: `${EXTERNAL_ROUTING}/smartprice/otapi/v1/svyaznoy/swagger/`,
+      unlogged: `${EXTERNAL_ROUTING}/auth/signin/`,
     },
     // TODO: New object
   },

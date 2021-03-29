@@ -7,7 +7,9 @@ import jwt from 'jsonwebtoken'
 import { hashedRedirectMap } from '../cfg'
 import buildUrl from 'build-url'
 
-const getMsByDays = (days: number): number => 1000 * 60 * 60 * 24 * days
+// const getMsByDays = (days: number): number => 1000 * 60 * 60 * 24 * days
+// const getMsByHours = (hours: number): number => 1000 * 60 * 60 * hours
+const getMsByMinutes = (minutes: number): number => 1000 * 60 * minutes
 
 export const goTarget = (expiresCookiesTimeInDays: number) => async (req: ICustomRequest, res: IResponse, next: any) => {
   if (!req.query.logged_req_id || typeof req.query.logged_req_id !== 'string')
@@ -22,7 +24,7 @@ export const goTarget = (expiresCookiesTimeInDays: number) => async (req: ICusto
 
   const loggedReqId = req.query.logged_req_id
   const hasLoggedReqIdInState = req.loggedMap.state.has(loggedReqId)
-  const maxAge = getMsByDays(expiresCookiesTimeInDays)
+  const maxAge = getMsByMinutes(0.25) // 10 sec
 
   try {
     const loggedObj = req.loggedMap.state.get(loggedReqId)
@@ -44,7 +46,7 @@ export const goTarget = (expiresCookiesTimeInDays: number) => async (req: ICusto
 
     if (!loggedObj) {
       res.clearCookie(targetCode)
-      res.cookie('last_auth_service_msg', 'Нет такой сессии для аутентификации на доп устройствах: !loggedObj; Возможно, Вы исчерпали количество дополнительных устройств для аутентификации', { maxAge, httpOnly: true })
+      res.cookie('urgent_auth_service_msg', 'Нет такой сессии для аутентификации на доп устройствах: !loggedObj; Возможно, Вы исчерпали количество дополнительных устройств для аутентификации', { maxAge, httpOnly: false })
       res.redirect(buildUrl(targetCfgItem.unlogged, {
         queryParams: { hash },
       }))
@@ -59,7 +61,7 @@ export const goTarget = (expiresCookiesTimeInDays: number) => async (req: ICusto
       // return res.status(200).redirect(fail_url)
       // return res.status(500).json({ ok: false, mesage: 'TODO' })
       // V2:
-      res.cookie('last_auth_service_msg', 'Нет такой сессии для аутентификации на доп устройствах: !hasLoggedReqIdInState; Возможно, Вы исчерпали количество дополнительных устройств для аутентификации', { maxAge, httpOnly: true })
+      res.cookie('urgent_auth_service_msg', 'Нет такой сессии для аутентификации на доп устройствах: !hasLoggedReqIdInState; Возможно, Вы исчерпали количество дополнительных устройств для аутентификации', { maxAge, httpOnly: false })
       res.redirect(buildUrl(targetCfgItem.unlogged, {
         queryParams: {
           hash: targetCfgItem.hash
@@ -76,11 +78,11 @@ export const goTarget = (expiresCookiesTimeInDays: number) => async (req: ICusto
 
     await req.loggedMap.addLoggedSessionOrDelete(loggedReqId)
       .then((msg) => {
-        res.cookie('last_auth_service_msg', msg, { maxAge, httpOnly: true })
+        // res.cookie('auth_service_msg', msg, { maxAge, httpOnly: false })
         res.status(200).redirect(success_url)
       })
       .catch((msg) => {
-        res.cookie('last_auth_service_msg', msg, { maxAge, httpOnly: true })
+        // res.cookie('auth_service_msg', msg, { maxAge, httpOnly: false })
 
         // TODO?: redirect to error page
 

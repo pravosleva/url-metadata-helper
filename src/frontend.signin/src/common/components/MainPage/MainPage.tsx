@@ -15,6 +15,7 @@ import { TValues } from './interfaces'
 import { getErrors } from './getErrors'
 // import { useRouter } from '~/common/hooks'
 import queryString from 'query-string'
+import { useUrgentMsgFromCookies } from '~/common/hooks'
 
 const { REACT_APP_API_URL } = process.env
 
@@ -32,10 +33,10 @@ interface IResSuccess extends IRes {
   uiName: string
   qr: string
 }
-interface IResFail extends IRes {
-  isOk: boolean
-  message: string
-}
+// interface IResFail extends IRes {
+//   isOk: boolean
+//   message: string
+// }
 
 export const MainPage = () => {
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
@@ -91,6 +92,7 @@ export const MainPage = () => {
     [isAccepted]
   );
   const [QR, setQR] = useState<string | null>(null)
+  useUrgentMsgFromCookies({ cookieName: 'urgent_auth_service_msg' })
 
   return (
     <Container

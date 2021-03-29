@@ -2,7 +2,7 @@
 /* eslint-disable no-restricted-syntax */
 import md5Hash from '../../utils/md5'
 
-const EXTERNAL_ROUTE = process.env.EXTERNAL_ROUTE || ''
+const EXTERNAL_ROUTING = process.env.EXTERNAL_ROUTING || ''
 const {
   BASE_PROTOCOL_HOST,
   SP_SVYAZNOY_JWT_SECRET,
@@ -45,7 +45,7 @@ if (hasDuplicate(keys)) {
 }
 // ---
 const qr = {
-  targetUrl: `${BASE_PROTOCOL_HOST}${EXTERNAL_ROUTE}/auth/go-target`,
+  targetUrl: `${BASE_PROTOCOL_HOST}${EXTERNAL_ROUTING}/auth/go-target`,
 }
 const redirect = {
   [EAccessCode.OTSvyaznoyV1]: {
@@ -53,8 +53,8 @@ const redirect = {
     uiName: 'Online Trade-in API (Svyaznoy)',
     accessPassword: SP_ACCESS_PASSWORD,
     hash: md5Hash(EAccessCode.OTSvyaznoyV1),
-    logged: `${EXTERNAL_ROUTE}/smartprice/otapi/v1/svyaznoy/swagger/`,
-    unlogged: `${EXTERNAL_ROUTE}/auth/signin/`,
+    logged: `${EXTERNAL_ROUTING}/smartprice/otapi/v1/svyaznoy/swagger/`,
+    unlogged: `${EXTERNAL_ROUTING}/auth/signin/`,
     qr,
   },
   [EAccessCode.Homepage]: {
@@ -62,8 +62,8 @@ const redirect = {
     uiName: 'Homepage',
     accessPassword: 'home',
     hash: md5Hash(EAccessCode.Homepage),
-    logged: `${EXTERNAL_ROUTE}/`,
-    unlogged: `${EXTERNAL_ROUTE}/auth/signin/`,
+    logged: `${EXTERNAL_ROUTING}/`,
+    unlogged: `${EXTERNAL_ROUTING}/auth/signin/`,
     qr,
   },
   [EAccessCode.QRSwagger]: {
@@ -71,8 +71,8 @@ const redirect = {
     uiName: 'QR test API documentation',
     accessPassword: QR_SWAGGER_ACCESS_PASSWORD,
     hash: md5Hash(EAccessCode.QRSwagger),
-    logged: `${EXTERNAL_ROUTE}/qr/swagger/`, // NOTE: Последний слеш обязательно!
-    unlogged: `${EXTERNAL_ROUTE}/auth/signin/`,
+    logged: `${EXTERNAL_ROUTING}/qr/swagger/`, // NOTE: Последний слеш обязательно!
+    unlogged: `${EXTERNAL_ROUTING}/auth/signin/`,
     qr,
   },
 }

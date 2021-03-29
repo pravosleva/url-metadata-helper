@@ -10,6 +10,7 @@ const getMsByDays = (days) => 1000 * 60 * 60 * 24 * days
 
 module.exports = (expiresCookiesTimeInDays) =>
   async function (req, res) {
+    // res.clearCookie('urgent_auth_service_msg')
     if (!req.body.hash) {
       return res
         .status(401)

@@ -31,6 +31,8 @@ export const defaultTheme = {
   },
 }
 
+export const { breakpoints: { values: { md } } } = defaultTheme
+
 export const GlobalCss = withStyles((theme: Theme) => ({
   // @global is handled by jss-plugin-global.
   '@global': {
