@@ -30,6 +30,13 @@ import otApiV1SvyaznoySwagger from './mws/otapi/v1/svyaznoi/swagger'
 import { EAccessCode, redirect } from '../auth/cfg'
 import redirectIfUnloggedMw from '../auth/mws/redirect-if-unlogged'
 
+import partnerApiTradeInIMEI from './mws/partner_api/tradein/imei'
+import partnerApiTradeInPhoneCheck from './mws/partner_api/tradein/phone/check'
+import partnerApiTradeInPhotoLink from './mws/partner_api/photo/link'
+import partnerApiTradeInPhotoStatus from './mws/partner_api/photo/status'
+import partnerApiTradeInPhotoUpload from './mws/partner_api/photo/upload'
+import partnerApiTradeInDecline from './mws/partner_api/tradein/decline'
+
 const jsonParser = bodyParser.json()
 
 const smartpriceApi = express()
@@ -50,7 +57,7 @@ smartpriceApi.get('/fapi/get-catalog-data/', catalogDataRoute)
 // Etc.
 smartpriceApi.get('/md5/make/', jsonParser, md5Make)
 
-// Online TradeIn API imitation
+// Online Trade-in API imitation
 smartpriceApi.use(
   '/otapi/v1/svyaznoy/swagger/',
   redirectIfUnloggedMw(redirect[EAccessCode.OTSvyaznoyV1].jwtSecret, EAccessCode.OTSvyaznoyV1),
@@ -66,5 +73,13 @@ smartpriceApi.post('/otapi/v1/svyaznoy/check_state/', otApiV1SvyaznoyCheckState)
 smartpriceApi.post('/otapi/v1/svyaznoy/accept_price/', otApiV1SvyaznoyAcceptPrice)
 smartpriceApi.post('/otapi/v1/svyaznoy/buyout_doc_form/', otApiV1SvyaznoyBuyoutDocForm)
 smartpriceApi.post('/otapi/v1/svyaznoy/sign_buyout_doc/', otApiV1SvyaznoySignBuyoutDoc)
+
+// Offline Trade-in API imitation
+smartpriceApi.post('/partner_api/tradein/imei/', partnerApiTradeInIMEI)
+smartpriceApi.post('/partner_api/tradein/phone/check/', partnerApiTradeInPhoneCheck)
+smartpriceApi.post('/partner_api/photo/link/', partnerApiTradeInPhotoLink)
+smartpriceApi.post('/partner_api/photo/status/', partnerApiTradeInPhotoStatus)
+smartpriceApi.post('/partner_api/photo/upload/', partnerApiTradeInPhotoUpload)
+smartpriceApi.post('/partner_api/tradein/decline/', partnerApiTradeInDecline)
 
 export default smartpriceApi
