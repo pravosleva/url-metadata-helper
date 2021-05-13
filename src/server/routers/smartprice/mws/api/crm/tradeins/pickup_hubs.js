@@ -1,4 +1,5 @@
 // const { getRandomInteger } = require('../../../../../../utils/getRandomInteger')
+const delay = require('../../../../../../utils/delay')
 
 // const { SUCCESS_ANYWAY } = process.env
 
@@ -45,5 +46,8 @@ module.exports = async (req, res) => {
   }
 
   // res.status(toBeOrNotToBe ? 200 : 400).send(response)
+
+  await delay(3000)
+
   res.status(200).send(response)
 }

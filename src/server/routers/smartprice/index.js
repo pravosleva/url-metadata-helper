@@ -11,6 +11,7 @@ import streetsAutocompleteRoute from './mws/api/autocomplete/streets'
 import checkDiscountPromoRoute from './mws/api/check-discount'
 import warrantyPageRoute from './mws/api/warranty_claim_email'
 import crmTradeinsPickupHubsRoute from './mws/api/crm/tradeins/pickup_hubs'
+import crmPickupCreateAndSendBatchRoute from './mws/api/crm/pickup/create_and_send_batch'
 
 import md5Make from './mws/md5/make'
 
@@ -52,6 +53,7 @@ smartpriceApi.post('/api/autocomplete/streets/', streetsAutocompleteRoute)
 smartpriceApi.post('/api/check-discount/', checkDiscountPromoRoute)
 smartpriceApi.post('/api/warranty_claim_email/', jsonParser, warrantyPageRoute)
 smartpriceApi.get('/api/crm/tradeins/pickup_hubs/', jsonParser, crmTradeinsPickupHubsRoute)
+smartpriceApi.put('/api/crm/pickup/create_and_send_batch/', jsonParser, crmPickupCreateAndSendBatchRoute)
 
 // Frontend API imitation (не совсем понятно, почему Гена так называет часть запросов из клиента)
 smartpriceApi.get('/fapi/get-catalog-data/', catalogDataRoute)
