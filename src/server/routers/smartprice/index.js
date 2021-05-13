@@ -10,7 +10,7 @@ import deliverypriceForCitiesAutocompleteRoute from './mws/api/autocomplete/deli
 import streetsAutocompleteRoute from './mws/api/autocomplete/streets'
 import checkDiscountPromoRoute from './mws/api/check-discount'
 import warrantyPageRoute from './mws/api/warranty_claim_email'
-import crmTradeinsPickupHubsRoute from './mws/crm/tradeins/pickup_hubs'
+import crmTradeinsPickupHubsRoute from './mws/api/crm/tradeins/pickup_hubs'
 
 import md5Make from './mws/md5/make'
 
