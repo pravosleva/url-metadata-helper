@@ -4,8 +4,18 @@ const delay = require('../../../../../../utils/delay')
 
 // const { SUCCESS_ANYWAY } = process.env
 
+// NOTE: See also https://t.ringeo.ru/issue/IT-2236#focus=streamItem-4-7775.0-0
+/*
+xlsx_file - файл с устройствами
+hub - название хаба
+courier - название курьера из списка (например cdek)
+scheduled_date - дата вывоза
+dry_run - true если отправляем для предпросмотра, false - для отправки пикапа
+*/
+
 const toClient = {
   dry_run: [
+    // dry_run == true - отдаём список устройств для предварительного просмотра
     {
       ok: true,
       result: [
@@ -20,6 +30,8 @@ const toClient = {
         },
       ],
     },
+    // dry_run == false - такой же ответ как при назначении вызова по кнопке из
+    // "Управление заявками на вывоз trade-in", по запросу PUT /api/crm/tradeins/pickup/batch/
     {
       ok: true,
       package_ids: ['1245135', '1245136', '1245137'],
@@ -38,6 +50,9 @@ const toClient = {
     },
   ],
 }
+
+// NOTE: По идее нужно делать как при назначении вывоза, то есть обновлять список пикапов исходя из этих данных.
+// Тут id - это номер пикапа, cdek_dispatch_number - номер накладной сдэк
 
 module.exports = async (req, res) => {
   res.append('Content-Type', 'application/json')

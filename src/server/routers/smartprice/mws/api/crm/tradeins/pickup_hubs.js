@@ -42,7 +42,6 @@ module.exports = async (req, res) => {
   // const toBeOrNotToBe = SUCCESS_ANYWAY === '1' ? 1 : Boolean(getRandomInteger(0, 1))
   const response = {
     ...toClient[0],
-    _originalBody: req.body,
   }
 
   // res.status(toBeOrNotToBe ? 200 : 400).send(response)
