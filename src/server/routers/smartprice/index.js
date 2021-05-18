@@ -53,7 +53,7 @@ smartpriceApi.post('/api/autocomplete/streets/', streetsAutocompleteRoute)
 smartpriceApi.post('/api/check-discount/', checkDiscountPromoRoute)
 smartpriceApi.post('/api/warranty_claim_email/', jsonParser, warrantyPageRoute)
 smartpriceApi.get('/api/crm/tradeins/pickup_hubs/', jsonParser, crmTradeinsPickupHubsRoute)
-smartpriceApi.put('/api/crm/pickup/create_and_send_batch/', jsonParser, crmPickupCreateAndSendBatchRoute)
+smartpriceApi.post('/api/crm/pickup/create_and_send_batch/', jsonParser, crmPickupCreateAndSendBatchRoute)
 
 // Frontend API imitation (не совсем понятно, почему Гена так называет часть запросов из клиента)
 smartpriceApi.get('/fapi/get-catalog-data/', catalogDataRoute)
