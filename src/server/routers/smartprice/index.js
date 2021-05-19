@@ -39,9 +39,13 @@ import partnerApiTradeInPhotoStatus from './mws/partner_api/photo/status'
 import partnerApiTradeInPhotoUpload from './mws/partner_api/photo/upload'
 import partnerApiTradeInDecline from './mws/partner_api/tradein/decline'
 
+const formidable = require('express-formidable')
+
 const jsonParser = bodyParser.json()
 
 const smartpriceApi = express()
+
+smartpriceApi.use(formidable())
 
 // Special API imitation
 smartpriceApi.get('/api/catalog', catalogCounterRoute)

@@ -57,27 +57,29 @@ const toClient = {
 module.exports = async (req, res) => {
   res.append('Content-Type', 'application/json')
 
-  // TODO: if !delivery -> 403 поле delivery обязательно
-
-  if (req.body.dry_run === true || req.body.dry_run === false) {
-    res.status(500).send({ ok: false, message: 'Обязательное поле: req.body.dry_run' })
+  if (!req.is('multipart/form-data')) {
+    return res.send(500).send({ ok: false, message: 'Is not multipart/form-data' })
   }
+
+  // if (req.fields.dry_run !== true || req.fields.dry_run !== false) {
+  //   res.status(500).send({ ok: false, message: 'Обязательное поле: req.body.dry_run' })
+  // }
 
   // const toBeOrNotToBe = SUCCESS_ANYWAY === '1' ? 1 : Boolean(getRandomInteger(0, 1))
   let base
-  if (req.body.dry_run === true) {
+  if (req.fields.dry_run === 'true') {
     base = toClient.dry_run[1]
   } else {
     base = toClient.dry_run[0]
   }
   const response = {
     ...base,
-    _originalBody: req.body,
+    _originalBody: { body: req.body, fields: req.fields },
   }
 
   // res.status(toBeOrNotToBe ? 200 : 400).send(response)
 
   await delay(3000)
 
-  res.status(200).send(response)
+  return res.status(200).send(response)
 }
