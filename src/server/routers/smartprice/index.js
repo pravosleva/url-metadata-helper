@@ -84,12 +84,12 @@ smartpriceApi.post('/otapi/v1/svyaznoy/buyout_doc_form', otApiV1SvyaznoyBuyoutDo
 smartpriceApi.post('/otapi/v1/svyaznoy/sign_buyout_doc', otApiV1SvyaznoySignBuyoutDoc)
 
 // Offline Trade-in API imitation
-smartpriceApi.post('/partner_api/tradein/imei/', partnerApiTradeInIMEI)
-smartpriceApi.post('/partner_api/tradein/phone/check/', partnerApiTradeInPhoneCheck)
-smartpriceApi.post('/partner_api/photo/link/', partnerApiTradeInPhotoLink)
-smartpriceApi.post('/partner_api/photo/status/', partnerApiTradeInPhotoStatus)
-smartpriceApi.post('/partner_api/photo/upload/', partnerApiTradeInPhotoUpload)
-smartpriceApi.post('/partner_api/tradein/decline/', partnerApiTradeInDecline)
+smartpriceApi.post('/partner_api/tradein/imei', partnerApiTradeInIMEI)
+smartpriceApi.post('/partner_api/tradein/phone/check', partnerApiTradeInPhoneCheck)
+smartpriceApi.post('/partner_api/photo/link', partnerApiTradeInPhotoLink)
+smartpriceApi.post('/partner_api/photo/status', partnerApiTradeInPhotoStatus)
+smartpriceApi.post('/partner_api/photo/upload', partnerApiTradeInPhotoUpload)
+smartpriceApi.post('/partner_api/tradein/decline', partnerApiTradeInDecline)
 smartpriceApi.get('/partner_api/tools/fms/:code', partnerApiToolsFmsCode)
 
 export default smartpriceApi
