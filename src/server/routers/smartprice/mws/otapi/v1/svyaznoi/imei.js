@@ -29,14 +29,12 @@ const toClient = [
   },
 ]
 
-module.exports = async (req, res) => {
+module.exports = (req, res) => {
   const toBeOrNotToBe = SUCCESS_ANYWAY ? 1 : getRandomInteger(0, 1)
 
-  setTimeout(() => {
-    res.status(200).send({
-      ...toClient[toBeOrNotToBe],
-      imei: req.body.IMEI,
-      _originalBody: req.body,
-    })
-  }, 500)
+  res.status(200).send({
+    ...toClient[toBeOrNotToBe],
+    imei: req.body.IMEI,
+    _originalBody: req.body,
+  })
 }

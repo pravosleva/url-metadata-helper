@@ -40,13 +40,13 @@ import partnerApiTradeInPhotoUpload from './mws/partner_api/photo/upload'
 import partnerApiTradeInDecline from './mws/partner_api/tradein/decline'
 import partnerApiToolsFmsCode from './mws/partner_api/tools/fms/[code]'
 
-const formidable = require('express-formidable')
+// const formidable = require('cyberjon-express-formidable')
 
 const jsonParser = bodyParser.json()
 
 const smartpriceApi = express()
 
-smartpriceApi.use(formidable())
+// smartpriceApi.use(formidable())
 
 // Special API imitation
 smartpriceApi.get('/api/catalog', catalogCounterRoute)

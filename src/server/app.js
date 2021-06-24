@@ -5,6 +5,7 @@ import express from 'express'
 import path from 'path'
 import cookieParser from 'cookie-parser'
 import logger from 'morgan'
+import cors from 'cors'
 import authRouter from './routers/auth'
 
 import { EAccessCode, redirect } from './routers/auth/cfg'
@@ -23,6 +24,7 @@ const app = express()
 
 const addRequestId = require('express-request-id')()
 
+app.use(cors())
 app.use(addRequestId) // NOTE: New additional field req.id
 app.use(logger('dev'))
 app.use(express.json())
