@@ -373,9 +373,22 @@ authApi.use(
 _For example: Additional access for specific swagger as static route_
 
 ```js
+// 4. Online Trade-in API imitation
+// 4.1 Docs for partners
 smartpriceApi.use(
-  '/otapi/v1/svyaznoy/swagger/',
-  redirectIfUnloggedMw(SP_SVYAZNOY_JWT_SECRET, accessCode.OTSvyaznoyV1),
-  otApiV1SvyaznoySwagger
+  '/otapi/v1/:partnerName/swagger',
+  function (req, res, next) {
+    switch (req.params.partnerName) {
+      // 4.1.1 Access sample
+      case EPartner.Svyaznoy:
+        redirectIfUnloggedMw(redirect[EAccessCode.OTSvyaznoyV1].jwtSecret, EAccessCode.OTSvyaznoyV1)(req, res, next)
+        break;
+      default:
+        res.status(500).json({ ok: false, message: '🖕 SORRY 🖕', _originalBody: { params: req.params } })
+        break
+    }
+  },
+  // redirectIfUnloggedMw(redirect[EAccessCode.OTSvyaznoyV1].jwtSecret, EAccessCode.OTSvyaznoyV1),
+  otApiV1Swagger
 )
 ```

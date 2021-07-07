@@ -17,17 +17,17 @@ import md5Make from './mws/md5/make'
 
 import catalogDataRoute from './mws/fapi/get-catalog-data'
 
-import otApiV1SvyaznoyGetIMEI from './mws/otapi/v1/svyaznoi/imei'
-import otApiV1SvyaznoyConfirmDetection from './mws/otapi/v1/svyaznoi/confirm_detection'
-import otApiV1SvyaznoyDiagnostics from './mws/otapi/v1/svyaznoi/diagnostics'
-import otApiV1SvyaznoyAcceptPreprice from './mws/otapi/v1/svyaznoi/accept_preprice'
-import otApiV1SvyaznoyDeclinePreprice from './mws/otapi/v1/svyaznoi/decline_price'
-import otApiV1SvyaznoyPhotoUpload from './mws/otapi/v1/svyaznoi/photo_upload'
-import otApiV1SvyaznoyCheckState from './mws/otapi/v1/svyaznoi/check_state'
-import otApiV1SvyaznoyAcceptPrice from './mws/otapi/v1/svyaznoi/accept_price'
-import otApiV1SvyaznoyBuyoutDocForm from './mws/otapi/v1/svyaznoi/buyout_doc_form'
-import otApiV1SvyaznoySignBuyoutDoc from './mws/otapi/v1/svyaznoi/sign_buyout_doc'
-import otApiV1SvyaznoySwagger from './mws/otapi/v1/svyaznoi/swagger'
+import otApiV1SvyaznoyGetIMEI from './mws/otapi/v1/[partnerName]/imei'
+import otApiV1SvyaznoyConfirmDetection from './mws/otapi/v1/[partnerName]/confirm_detection'
+import otApiV1SvyaznoyDiagnostics from './mws/otapi/v1/[partnerName]/diagnostics'
+import otApiV1SvyaznoyAcceptPreprice from './mws/otapi/v1/[partnerName]/accept_preprice'
+import otApiV1SvyaznoyDeclinePreprice from './mws/otapi/v1/[partnerName]/decline_price'
+import otApiV1SvyaznoyPhotoUpload from './mws/otapi/v1/[partnerName]/photo_upload'
+import otApiV1SvyaznoyCheckState from './mws/otapi/v1/[partnerName]/check_state'
+import otApiV1SvyaznoyAcceptPrice from './mws/otapi/v1/[partnerName]/accept_price'
+import otApiV1SvyaznoyBuyoutDocForm from './mws/otapi/v1/[partnerName]/buyout_doc_form'
+import otApiV1SvyaznoySignBuyoutDoc from './mws/otapi/v1/[partnerName]/sign_buyout_doc'
+import otApiV1Swagger, { EPartner } from './mws/otapi/v1/[partnerName]/swagger'
 // import checkAuth from '../auth/mws/check-jwt'
 import { EAccessCode, redirect } from '../auth/cfg'
 import redirectIfUnloggedMw from '../auth/mws/redirect-if-unlogged'
@@ -48,7 +48,7 @@ const smartpriceApi = express()
 
 // smartpriceApi.use(formidable())
 
-// Special API imitation
+// 1. Special API imitation
 smartpriceApi.get('/api/catalog', catalogCounterRoute)
 smartpriceApi.post('/api/cdb', cartMutationRoute)
 smartpriceApi.delete('/api/cdb', cartDeleteRoute)
@@ -60,30 +60,42 @@ smartpriceApi.post('/api/warranty_claim_email', jsonParser, warrantyPageRoute)
 smartpriceApi.get('/api/crm/tradeins/pickup_hubs', jsonParser, crmTradeinsPickupHubsRoute)
 smartpriceApi.post('/api/crm/pickup/create_and_send_batch', jsonParser, crmPickupCreateAndSendBatchRoute)
 
-// Frontend API imitation (не совсем понятно, почему Гена так называет часть запросов из клиента)
+// 2. Frontend API imitation (не совсем понятно, почему Гена так называет часть запросов из клиента)
 smartpriceApi.get('/fapi/get-catalog-data', catalogDataRoute)
 
-// Etc.
+// 3. Etc.
 smartpriceApi.get('/md5/make', jsonParser, md5Make)
 
-// Online Trade-in API imitation
+// 4. Online Trade-in API imitation
+// 4.1 Docs for partners
 smartpriceApi.use(
-  '/otapi/v1/svyaznoy/swagger',
-  redirectIfUnloggedMw(redirect[EAccessCode.OTSvyaznoyV1].jwtSecret, EAccessCode.OTSvyaznoyV1),
-  otApiV1SvyaznoySwagger
+  '/otapi/v1/:partnerName/swagger',
+  function (req, res, next) {
+    switch (req.params.partnerName) {
+      case EPartner.Svyaznoy:
+        redirectIfUnloggedMw(redirect[EAccessCode.OTSvyaznoyV1].jwtSecret, EAccessCode.OTSvyaznoyV1)(req, res, next)
+        break;
+      default:
+        res.status(500).json({ ok: false, message: '🖕 SORRY 🖕', _originalBody: { params: req.params } })
+        break
+    }
+  },
+  // redirectIfUnloggedMw(redirect[EAccessCode.OTSvyaznoyV1].jwtSecret, EAccessCode.OTSvyaznoyV1),
+  otApiV1Swagger
 )
-smartpriceApi.post('/otapi/v1/svyaznoy/imei', otApiV1SvyaznoyGetIMEI)
-smartpriceApi.post('/otapi/v1/svyaznoy/confirm_detection', otApiV1SvyaznoyConfirmDetection)
-smartpriceApi.post('/otapi/v1/svyaznoy/diagnostics', otApiV1SvyaznoyDiagnostics)
-smartpriceApi.post('/otapi/v1/svyaznoy/accept_preprice', otApiV1SvyaznoyAcceptPreprice)
-smartpriceApi.post('/otapi/v1/svyaznoy/decline_price', otApiV1SvyaznoyDeclinePreprice)
-smartpriceApi.post('/otapi/v1/svyaznoy/photo_upload', otApiV1SvyaznoyPhotoUpload)
-smartpriceApi.post('/otapi/v1/svyaznoy/check_state', otApiV1SvyaznoyCheckState)
-smartpriceApi.post('/otapi/v1/svyaznoy/accept_price', otApiV1SvyaznoyAcceptPrice)
-smartpriceApi.post('/otapi/v1/svyaznoy/buyout_doc_form', otApiV1SvyaznoyBuyoutDocForm)
-smartpriceApi.post('/otapi/v1/svyaznoy/sign_buyout_doc', otApiV1SvyaznoySignBuyoutDoc)
+// 4.2 Etc.
+smartpriceApi.post('/otapi/v1/:partnerName/imei', otApiV1SvyaznoyGetIMEI)
+smartpriceApi.post('/otapi/v1/:partnerName/confirm_detection', otApiV1SvyaznoyConfirmDetection)
+smartpriceApi.post('/otapi/v1/:partnerName/diagnostics', otApiV1SvyaznoyDiagnostics)
+smartpriceApi.post('/otapi/v1/:partnerName/accept_preprice', otApiV1SvyaznoyAcceptPreprice)
+smartpriceApi.post('/otapi/v1/:partnerName/decline_price', otApiV1SvyaznoyDeclinePreprice)
+smartpriceApi.post('/otapi/v1/:partnerName/photo_upload', otApiV1SvyaznoyPhotoUpload)
+smartpriceApi.post('/otapi/v1/:partnerName/check_state', otApiV1SvyaznoyCheckState)
+smartpriceApi.post('/otapi/v1/:partnerName/accept_price', otApiV1SvyaznoyAcceptPrice)
+smartpriceApi.post('/otapi/v1/:partnerName/buyout_doc_form', otApiV1SvyaznoyBuyoutDocForm)
+smartpriceApi.post('/otapi/v1/:partnerName/sign_buyout_doc', otApiV1SvyaznoySignBuyoutDoc)
 
-// Offline Trade-in API imitation
+// 5. Offline Trade-in API imitation
 smartpriceApi.post('/partner_api/tradein/imei', partnerApiTradeInIMEI)
 smartpriceApi.post('/partner_api/tradein/phone/check', partnerApiTradeInPhoneCheck)
 smartpriceApi.post('/partner_api/photo/link', partnerApiTradeInPhotoLink)

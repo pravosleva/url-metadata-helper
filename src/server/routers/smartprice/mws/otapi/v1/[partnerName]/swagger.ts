@@ -1,7 +1,9 @@
 const express = require('express')
 const path = require('path')
+// import { EAccessCode, redirect } from '../../../../../auth/cfg'
+// import redirectIfUnloggedMw from '../../../../../auth/mws/redirect-if-unlogged'
 
-const swagger = express()
+const swagger = express.Router({ mergeParams: true })
 // https://www.npmjs.com/package/swagger-ui-express
 const swaggerUi = require('swagger-ui-express')
 const YAML = require('yamljs')
@@ -15,12 +17,31 @@ const options = {
   // customJs: `${EXTERNAL_ROUTING}/assets/swagger-ui/js/onload.js`,
 }
 
+export enum EPartner {
+  Svyaznoy = 'svyaznoy',
+}
+const docsMapping = {
+  [EPartner.Svyaznoy]: './partner-swagger/svyaznoy.yaml',
+}
+const getDocPath = (partnerName: string): string | null => {
+  return docsMapping[partnerName] || null
+}
+
 swagger.use(
   '/',
-  function (req, _res, next) {
+  function (req, res, next) {
     // From root dir:
-    req.swaggerDoc = YAML.load(path.join(__dirname, './swagger.yaml'))
-    next()
+    const docPath = getDocPath(req.params.partnerName)
+
+    if (docPath) {
+      req.swaggerDoc = YAML.load(path.join(__dirname, docPath))
+      next()
+    } else {
+      res.append('Content-Type', 'application/json')
+      res
+        .status(500)
+        .send({ ok: false, message: `Для партнера ${req.params.partnerName} данный функционал не предусмотрен` })
+    }
   },
   // swaggerUi.serveFiles(doc, {}),
   // function (req, res, next) {
@@ -32,4 +53,4 @@ swagger.use(
   swaggerUi.setup(null, options)
 )
 
-module.exports = swagger
+export default swagger
