@@ -32,7 +32,7 @@ export const tryAuthOnOtherDevice = async (req: ICustomRequest, res: IResponse) 
       }))
     // ---
 
-    return res.status(result.isOk ? 200 : 500).json({
+    return res.status(200).json({
       _express: {
         ..._express, 
         loggedSize: req.loggedMap.state.size,
