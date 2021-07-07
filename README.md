@@ -379,10 +379,11 @@ smartpriceApi.use(
   '/otapi/v1/:partnerName/swagger',
   function (req, res, next) {
     switch (req.params.partnerName) {
-      // 4.1.1 Access sample
+      // 4.1.1 Access tool sample
       case EPartner.Svyaznoy:
         redirectIfUnloggedMw(redirect[EAccessCode.OTSvyaznoyV1].jwtSecret, EAccessCode.OTSvyaznoyV1)(req, res, next)
         break;
+      // TODO: Other partner...
       default:
         res.status(500).json({ ok: false, message: '🖕 SORRY 🖕', _originalBody: { params: req.params } })
         break

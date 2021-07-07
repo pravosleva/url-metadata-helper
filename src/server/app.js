@@ -14,7 +14,7 @@ import mainRouter from './routers/index'
 import usersRouter from './routers/users'
 import urlMetadataRouter from './routers/url-metadata'
 import reCAPTCHAV3Router from './routers/recaptcha-v3'
-import swaggerRouter from './routers/swagger'
+import mainSwaggerRouter from './routers/swagger'
 import smartpriceRouter from './routers/smartprice'
 import imeiRouter from './routers/imei'
 import { qrApi as qrRouter } from './routers/qr'
@@ -48,7 +48,7 @@ app.use(express.static(path.join(__dirname, '../', 'public')))
 app.use('/users', usersRouter)
 app.use('/url-metadata', urlMetadataRouter)
 app.use('/recaptcha-v3', reCAPTCHAV3Router)
-app.use('/swagger', swaggerRouter)
+app.use('/swagger', mainSwaggerRouter)
 app.use('/smartprice', smartpriceRouter)
 app.use('/imei', imeiRouter)
 app.use('/auth', authRouter)
