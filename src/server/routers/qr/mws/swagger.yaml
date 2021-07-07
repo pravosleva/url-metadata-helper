@@ -14,8 +14,12 @@ tags:
   - name: 'tst.generate'
     description: 'Generate QR code by payload'
     externalDocs:
-      description: 'Сгенерить QR по строке (аргументу, как правило, это ссылка)'
+      description: 'Сгенерить QR по строке payload'
       url: 'swagger.io'
+  - name: 'reset-logged-map'
+    description: 'Reset all logged keys from memory'
+    externalDocs:
+      description: 'Сбросить текущий стейт'
 paths:
   /tst.generate:
     get:
@@ -43,6 +47,24 @@ paths:
                 required: true
               src:
                 type: string
+                required: true
+  /reset-logged-map:
+    get:
+      tags:
+        - 'reset-logged-map'
+      produces:
+        - application/json
+      summary: 'Returns success or not'
+      description: 'Вернет успех или нет'
+      responses:
+        200:
+          description: 'OK'
+          schema:
+            info: 'Success response sample'
+            type: object
+            properties:
+              ok:
+                type: boolean
                 required: true
 definitions:
   GenerateSampleParams:

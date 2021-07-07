@@ -3,7 +3,7 @@ import { tstGenerate } from './mws/tst.generate'
 import { tryAuthOnOtherDevice } from './mws/tst.try-auth-on-other-device'
 import { getLoggedMap } from './mws/tst.get-logged-map'
 import { generate } from './mws/generate'
-import { clearState } from './mws/clear-state'
+import { clearState } from './mws/reset-logged-map'
 import { swagger } from './mws/swagger'
 
 import { EAccessCode, redirect } from '../auth/cfg'
@@ -16,7 +16,7 @@ qrApi.get('/tst.try-auth-on-other-device', tryAuthOnOtherDevice)
 qrApi.get('/tst.get-logged-map', getLoggedMap)
 
 qrApi.post('/generate', generate)
-qrApi.get('/clear-state', clearState)
+qrApi.get('/reset-logged-map', clearState)
 qrApi.use(
   '/swagger',
   redirectIfUnloggedMw(redirect[EAccessCode.QRSwagger].jwtSecret, EAccessCode.QRSwagger),
